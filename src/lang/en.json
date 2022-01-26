@@ -1,0 +1,16 @@
+{
+  "common.name": "Name",
+  "common.avatar": "Avatar",
+  "common.avatarUrl": "Avatar URL",
+  "common.description": "Description",
+
+  "erros.default": "Something went wrong, please try again",
+
+  "profile.title": "Profile",
+  "profile.setup.title": "Setup profile",
+  "profile.edit.title": "Edit profile",
+
+  "profile.edit.form.avatar.popover.title": "Why not file upload?",
+  "profile.edit.form.avatar.popover.description": "Storing file on blockchain is not cheap operation so it's better to go with just the URL",
+  "profile.edit.form.description.placeholder": "You may want to describe yourself a little bit"
+}
