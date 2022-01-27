@@ -1,5 +1,5 @@
 import { useContractCall, useContractCalls } from "@usedapp/core";
-import { chatAbi, factoryAbi } from "app/abis";
+import { chatAbi, factoryAbi, profileAbi } from "app/abis";
 import { stringToBytes32 } from "utils/ethersUtils";
 import { constants } from "ethers";
 import { IChat } from "types/chat";
@@ -14,7 +14,7 @@ const useChat = (id: string): [IChat | null, boolean] => {
       args: [stringToBytes32(id)],
     }) ?? [];
 
-  const [membersCount] = (
+  const [membersCount, membersAddresses, messagesCount] = (
     (useContractCalls(
       address
         ? [
@@ -24,7 +24,32 @@ const useChat = (id: string): [IChat | null, boolean] => {
               method: "membersCount",
               args: [],
             },
+            {
+              abi: chatAbi,
+              address,
+              method: "membersValues",
+              args: [],
+            },
+            {
+              abi: chatAbi,
+              address,
+              method: "msgIdCounter",
+              args: [],
+            },
           ]
+        : []
+    ) ?? []) as (undefined[] | any[])[]
+  ).flat();
+
+  const [membersProfiles] = (
+    (useContractCalls(
+      membersAddresses
+        ? membersAddresses.map((address: string) => ({
+            abi: profileAbi,
+            address,
+            method: "profile",
+            args: [],
+          }))
         : []
     ) ?? []) as (undefined[] | any[])[]
   ).flat();
@@ -36,6 +61,7 @@ const useChat = (id: string): [IChat | null, boolean] => {
             id,
             address,
             membersCount,
+            messagesCount,
           }
         : null,
     [id, address, membersCount]

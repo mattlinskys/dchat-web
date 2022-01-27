@@ -6,7 +6,9 @@ import { bytes32ToString } from "utils/ethersUtils";
 import { constants } from "ethers";
 import { IProfile } from "types/profile";
 
-const useProfile = (address: string): [IProfile | undefined, boolean] => {
+const useProfile = (
+  address?: string | null
+): [IProfile | undefined, boolean] => {
   const [profileAddress] =
     useContractCall(
       address && {
@@ -17,7 +19,7 @@ const useProfile = (address: string): [IProfile | undefined, boolean] => {
       }
     ) ?? [];
 
-  const [name, avatarUri, description] = (
+  const [name, encryptionPublicKey, avatarUrl, description] = (
     (useContractCalls(
       profileAddress && profileAddress !== constants.AddressZero
         ? [
@@ -27,7 +29,13 @@ const useProfile = (address: string): [IProfile | undefined, boolean] => {
               method: "name",
               args: [],
             },
-            getCustomKeyCallArgs(profileAddress, "avatarUri"),
+            {
+              abi: profileAbi,
+              address: profileAddress,
+              method: "encryptionPublicKey",
+              args: [],
+            },
+            getCustomKeyCallArgs(profileAddress, "avatarUrl"),
             getCustomKeyCallArgs(profileAddress, "description"),
           ]
         : []
@@ -36,10 +44,16 @@ const useProfile = (address: string): [IProfile | undefined, boolean] => {
 
   const profile = useMemo(
     () =>
-      name !== undefined
-        ? { name: bytes32ToString(name), avatarUri, description }
+      address && name !== undefined
+        ? {
+            name: bytes32ToString(name),
+            address,
+            encryptionPublicKey: encryptionPublicKey!,
+            avatarUrl: avatarUrl || undefined,
+            description: description || undefined,
+          }
         : undefined,
-    [name, avatarUri, description]
+    [address, name, encryptionPublicKey, avatarUrl, description]
   );
   const isLoaded = !!profile || profileAddress === constants.AddressZero;
 

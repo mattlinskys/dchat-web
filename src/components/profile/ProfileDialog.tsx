@@ -38,8 +38,8 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({
       <ModalCloseButton />
 
       <ModalBody>
-        <VStack spacing={4}>
-          <SimpleGrid w="full" columns={2} spacing={4}>
+        <VStack spacing={4} align="stretch">
+          <SimpleGrid columns={2} spacing={4}>
             <Box>
               <Text fontSize="sm" fontWeight="medium" mb="1">
                 <FormattedMessage id="common.avatar" />
@@ -54,18 +54,25 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({
             </Box>
           </SimpleGrid>
 
-          <Box w="full">
+          <Box>
             <Text fontSize="sm" fontWeight="medium" mb="1">
               <FormattedMessage id="common.description" />
             </Text>
-            <Text>{profile?.description}</Text>
+            <Text>{profile?.description || "-"}</Text>
+          </Box>
+
+          <Box>
+            <Text fontSize="sm" fontWeight="medium" mb="1">
+              <FormattedMessage id="common.wallet" />
+            </Text>
+            <Text isTruncated>{profile?.address}</Text>
           </Box>
         </VStack>
       </ModalBody>
 
       <ModalFooter>
         <Button onClick={onLogOut}>
-          <FormattedMessage id="common.logOut" />
+          <FormattedMessage id="common.disconnect" />
         </Button>
         <Button ml={2} onClick={onEdit}>
           <FormattedMessage id="common.edit" />

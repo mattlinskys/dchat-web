@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { HOME_PATH } from "constants/routes";
 import { useToast } from "@chakra-ui/react";
 import ChatContext from "contexts/ChatContext";
+import MessagesList from "components/chat/MessagesList";
+import SendMsgForm from "components/chat/SendMsgForm";
 
 const ChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,15 +26,21 @@ const ChatPage: React.FC = () => {
   }, [isLoaded]);
 
   const contextValue = useMemo(
-    () => ({
-      chat,
-      isLoaded,
-    }),
+    () =>
+      chat
+        ? {
+            chat,
+            isLoaded,
+          }
+        : undefined,
     [chat, isLoaded]
   );
 
   return (
-    <ChatContext.Provider value={contextValue}>chat {id}</ChatContext.Provider>
+    <ChatContext.Provider value={contextValue}>
+      <MessagesList />
+      <SendMsgForm />
+    </ChatContext.Provider>
   );
 };
 

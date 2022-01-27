@@ -1,8 +1,14 @@
 {
   "common.name": "Name",
+  "common.wallet": "Wallet",
   "common.avatar": "Avatar",
   "common.avatarUrl": "Avatar URL",
   "common.description": "Description",
+  "common.edit": "Edit",
+  "common.save": "Save",
+  "common.disconnect": "Disconnect",
+
+  "validation.name:required": "Name is required",
 
   "erros.default": "Something went wrong, please try again",
 
