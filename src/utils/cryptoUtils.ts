@@ -15,8 +15,8 @@ export const encrypt = (publicKey: string, data: any) => {
 
   return {
     version: "x25519-xsalsa20-poly1305",
-    nonce: naclUtil.encodeBase64(nonce),
-    ephemPublicKey: naclUtil.encodeBase64(ephemeralKeyPair.publicKey),
-    ciphertext: naclUtil.encodeBase64(encryptedMessage),
+    nonce: nonce,
+    ephemPublicKey: ephemeralKeyPair.publicKey,
+    ciphertext: encryptedMessage,
   };
 };

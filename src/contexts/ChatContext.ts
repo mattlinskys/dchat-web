@@ -4,7 +4,7 @@ import { IProfile } from "types/profile";
 
 export interface ChatContextValue {
   chat?: IChat;
-  members?: IProfile[];
+  members: IProfile[];
   isLoaded: boolean;
 }
 

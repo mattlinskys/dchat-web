@@ -1,6 +1,6 @@
 import { useContractCall, useContractCalls } from "@usedapp/core";
-import { chatAbi, factoryAbi, profileAbi } from "app/abis";
-import { stringToBytes32 } from "utils/ethersUtils";
+import { chatAbi, factoryAbi } from "app/abis";
+import { utils } from "ethers";
 import { constants } from "ethers";
 import { IChat } from "types/chat";
 import { useMemo } from "react";
@@ -11,12 +11,12 @@ const useChat = (id: string): [IChat | null, boolean] => {
       abi: factoryAbi,
       address: process.env.REACT_APP_FACTORY_ADDRESS,
       method: "chats",
-      args: [stringToBytes32(id)],
+      args: [utils.id(id)],
     }) ?? [];
 
-  const [membersCount, membersAddresses, messagesCount] = (
+  const [membersCount, messagesCount] = (
     (useContractCalls(
-      address
+      address && address !== constants.AddressZero
         ? [
             {
               abi: chatAbi,
@@ -27,29 +27,10 @@ const useChat = (id: string): [IChat | null, boolean] => {
             {
               abi: chatAbi,
               address,
-              method: "membersValues",
-              args: [],
-            },
-            {
-              abi: chatAbi,
-              address,
               method: "msgIdCounter",
               args: [],
             },
           ]
-        : []
-    ) ?? []) as (undefined[] | any[])[]
-  ).flat();
-
-  const [membersProfiles] = (
-    (useContractCalls(
-      membersAddresses
-        ? membersAddresses.map((address: string) => ({
-            abi: profileAbi,
-            address,
-            method: "profile",
-            args: [],
-          }))
         : []
     ) ?? []) as (undefined[] | any[])[]
   ).flat();

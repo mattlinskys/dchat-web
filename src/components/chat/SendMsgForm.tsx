@@ -5,13 +5,15 @@ import { encrypt } from "utils/cryptoUtils";
 import { utils } from "ethers";
 import useChatContract from "hooks/useChatContract";
 import ChatContext from "contexts/ChatContext";
+import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 
 const SendMsgForm: React.FC = () => {
   const toast = useToast();
   const [value, setValue] = useState("");
   const { chat, members } = useContext(ChatContext)!;
-  const chatContract = useChatContract(chat!.address);
+  const chatContract = useChatContract(chat?.address!);
   const { state, send } = useContractFunction(chatContract, "sendCipherMsg");
+  useContractFunctionErrorToast(state);
 
   const handleSend = useCallback(async () => {
     const formattedValue = value.trim();
@@ -19,6 +21,7 @@ const SendMsgForm: React.FC = () => {
       return;
     }
 
+    setValue("");
     try {
       const ciphertexts = [];
       for (const member of members) {
@@ -26,12 +29,14 @@ const SendMsgForm: React.FC = () => {
           member.encryptionPublicKey,
           formattedValue
         );
+
         ciphertexts.push(
-          utils.toUtf8Bytes(nonce + ephemPublicKey + ciphertext)
+          utils.concat([nonce, ephemPublicKey, ciphertext])
+          // new Uint8Array([...nonce, ...ephemPublicKey, ...ciphertext])
         );
       }
-      await send(ciphertexts);
-      // TODO: Send
+
+      await send(ciphertexts, 0);
     } catch (err: any) {
       toast({
         title: err.message,
@@ -40,7 +45,7 @@ const SendMsgForm: React.FC = () => {
         isClosable: true,
       });
     }
-  }, [value, members]);
+  }, [value, members, send]);
 
   return (
     <HStack spacing="4">

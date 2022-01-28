@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Button,
   VStack,
@@ -14,12 +14,14 @@ import useFactoryContract from "hooks/useFactoryContract";
 import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 import { useNavigate } from "react-router-dom";
 import { getChatPath } from "utils/routesUtils";
+import { nanoid } from "nanoid";
 
 const CreateChatForm: React.FC = () => {
   const { account } = useEthers();
   const navigate = useNavigate();
   const [addresses, setAddresses] = useState([account!]);
   const [value, setValue] = useState("");
+  const id = useMemo(() => nanoid(), []);
   const isInvalid = !!value && !utils.isAddress(value);
   const factoryContract = useFactoryContract();
   const { state, send, events } = useContractFunction(
@@ -36,13 +38,12 @@ const CreateChatForm: React.FC = () => {
   };
 
   const handleSubmit = () => {
-    send(addresses);
+    send(utils.id(id), addresses);
   };
 
   useEffect(() => {
-    const event = (events ?? []).find((e) => e.name === "ChatCreated");
-    if (state.status === "Success" && event) {
-      navigate(getChatPath(event.args.id), { state: { new: true } });
+    if (state.status === "Success") {
+      navigate(getChatPath(id), { state: { new: true } });
     }
   }, [state.status, events?.length]);
 
@@ -89,7 +90,6 @@ const CreateChatForm: React.FC = () => {
         </InputRightElement>
       </InputGroup>
       <Button
-        isDisabled={addresses.length > 1}
         isLoading={
           state.status === "Mining" ||
           state.status === "PendingSignature" ||

@@ -9,5 +9,5 @@ export const getCustomKeyCallArgs = (
   abi: customizableAbi,
   address,
   method: "getCustomKey",
-  args: [utils.keccak256(utils.toUtf8Bytes(key))],
+  args: [utils.id(key)],
 });

@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { Contract } from "@ethersproject/contracts";
+import { Contract } from "ethers";
 import { factoryAbi } from "app/abis";
 
 const useFactoryContract = () =>

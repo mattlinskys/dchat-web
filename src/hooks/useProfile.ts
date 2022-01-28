@@ -2,8 +2,7 @@ import { useMemo } from "react";
 import { useContractCall, useContractCalls } from "@usedapp/core";
 import { factoryAbi, profileAbi } from "app/abis";
 import { getCustomKeyCallArgs } from "utils/contractsUtils";
-import { bytes32ToString } from "utils/ethersUtils";
-import { constants } from "ethers";
+import { constants, utils } from "ethers";
 import { IProfile } from "types/profile";
 
 const useProfile = (
@@ -46,9 +45,9 @@ const useProfile = (
     () =>
       address && name !== undefined
         ? {
-            name: bytes32ToString(name),
+            name: utils.parseBytes32String(name),
             address,
-            encryptionPublicKey: encryptionPublicKey!,
+            encryptionPublicKey: utils.toUtf8String(encryptionPublicKey!),
             avatarUrl: avatarUrl || undefined,
             description: description || undefined,
           }

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext } from "react";
 import { useContractFunction, useEthers } from "@usedapp/core";
 import SetupProfileDialog, {
   SetupProfileDialogProps,
@@ -7,7 +7,6 @@ import { SETUP_PROFILE_HASH } from "constants/hashes";
 import ProfileContext from "contexts/ProfileContext";
 import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 import useHashDisclosure from "hooks/useHashDisclosure";
-import { stringToBytes32 } from "utils/ethersUtils";
 import useFactoryContract from "hooks/useFactoryContract";
 import { utils } from "ethers";
 import { useToast } from "@chakra-ui/react";
@@ -21,10 +20,7 @@ const SetupProfileDialogProvider: React.FC = () => {
   );
   const factoryContract = useFactoryContract();
   const toast = useToast();
-  const { state, send, events } = useContractFunction(
-    factoryContract,
-    "createProfile"
-  );
+  const { state, send } = useContractFunction(factoryContract, "createProfile");
   useContractFunctionErrorToast(state);
 
   const handleSubmit = useCallback<SetupProfileDialogProps["onSubmit"]>(
@@ -41,9 +37,9 @@ const SetupProfileDialogProvider: React.FC = () => {
         ).filter((key) => !!values[key]?.trim());
 
         await send(
-          stringToBytes32(values.name),
+          utils.formatBytes32String(values.name),
           utils.toUtf8Bytes(publicKey),
-          customKeys.map((key) => utils.keccak256(utils.toUtf8Bytes(key))),
+          customKeys.map((key) => utils.id(key)),
           customKeys.map((key) => values[key])
         );
       } catch (err: any) {

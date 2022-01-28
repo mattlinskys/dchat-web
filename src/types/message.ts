@@ -1,8 +1,10 @@
+import type { BigNumber } from "ethers";
+
 export interface IMessage {
-  id: number;
-  time: number;
-  replyTo: number;
+  id: BigNumber;
+  replyTo?: BigNumber;
   sender: string;
-  data: string;
-  encrypted: boolean;
+  data?: string;
+  isEncrypted: boolean;
+  sentAt: Date;
 }

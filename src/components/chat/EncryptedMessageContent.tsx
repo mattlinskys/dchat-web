@@ -3,11 +3,13 @@ import MessageContent from "components/chat/MessageContent";
 import ChatContext from "contexts/ChatContext";
 import { useContractCall, useEthers } from "@usedapp/core";
 import { chatAbi } from "app/abis";
-import { utils } from "ethers";
+import { utils, BigNumber } from "ethers";
 import { Button, useToast } from "@chakra-ui/react";
+import naclUtil from "tweetnacl-util";
+import { EPHEM_PUBLIC_KEY_LENGTH, NONCE_LENGTH } from "constants/crypto";
 
 export interface EncryptedMessageContentProps {
-  messageId: number;
+  messageId: BigNumber;
 }
 
 const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
@@ -22,35 +24,39 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
   const [data] =
     useContractCall(
       account &&
-        chat?.address && {
+        chat && {
           abi: chatAbi,
           address: chat.address,
-          method: "messagesCipher",
+          method: "messagesCiphertext",
           args: [
             utils.keccak256(
-              utils.defaultAbiCoder.encode(
-                ["uint256", "address"],
-                [messageId, account]
-              )
+              utils.defaultAbiCoder.encode(["uint256"], [messageId]) +
+                account.replace(/^0x/, "")
             ),
           ],
         }
     ) ?? [];
-  // TODO: Decrypt
-  // const content = data && utils.toUtf8String(data);
 
   const decrypt = useCallback(async () => {
     setDecrypting(true);
     try {
+      const nonce = utils.arrayify(data).slice(0, NONCE_LENGTH);
+      const ephemPublicKey = utils
+        .arrayify(data)
+        .slice(NONCE_LENGTH, NONCE_LENGTH + EPHEM_PUBLIC_KEY_LENGTH);
+      const encryptedMessage = utils
+        .arrayify(data)
+        .slice(NONCE_LENGTH + EPHEM_PUBLIC_KEY_LENGTH);
+
       const provider = await connector!.getProvider();
       const decrypted = await provider.request({
         method: "eth_decrypt",
         params: [
           JSON.stringify({
             version: "x25519-xsalsa20-poly1305",
-            // nonce: naclUtil.encodeBase64(nonce),
-            // ephemPublicKey: naclUtil.encodeBase64(ephemeralKeyPair.publicKey),
-            // ciphertext: naclUtil.encodeBase64(encryptedMessage),
+            nonce: naclUtil.encodeBase64(nonce),
+            ephemPublicKey: naclUtil.encodeBase64(ephemPublicKey),
+            ciphertext: naclUtil.encodeBase64(encryptedMessage),
           }),
           account,
         ],
