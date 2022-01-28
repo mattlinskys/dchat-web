@@ -1,3 +1,6 @@
+import { Link, Text } from "@chakra-ui/react";
+import { shortenAddress } from "@usedapp/core";
+import useActiveChain from "hooks/useActiveChain";
 import React, { useMemo } from "react";
 
 export interface InteractiveContentProps {
@@ -5,6 +8,7 @@ export interface InteractiveContentProps {
 }
 
 const InteractiveContent: React.FC<InteractiveContentProps> = ({ content }) => {
+  const activeChain = useActiveChain();
   const children = useMemo(() => {
     const regex =
       /(?<link>(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])|(?:@(?<name>[A-Z0-9-_]+))|(?::(?<iconKey>[a-z-]+):)|(?<address>0x[0-9A-F]{40})/gi;
@@ -27,33 +31,40 @@ const InteractiveContent: React.FC<InteractiveContentProps> = ({ content }) => {
           const key = `${lastIndex}_${url.href}`;
 
           parts.push(
-            <a
-              key={key}
-              href={url.href}
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-            >
+            <Link key={key} href={url.href} isExternal>
               {url.href}
-            </a>
+            </Link>
           );
         } catch {
           parts.push(match[0]);
         }
       } else if (address) {
         parts.push(
-          <a
+          <Link
             key={`${lastIndex}_${address}`}
-            // TODO: Url based on current chain
-            href={`https://polygonscan.com/address/${address}`}
-            target="_blank"
-            rel="noopener noreferrer nofollow"
+            href={`${activeChain.blockExplorerUrls[0]}address/${address}`}
+            title={address}
+            fontWeight="medium"
+            isExternal
           >
-            {address}
-          </a>
+            {shortenAddress(address)}
+          </Link>
+        );
+      } else if (iconKey) {
+        // TODO: Icon
+        parts.push(<>{iconKey}</>);
+      } else if (name) {
+        parts.push(
+          <>
+            <Text as="span" opacity="0.8">
+              @
+            </Text>
+            <Text as="span" fontWeight="medium">
+              {name}
+            </Text>
+          </>
         );
       }
-
-      // TODO: icon/name parts
 
       lastIndex += match[0].length;
       match = regex.exec(content);
@@ -61,7 +72,7 @@ const InteractiveContent: React.FC<InteractiveContentProps> = ({ content }) => {
 
     parts.push(content.slice(lastIndex));
     return parts;
-  }, [content]);
+  }, [content, activeChain.blockExplorerUrls]);
 
   return <>{children}</>;
 };

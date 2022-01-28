@@ -6,6 +6,19 @@ const theme = extendTheme({
       body: {
         backgroundColor: "#F8F9FD",
       },
+      a: {
+        color: "teal.500",
+        _hover: {
+          textDecoration: "underline",
+        },
+      },
+    },
+  },
+  components: {
+    Link: {
+      baseStyle: {
+        color: "blue.600",
+      },
     },
   },
 });

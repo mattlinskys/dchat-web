@@ -29,14 +29,14 @@ const SendMsgForm: React.FC = () => {
           member.encryptionPublicKey,
           formattedValue
         );
-
-        ciphertexts.push(
-          utils.concat([nonce, ephemPublicKey, ciphertext])
-          // new Uint8Array([...nonce, ...ephemPublicKey, ...ciphertext])
-        );
+        ciphertexts.push(utils.concat([nonce, ephemPublicKey, ciphertext]));
       }
 
-      await send(ciphertexts, 0);
+      await send(
+        members.map(({ address }) => address),
+        ciphertexts,
+        0
+      );
     } catch (err: any) {
       toast({
         title: err.message,

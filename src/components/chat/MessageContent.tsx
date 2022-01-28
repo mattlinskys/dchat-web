@@ -8,7 +8,7 @@ export interface MessageContentProps {
 
 const MessageContent: React.FC<MessageContentProps> = ({ content }) => {
   return (
-    <Text>
+    <Text whiteSpace="pre-wrap" className="hyphens-auto">
       <InteractiveContent content={content} />
     </Text>
   );

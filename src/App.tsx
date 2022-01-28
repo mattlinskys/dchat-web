@@ -7,6 +7,7 @@ import theme from "app/theme";
 import { CHAT_PATH, HOME_PATH } from "constants/routes";
 
 import { DAppProvider } from "@usedapp/core";
+import ChainsProvider from "providers/ChainsProvider";
 import { ChakraProvider } from "@chakra-ui/react";
 import ProfileProvider from "providers/ProfileProvider";
 import SetupProfileDialogProvider from "providers/SetupProfileDialogProvider";
@@ -20,17 +21,19 @@ const App: React.FC = () => {
     <IntlProvider locale="en" messages={messagesEn}>
       <BrowserRouter>
         <DAppProvider config={dappConfig}>
-          <ChakraProvider theme={theme}>
-            <ProfileProvider>
-              <Routes>
-                <Route path={HOME_PATH} element={<HomePage />} />
-                <Route path={CHAT_PATH} element={<ChatPage />} />
-              </Routes>
+          <ChainsProvider>
+            <ChakraProvider theme={theme}>
+              <ProfileProvider>
+                <Routes>
+                  <Route path={HOME_PATH} element={<HomePage />} />
+                  <Route path={CHAT_PATH} element={<ChatPage />} />
+                </Routes>
 
-              <SetupProfileDialogProvider />
-              <ProfileDialogProvider />
-            </ProfileProvider>
-          </ChakraProvider>
+                <SetupProfileDialogProvider />
+                <ProfileDialogProvider />
+              </ProfileProvider>
+            </ChakraProvider>
+          </ChainsProvider>
         </DAppProvider>
       </BrowserRouter>
     </IntlProvider>
