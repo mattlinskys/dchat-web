@@ -8,9 +8,9 @@ import {
   ModalHeader,
   ModalOverlay,
 } from "@chakra-ui/modal";
-import { Avatar } from "@chakra-ui/avatar";
+// import { Avatar } from "@chakra-ui/avatar";
 import { Button } from "@chakra-ui/button";
-import { Box, SimpleGrid, Text, VStack } from "@chakra-ui/layout";
+import { Box, Text, VStack } from "@chakra-ui/layout";
 import { FormattedMessage } from "react-intl";
 import { IProfile } from "types/profile";
 
@@ -39,27 +39,27 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({
 
       <ModalBody>
         <VStack spacing={4} align="stretch">
-          <SimpleGrid columns={2} spacing={4}>
+          {/* <SimpleGrid columns={2} spacing={4}>
             <Box>
               <Text fontSize="sm" fontWeight="medium" mb="1">
                 <FormattedMessage id="common.avatar" />
               </Text>
               <Avatar name={profile?.name} src={profile?.avatarUrl} />
-            </Box>
-            <Box>
-              <Text fontSize="sm" fontWeight="medium" mb="1">
-                <FormattedMessage id="common.name" />
-              </Text>
-              <Text>{profile?.name}</Text>
-            </Box>
-          </SimpleGrid>
-
+            </Box> */}
           <Box>
+            <Text fontSize="sm" fontWeight="medium" mb="1">
+              <FormattedMessage id="common.name" />
+            </Text>
+            <Text>{profile?.name}</Text>
+          </Box>
+          {/* </SimpleGrid> */}
+
+          {/* <Box>
             <Text fontSize="sm" fontWeight="medium" mb="1">
               <FormattedMessage id="common.description" />
             </Text>
             <Text>{profile?.description || "-"}</Text>
-          </Box>
+          </Box> */}
 
           <Box>
             <Text fontSize="sm" fontWeight="medium" mb="1">

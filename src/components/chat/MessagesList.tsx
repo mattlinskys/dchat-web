@@ -1,50 +1,60 @@
-import React, { memo, useContext, useEffect, useState } from "react";
+import React, { memo, useCallback, useContext, useMemo, useState } from "react";
 import ChatContext from "contexts/ChatContext";
-import { useContractCalls, useEthers } from "@usedapp/core";
-import { chatAbi } from "app/abis";
-import { BigNumber, Contract } from "ethers";
-import { IMessage } from "types/message";
 import Message from "components/chat/Message";
-import useChatContract from "hooks/useChatContract";
+import { Heading, Stack, VStack } from "@chakra-ui/react";
+import useContractEvents from "hooks/useContractEvents";
+import { Contract } from "ethers";
+import { chatAbi } from "app/abis";
 
 export interface MessagesListProps {
   take?: number;
 }
 
-const MessagesList: React.FC<MessagesListProps> = ({ take = 10 }) => {
-  const { chat } = useContext(ChatContext)!;
-  const { library } = useEthers();
-  const [skip, setSkip] = useState(0);
-  const [messages, setMessages] = useState<IMessage[]>([]);
-
-  useEffect(() => {
-    if (!chat || !library) {
-      return;
+const MessagesList: React.FC<MessagesListProps> = ({ take = 2 }) => {
+  const { chat } = useContext(ChatContext);
+  const [page, setPage] = useState(0);
+  const range = useMemo(() => {
+    if (chat.messagesCount.isZero()) {
+      return [];
     }
+    const to = chat.messagesCount.toNumber();
+    const from = Math.max(to - take * (page + 1), 0);
+    return new Array(to - from)
+      .fill(null)
+      .map((_, i) => i + from + 1)
+      .reverse();
+  }, [take, page, chat.messagesCount]);
 
-    (async () => {
-      const chatContract = new Contract(chat.address, chatAbi, library);
+  const handleScroll = useCallback(
+    (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
+      if (!chat) {
+        return;
+      }
       // TODO:
-      const result = await chatContract.messages(1);
+    },
+    [range.length, chat.messagesCount]
+  );
 
-      const msg: IMessage = {
-        id: result.id,
-        ...(result.replyTo.isZero() ? {} : { replyTo: result.replyTo }),
-        sender: result.sender,
-        ...(result.data ? { data: result.data } : {}),
-        isEncrypted: result.encrypted,
-        sentAt: new Date(result.time.toNumber() * 1000),
-      };
-      setMessages([msg]);
-    })();
-  }, [library, skip, take, chat?.address]);
+  useContractEvents(new Contract(chat.address, chatAbi), "MsgSent", (id) => {
+    // TODO:
+  });
 
   return (
-    <>
-      {messages.map((msg) => (
-        <Message key={msg.id.toString()} message={msg} />
-      ))}
-    </>
+    <VStack spacing="2" align="stretch">
+      <Heading fontSize="xl">
+        Messages ({chat.messagesCount.toNumber()})
+      </Heading>
+
+      <Stack
+        direction="column-reverse"
+        overflowY="auto"
+        align="stretch"
+        spacing="2"
+        onScroll={handleScroll}
+      >
+        {chat && range.map((id) => <Message key={id} id={id} />)}
+      </Stack>
+    </VStack>
   );
 };
 

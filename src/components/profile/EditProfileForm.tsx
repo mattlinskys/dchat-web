@@ -4,38 +4,39 @@ import {
   FormErrorMessage,
   FormLabel,
 } from "@chakra-ui/form-control";
-import { InfoOutlineIcon } from "@chakra-ui/icons";
+// import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { Input } from "@chakra-ui/input";
 import { Box, VStack } from "@chakra-ui/layout";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverCloseButton,
-  PopoverBody,
-} from "@chakra-ui/popover";
-import { IconButton, Textarea, Button } from "@chakra-ui/react";
+// import {
+//   Popover,
+//   PopoverTrigger,
+//   PopoverContent,
+//   PopoverHeader,
+//   PopoverCloseButton,
+//   PopoverBody,
+// } from "@chakra-ui/popover";
+// import { IconButton, Textarea, Button } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { Formik, Form, Field, FieldProps } from "formik";
 import { FormattedMessage, useIntl } from "react-intl";
 import * as Yup from "yup";
 
 interface EditProfileFormValues {
   name: string;
-  avatarUrl: string;
-  description: string;
+  // avatarUrl: string;
+  // description: string;
 }
 
 export interface EditProfileFormProps {
   defaultValues?: Partial<EditProfileFormValues>;
   onSubmit: (values: EditProfileFormValues) => Promise<void>;
-  // isSubmitting?: boolean;
+  isLoading?: boolean;
 }
 
 const EditProfileForm: React.FC<EditProfileFormProps> = ({
   defaultValues,
   onSubmit,
-  // isSubmitting,
+  isLoading,
 }) => {
   const { formatMessage } = useIntl();
 
@@ -43,8 +44,8 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({
     <Formik
       initialValues={{
         name: defaultValues?.name ?? "",
-        avatarUrl: defaultValues?.avatarUrl ?? "",
-        description: defaultValues?.description ?? "",
+        // avatarUrl: defaultValues?.avatarUrl ?? "",
+        // description: defaultValues?.description ?? "",
       }}
       onSubmit={async (values) => {
         await onSubmit(values);
@@ -77,7 +78,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({
               )}
             </Field>
 
-            <Field name="avatarUrl">
+            {/* <Field name="avatarUrl">
               {({ field, meta }: FieldProps) => (
                 <FormControl
                   id="avatarUrl"
@@ -130,10 +131,10 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({
                   />
                 </FormControl>
               )}
-            </Field>
+            </Field> */}
 
             <Box w="full" display="flex" justifyContent="flex-end">
-              <Button type="submit" isLoading={isSubmitting}>
+              <Button type="submit" isLoading={isSubmitting || isLoading}>
                 <FormattedMessage id="common.save" />
               </Button>
             </Box>

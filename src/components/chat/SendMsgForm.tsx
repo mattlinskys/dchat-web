@@ -10,8 +10,8 @@ import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 const SendMsgForm: React.FC = () => {
   const toast = useToast();
   const [value, setValue] = useState("");
-  const { chat, members } = useContext(ChatContext)!;
-  const chatContract = useChatContract(chat?.address!);
+  const { chat, members } = useContext(ChatContext);
+  const chatContract = useChatContract(chat.address);
   const { state, send } = useContractFunction(chatContract, "sendCipherMsg");
   useContractFunctionErrorToast(state);
 
@@ -21,12 +21,11 @@ const SendMsgForm: React.FC = () => {
       return;
     }
 
-    setValue("");
     try {
       const ciphertexts = [];
       for (const member of members) {
         const { nonce, ephemPublicKey, ciphertext } = encrypt(
-          member.encryptionPublicKey,
+          utils.arrayify(member.encryptionPublicKey),
           formattedValue
         );
         ciphertexts.push(utils.concat([nonce, ephemPublicKey, ciphertext]));
@@ -37,6 +36,7 @@ const SendMsgForm: React.FC = () => {
         ciphertexts,
         0
       );
+      setValue("");
     } catch (err: any) {
       toast({
         title: err.message,

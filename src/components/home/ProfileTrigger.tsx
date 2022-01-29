@@ -12,7 +12,7 @@ const ProfileTrigger: React.FC = () => {
     profile ? (
       <>
         <Text>
-          Profile: {profile.name} {profile.address}
+          Profile: {profile.name} {profile.account} {profile.address}
         </Text>
         <Button onClick={() => navigate(`#${PROFILE_HASH}`)}>
           Edit profile

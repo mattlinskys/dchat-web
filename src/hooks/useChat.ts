@@ -2,10 +2,9 @@ import { useContractCall, useContractCalls } from "@usedapp/core";
 import { chatAbi, factoryAbi } from "app/abis";
 import { utils } from "ethers";
 import { constants } from "ethers";
-import { IChat } from "types/chat";
 import { useMemo } from "react";
 
-const useChat = (id: string): [IChat | null, boolean] => {
+const useChat = (id: string) => {
   const [address] =
     useContractCall({
       abi: factoryAbi,
@@ -49,7 +48,7 @@ const useChat = (id: string): [IChat | null, boolean] => {
   );
   const isLoaded = !!chat || address === constants.AddressZero;
 
-  return [chat, isLoaded];
+  return { chat, isLoaded };
 };
 
 export default useChat;

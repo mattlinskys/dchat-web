@@ -25,7 +25,7 @@ const CreateChatForm: React.FC = () => {
   const isInvalid = !!value && !utils.isAddress(value);
   const factoryContract = useFactoryContract();
   const { state, send, events } = useContractFunction(
-    factoryContract,
+    factoryContract!,
     "createChat"
   );
   useContractFunctionErrorToast(state);
@@ -78,7 +78,7 @@ const CreateChatForm: React.FC = () => {
             h="1.75rem"
             size="sm"
             onClick={() => {
-              if (isInvalid) {
+              if (isInvalid || !value.trim()) {
                 return;
               }
 

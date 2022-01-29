@@ -10,6 +10,7 @@ export interface IChat {
 export interface IMember {
   name: string;
   address: string;
+  account: string;
   encryptionPublicKey: string;
-  avatarUrl?: string;
+  // avatarUrl?: string;
 }

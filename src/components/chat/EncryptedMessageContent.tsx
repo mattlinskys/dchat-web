@@ -16,37 +16,38 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
   messageId,
 }) => {
   const { account, connector } = useEthers();
-  const { chat } = useContext(ChatContext)!;
+  const { chat } = useContext(ChatContext);
   const toast = useToast();
   const [decrypting, setDecrypting] = useState(false);
   const [content, setContent] = useState<string>();
 
   const [data] =
     useContractCall(
-      account &&
-        chat && {
-          abi: chatAbi,
-          address: chat.address,
-          method: "messagesCiphertext",
-          args: [
-            utils.keccak256(
-              utils.defaultAbiCoder.encode(["uint256"], [messageId]) +
-                account.replace(/^0x/, "")
-            ),
-          ],
-        }
+      account && {
+        abi: chatAbi,
+        address: chat.address,
+        method: "messagesCiphertext",
+        args: [
+          utils.keccak256(
+            utils.defaultAbiCoder.encode(["uint256"], [messageId]) +
+              account.replace(/^0x/, "")
+          ),
+        ],
+      }
     ) ?? [];
 
   const decrypt = useCallback(async () => {
     setDecrypting(true);
     try {
-      const nonce = utils.arrayify(data).slice(0, NONCE_LENGTH);
-      const ephemPublicKey = utils
-        .arrayify(data)
-        .slice(NONCE_LENGTH, NONCE_LENGTH + EPHEM_PUBLIC_KEY_LENGTH);
-      const encryptedMessage = utils
-        .arrayify(data)
-        .slice(NONCE_LENGTH + EPHEM_PUBLIC_KEY_LENGTH);
+      const bytes = utils.arrayify(data);
+      const nonce = bytes.slice(0, NONCE_LENGTH);
+      const ephemPublicKey = bytes.slice(
+        NONCE_LENGTH,
+        NONCE_LENGTH + EPHEM_PUBLIC_KEY_LENGTH
+      );
+      const encryptedMessage = bytes.slice(
+        NONCE_LENGTH + EPHEM_PUBLIC_KEY_LENGTH
+      );
 
       const provider = await connector!.getProvider();
       const decrypted = await provider.request({

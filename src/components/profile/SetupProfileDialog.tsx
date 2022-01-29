@@ -13,7 +13,7 @@ import EditProfileForm, {
 } from "components/profile/EditProfileForm";
 
 export interface SetupProfileDialogProps
-  extends Pick<EditProfileFormProps, "onSubmit"> {
+  extends Pick<EditProfileFormProps, "onSubmit" | "isLoading"> {
   isOpen: boolean;
   onClose: () => void;
 }
@@ -21,7 +21,7 @@ export interface SetupProfileDialogProps
 const SetupProfileDialog: React.FC<SetupProfileDialogProps> = ({
   isOpen,
   onClose,
-  onSubmit,
+  ...rest
 }) => (
   <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
@@ -32,7 +32,7 @@ const SetupProfileDialog: React.FC<SetupProfileDialogProps> = ({
       <ModalCloseButton />
 
       <ModalBody pb={4}>
-        <EditProfileForm onSubmit={onSubmit} />
+        <EditProfileForm {...rest} />
       </ModalBody>
     </ModalContent>
   </Modal>

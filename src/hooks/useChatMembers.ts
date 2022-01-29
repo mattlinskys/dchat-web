@@ -47,8 +47,7 @@ const useChatMembers = (address?: string) => {
             ? ({
                 name: utils.parseBytes32String(values[0]),
                 address: membersAddresses[i],
-                encryptionPublicKey: utils.toUtf8String(values[1]),
-                ...(values[3] ? { avatarUrl: values[3] } : {}),
+                encryptionPublicKey: values[1],
               } as IMember)
             : undefined
         )

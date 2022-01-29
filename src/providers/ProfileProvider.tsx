@@ -5,10 +5,14 @@ import useProfile from "hooks/useProfile";
 
 const ProfileProvider: React.FC = ({ children }) => {
   const { account } = useEthers();
-  const [profile, isLoaded] = useProfile(account);
+  const { profile, setProfile, setAddress, isLoaded } = useProfile(
+    account || undefined
+  );
 
   const value = useMemo<ProfileContextValue>(
     () => ({
+      setProfile,
+      setAddress,
       profile,
       isLoaded,
       isAuthenticated: !!profile && isLoaded,

@@ -2,19 +2,20 @@ import React, { useEffect, useMemo } from "react";
 import useChat from "hooks/useChat";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { HOME_PATH } from "constants/routes";
-import { Box, useToast } from "@chakra-ui/react";
+import { Box, VStack, Spinner, useToast } from "@chakra-ui/react";
 import ChatContext from "contexts/ChatContext";
 import ms from "ms";
 import MessagesList from "components/chat/MessagesList";
 import SendMsgForm from "components/chat/SendMsgForm";
 import useChatMembers from "hooks/useChatMembers";
+import MessagesProvider from "providers/MessagesProvider";
 
 const ChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { state } = useLocation();
   const toast = useToast();
-  const [chat, isLoaded] = useChat(id!);
+  const { chat, isLoaded } = useChat(id!);
   const members = useChatMembers(chat?.address);
 
   useEffect(() => {
@@ -55,23 +56,37 @@ const ChatPage: React.FC = () => {
     [chat, isLoaded]
   );
 
-  return (
+  return contextValue ? (
     <ChatContext.Provider value={contextValue}>
-      {chat && (
-        <Box
+      <MessagesProvider>
+        <VStack
           maxW="sm"
           mx="auto"
           my="8"
           p="4"
+          spacing="4"
+          align="stretch"
           rounded="md"
           border="1px"
           borderColor="gray.200"
         >
           <MessagesList />
           <SendMsgForm />
-        </Box>
-      )}
+        </VStack>
+      </MessagesProvider>
     </ChatContext.Provider>
+  ) : (
+    <Box
+      position="fixed"
+      top="50%"
+      left="50%"
+      lineHeight="none"
+      transform="auto-gpu"
+      translateX="-50%"
+      translateY="-50%"
+    >
+      <Spinner size="xl" />
+    </Box>
   );
 };
 

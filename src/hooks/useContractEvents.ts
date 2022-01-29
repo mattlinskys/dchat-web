@@ -1,44 +1,25 @@
 import { useEffect } from "react";
 import { useEthers } from "@usedapp/core";
-import { providers, utils } from "ethers";
+import { Contract, EventFilter } from "ethers";
 
 const useContractEvents = (
-  address: string,
-  id: string,
-  topics: (null | string | string[])[],
-  cb: (...args: any[]) => void
+  contract: Contract | undefined,
+  event: string | EventFilter,
+  listener: (...args: any[]) => void
 ) => {
-  const { connector } = useEthers();
+  const { library } = useEthers();
 
   useEffect(() => {
-    if (!connector) {
+    if (!library || !contract) {
       return;
     }
 
-    const eventHandler = (...args: any[]) => {
-      console.log("event", args);
-      cb(...args);
-    };
-    const filter = {
-      address,
-      topics: [utils.id(id), ...topics],
-    };
-
-    let unmounted = false;
-    let provider: providers.Provider;
-    (async () => {
-      // TODO: Use library.on
-      provider = (await connector.getProvider()) as providers.Provider;
-      if (!unmounted) {
-        provider.on(filter, eventHandler);
-      }
-    })();
-
+    const connectedContract = contract.connect(library);
+    connectedContract.on(event, listener);
     return () => {
-      unmounted = true;
-      provider?.off(filter, eventHandler);
+      connectedContract.off(event, listener);
     };
-  }, [address, topics, cb]);
+  }, [contract, library, event, listener]);
 };
 
 export default useContractEvents;

@@ -1,9 +1,8 @@
 import nacl from "tweetnacl";
 import naclUtil from "tweetnacl-util";
 
-export const encrypt = (publicKey: string, data: any) => {
+export const encrypt = (pubKeyUInt8Array: Uint8Array, data: any) => {
   const ephemeralKeyPair = nacl.box.keyPair();
-  const pubKeyUInt8Array = naclUtil.decodeBase64(publicKey);
   const msgParamsUInt8Array = naclUtil.decodeUTF8(data);
   const nonce = nacl.randomBytes(nacl.box.nonceLength);
   const encryptedMessage = nacl.box(

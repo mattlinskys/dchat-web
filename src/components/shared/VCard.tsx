@@ -10,7 +10,7 @@ import React from "react";
 import { IProfile } from "types/profile";
 
 export interface VCardProps {
-  user?: Pick<IProfile, "name" | "avatarUrl">;
+  user?: Pick<IProfile, "name">;
   address?: string;
 }
 
@@ -19,7 +19,7 @@ const VCard: React.FC<VCardProps> = ({ user, address }) => {
     <HStack spacing="2" maxW="48">
       {user ? (
         <>
-          <Avatar name={user.name} src={user.avatarUrl} />
+          <Avatar name={user.name} />
           <Box overflow="hidden">
             <Text fontSize="sm" isTruncated>
               {user.name}
