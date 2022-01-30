@@ -47,9 +47,7 @@ const EditProfileForm: React.FC<EditProfileFormProps> = ({
         // avatarUrl: defaultValues?.avatarUrl ?? "",
         // description: defaultValues?.description ?? "",
       }}
-      onSubmit={async (values) => {
-        await onSubmit(values);
-      }}
+      onSubmit={onSubmit}
       validationSchema={Yup.object().shape({
         name: Yup.string().required("required"),
       })}

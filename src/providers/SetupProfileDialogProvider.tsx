@@ -14,7 +14,7 @@ import { useToast } from "@chakra-ui/react";
 
 const SetupProfileDialogProvider: React.FC = () => {
   const { connector, account } = useEthers();
-  const { profile, setAddress, isLoaded } = useContext(ProfileContext)!;
+  const { profile, isLoaded } = useContext(ProfileContext)!;
   const { isVisible, onClose } = useHashDisclosure(
     SETUP_PROFILE_HASH,
     isLoaded && !profile
@@ -55,7 +55,8 @@ const SetupProfileDialogProvider: React.FC = () => {
   useEffect(() => {
     const [event] = events ?? [];
     if (state.status === "Success" && event) {
-      setAddress(event.args.account);
+      // TODO:
+      // setAddress(event.args.account);
     }
   }, [state.status, events?.length]);
 

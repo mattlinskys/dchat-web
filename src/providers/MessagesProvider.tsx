@@ -8,14 +8,14 @@ import React, {
 import MessagesContext from "contexts/MessagesContext";
 import ChatContext from "contexts/ChatContext";
 import { IMessage } from "types/message";
-import useContract from "hooks/useContract";
+import useConnectedContract from "hooks/useConnectedContract";
 import { chatAbi } from "app/abis";
 
 const MessagesProvider: React.FC = ({ children }) => {
   const {
     chat: { address, messagesCount },
   } = useContext(ChatContext);
-  const chatContract = useContract(chatAbi, address);
+  const chatContract = useConnectedContract(chatAbi, address);
   const [messages, setMessages] = useState<IMessage[]>([]);
 
   const fetchMessages = useCallback(() => {

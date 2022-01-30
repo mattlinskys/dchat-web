@@ -1,12 +1,12 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import MessageContent from "components/chat/MessageContent";
 import ChatContext from "contexts/ChatContext";
-import { useContractCall, useEthers } from "@usedapp/core";
 import { chatAbi } from "app/abis";
 import { utils, BigNumber } from "ethers";
 import { Button, useToast } from "@chakra-ui/react";
 import naclUtil from "tweetnacl-util";
 import { EPHEM_PUBLIC_KEY_LENGTH, NONCE_LENGTH } from "constants/crypto";
+import { useContractCall, useEthers } from "@usedapp/core";
 
 export interface EncryptedMessageContentProps {
   messageId: BigNumber;
@@ -20,7 +20,6 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
   const toast = useToast();
   const [decrypting, setDecrypting] = useState(false);
   const [content, setContent] = useState<string>();
-
   const [data] =
     useContractCall(
       account && {
@@ -36,10 +35,16 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
       }
     ) ?? [];
 
+  useEffect(() => {
+    if (content) {
+      setContent(undefined);
+    }
+  }, [account]);
+
   const decrypt = useCallback(async () => {
     setDecrypting(true);
     try {
-      const bytes = utils.arrayify(data);
+      const bytes = utils.arrayify(data!);
       const nonce = bytes.slice(0, NONCE_LENGTH);
       const ephemPublicKey = bytes.slice(
         NONCE_LENGTH,
@@ -80,13 +85,16 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
     <MessageContent content={content} />
   ) : (
     <>
-      {data && (
-        <>
-          <Button isLoading={decrypting} onClick={() => decrypt()}>
-            Decrypt
-          </Button>
-        </>
-      )}
+      {data &&
+        (data === "0x" ? (
+          <i>Missing encrypted data</i>
+        ) : (
+          <>
+            <Button isLoading={decrypting} onClick={() => decrypt()}>
+              Decrypt
+            </Button>
+          </>
+        ))}
     </>
   );
 };

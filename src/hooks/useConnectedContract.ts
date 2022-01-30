@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { Contract, ContractInterface } from "ethers";
 import { useEthers } from "@usedapp/core";
 
-const useContract = (abi: ContractInterface, address?: string) => {
+const useConnectedContract = (abi: ContractInterface, address?: string) => {
   const { library } = useEthers();
   return useMemo(
     () =>
@@ -13,4 +13,4 @@ const useContract = (abi: ContractInterface, address?: string) => {
   );
 };
 
-export default useContract;
+export default useConnectedContract;

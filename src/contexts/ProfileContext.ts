@@ -3,8 +3,6 @@ import { IProfile } from "types/profile";
 
 export interface ProfileContextValue {
   profile?: IProfile;
-  setProfile: (profile: IProfile) => void;
-  setAddress: (address: string) => void;
   isLoaded: boolean;
   isAuthenticated: boolean;
 }

@@ -2,13 +2,12 @@ import React from "react";
 import { IntlProvider } from "react-intl";
 import messagesEn from "lang/en.json";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import dappConfig from "app/dappConfig";
 import theme from "app/theme";
 import { CHAT_PATH, HOME_PATH } from "constants/routes";
-
-import { DAppProvider } from "@usedapp/core";
-import ChainsProvider from "providers/ChainsProvider";
 import { ChakraProvider } from "@chakra-ui/react";
+import { DAppProvider } from "@usedapp/core";
+
+import ChainsProvider from "providers/ChainsProvider";
 import ProfileProvider from "providers/ProfileProvider";
 import SetupProfileDialogProvider from "providers/SetupProfileDialogProvider";
 import ProfileDialogProvider from "providers/ProfileDialogProvider";
@@ -20,7 +19,7 @@ const App: React.FC = () => {
   return (
     <IntlProvider locale="en" messages={messagesEn}>
       <BrowserRouter>
-        <DAppProvider config={dappConfig}>
+        <DAppProvider config={{}}>
           <ChainsProvider>
             <ChakraProvider theme={theme}>
               <ProfileProvider>

@@ -1,6 +1,11 @@
 import React, { useEffect, useMemo } from "react";
 import useChat from "hooks/useChat";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import {
+  useNavigate,
+  useParams,
+  useLocation,
+  Location,
+} from "react-router-dom";
 import { HOME_PATH } from "constants/routes";
 import { Box, VStack, Spinner, useToast } from "@chakra-ui/react";
 import ChatContext from "contexts/ChatContext";
@@ -13,7 +18,9 @@ import MessagesProvider from "providers/MessagesProvider";
 const ChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const { state, pathname, search } = useLocation() as Location & {
+    state: null | { new?: boolean };
+  };
   const toast = useToast();
   const { chat, isLoaded } = useChat(id!);
   const members = useChatMembers(chat?.address);
@@ -31,7 +38,7 @@ const ChatPage: React.FC = () => {
       };
 
       let timeout: ReturnType<Window["setTimeout"]>;
-      if ((state as null | { new?: boolean })?.new) {
+      if (state?.new) {
         // * Wait for the next block
         timeout = window.setTimeout(notFound, ms("16s"));
       } else {
@@ -43,6 +50,13 @@ const ChatPage: React.FC = () => {
       };
     }
   }, [isLoaded]);
+
+  useEffect(() => {
+    if (chat && state?.new) {
+      // * Reset state
+      navigate(pathname + search);
+    }
+  }, [!!chat, state?.new]);
 
   const contextValue = useMemo(
     () =>

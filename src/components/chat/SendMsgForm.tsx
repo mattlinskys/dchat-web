@@ -3,8 +3,8 @@ import { Button, HStack, Input, useToast } from "@chakra-ui/react";
 import { useContractFunction } from "@usedapp/core";
 import { encrypt } from "utils/cryptoUtils";
 import { utils } from "ethers";
-import useChatContract from "hooks/useChatContract";
 import ChatContext from "contexts/ChatContext";
+import useChatContract from "hooks/useChatContract";
 import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 
 const SendMsgForm: React.FC = () => {
@@ -32,7 +32,7 @@ const SendMsgForm: React.FC = () => {
       }
 
       await send(
-        members.map(({ address }) => address),
+        members.map(({ account }) => account),
         ciphertexts,
         0
       );

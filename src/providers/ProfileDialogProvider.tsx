@@ -4,8 +4,8 @@ import { useEthers } from "@usedapp/core";
 import { PROFILE_HASH } from "constants/hashes";
 import ProfileDialog from "components/profile/ProfileDialog";
 import useHashDisclosure from "hooks/useHashDisclosure";
-import EditProfileDialog from "components/profile/EditProfileDialog";
 import { useDisclosure } from "@chakra-ui/hooks";
+import EditProfileDialogProvider from "providers/EditProfileDialogProvider";
 
 const ProfileDialogProvider: React.FC = () => {
   const { deactivate } = useEthers();
@@ -33,12 +33,13 @@ const ProfileDialogProvider: React.FC = () => {
         onLogOut={deactivate}
       />
 
-      <EditProfileDialog
-        isOpen={isVisible && isEditingActive}
-        profile={profile!}
-        onClose={onCloseEditing}
-        onSubmit={async () => {}}
-      />
+      {profile && (
+        <EditProfileDialogProvider
+          isOpen={isVisible && isEditingActive}
+          profile={profile}
+          onClose={onCloseEditing}
+        />
+      )}
     </>
   );
 };
