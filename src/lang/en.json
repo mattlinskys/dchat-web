@@ -1,14 +1,20 @@
 {
   "common.name": "Name",
+  "common.id": "ID",
+  "common.chatId": "Chat ID",
   "common.wallet": "Wallet",
   "common.avatar": "Avatar",
   "common.avatarUrl": "Avatar URL",
   "common.description": "Description",
   "common.edit": "Edit",
   "common.save": "Save",
+  "common.add": "Add",
+  "common.create": "Create",
   "common.disconnect": "Disconnect",
+  "common.members": "Members",
+  "common.you": "You",
 
-  "validation.name:required": "Name is required",
+  "validation.name:required": "This field is required",
 
   "erros.default": "Something went wrong, please try again",
 

@@ -40,7 +40,7 @@ const Message: React.FC<MessageProps> = ({ id }) => {
     <Box>
       {message && (
         <>
-          <VCard user={sender} />
+          <VCard user={sender} avatarSize="8" />
           {message.isEncrypted ? (
             <EncryptedMessageContent messageId={message.id} />
           ) : (

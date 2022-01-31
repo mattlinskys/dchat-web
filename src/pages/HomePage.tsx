@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, VStack } from "@chakra-ui/react";
+import { Box, Divider, Heading, VStack } from "@chakra-ui/react";
 import JoinChatForm from "components/home/JoinChatForm";
 import ProfileTrigger from "components/home/ProfileTrigger";
 import CreateChatForm from "components/home/CreateChatForm";
@@ -14,9 +14,13 @@ const HomePage: React.FC = () => {
         <Box p="4">
           <p>Address: {account}</p>
 
-          <VStack mt="4" w="sm" spacing="8">
+          <VStack mt="4" w="sm" spacing="8" align="stretch">
             <JoinChatForm />
-            <CreateChatForm />
+            <Box rounded="md" p="4" bg="gray.600">
+              <Heading fontSize="xl">Create chat</Heading>
+              <Divider my="3" borderColor="gray.300" />
+              <CreateChatForm />
+            </Box>
             <ProfileTrigger />
           </VStack>
         </Box>
