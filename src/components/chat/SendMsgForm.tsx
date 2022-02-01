@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
-import { Button, HStack, Input, useToast } from "@chakra-ui/react";
+import { HStack, Input, useToast } from "@chakra-ui/react";
 import { useContractFunction } from "@usedapp/core";
 import { encrypt } from "utils/cryptoUtils";
 import { utils } from "ethers";
@@ -48,7 +48,7 @@ const SendMsgForm: React.FC = () => {
   }, [value, members, send]);
 
   return (
-    <HStack spacing="4">
+    <HStack w="full" spacing="4">
       <Input
         placeholder="Type message..."
         value={value}
@@ -58,16 +58,12 @@ const SendMsgForm: React.FC = () => {
             handleSend();
           }
         }}
-      />
-      <Button
-        isDisabled={!members}
-        isLoading={
-          state.status === "Mining" || state.status === "PendingSignature"
+        rounded="full"
+        h="9"
+        isDisabled={
+          state.status === "PendingSignature" || state.status === "Mining"
         }
-        onClick={() => handleSend()}
-      >
-        Send
-      </Button>
+      />
     </HStack>
   );
 };

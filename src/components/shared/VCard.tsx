@@ -10,19 +10,27 @@ import {
 import { FormattedMessage } from "react-intl";
 import { IProfile } from "types/profile";
 import { shortenAddress } from "utils/addressUtils";
+import Avatar from "components/shared/Avatar";
 
 export interface VCardProps {
   user?: Pick<IProfile, "name">;
   account?: string;
   avatarSize: BoxProps["w"];
   isMe?: boolean;
+  details?: React.ReactNode;
 }
 
-const VCard: React.FC<VCardProps> = ({ user, account, avatarSize, isMe }) => (
+const VCard: React.FC<VCardProps> = ({
+  user,
+  account,
+  avatarSize,
+  isMe,
+  details,
+}) => (
   <HStack spacing="2" maxW="48">
     {user ? (
       <>
-        <Box w={avatarSize} h={avatarSize} rounded="full" bg="gray.200" />
+        <Avatar name={user.name} size={avatarSize} />
         <Box overflow="hidden">
           <Text fontSize="sm" fontWeight="bold" opacity={0.9} isTruncated>
             {user.name}{" "}
@@ -31,7 +39,9 @@ const VCard: React.FC<VCardProps> = ({ user, account, avatarSize, isMe }) => (
                 (<FormattedMessage id="common.you" ignoreTag />)
               </Text>
             )}
+            {details}
           </Text>
+
           {account && (
             <Text fontSize="xs" opacity={0.5} title={account} isTruncated>
               {shortenAddress(account, 3)}

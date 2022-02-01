@@ -6,6 +6,7 @@ import theme from "app/theme";
 import { CHAT_PATH, HOME_PATH } from "constants/routes";
 import { ChakraProvider } from "@chakra-ui/react";
 import { DAppProvider } from "@usedapp/core";
+import Layout from "components/base/Layout";
 
 import ChainsProvider from "providers/ChainsProvider";
 import ProfileProvider from "providers/ProfileProvider";
@@ -23,10 +24,12 @@ const App: React.FC = () => {
           <ChainsProvider>
             <ChakraProvider theme={theme}>
               <ProfileProvider>
-                <Routes>
-                  <Route path={HOME_PATH} element={<HomePage />} />
-                  <Route path={CHAT_PATH} element={<ChatPage />} />
-                </Routes>
+                <Layout>
+                  <Routes>
+                    <Route path={HOME_PATH} element={<HomePage />} />
+                    <Route path={CHAT_PATH} element={<ChatPage />} />
+                  </Routes>
+                </Layout>
 
                 <SetupProfileDialogProvider />
                 <ProfileDialogProvider />

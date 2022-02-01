@@ -5,6 +5,5 @@ export interface IMessage {
   replyTo?: BigNumber;
   sender: string;
   data?: string;
-  isEncrypted: boolean;
   sentAt: Date;
 }

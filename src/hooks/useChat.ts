@@ -13,23 +13,15 @@ const useChat = (id: string) => {
       args: [utils.id(id)],
     }) ?? [];
 
-  const [membersCount, messagesCount] = (
+  const [ownerAccount, membersCount, messagesCount] = (
     (useContractCalls(
       address && address !== constants.AddressZero
-        ? [
-            {
-              abi: chatAbi,
-              address,
-              method: "membersCount",
-              args: [],
-            },
-            {
-              abi: chatAbi,
-              address,
-              method: "msgIdCounter",
-              args: [],
-            },
-          ]
+        ? ["owner", "membersCount", "messagesCount"].map((method) => ({
+            abi: chatAbi,
+            address,
+            method,
+            args: [],
+          }))
         : []
     ) ?? []) as (undefined[] | any[])[]
   ).flat();
@@ -40,6 +32,7 @@ const useChat = (id: string) => {
         ? {
             id,
             address,
+            ownerAccount,
             membersCount,
             messagesCount,
           }

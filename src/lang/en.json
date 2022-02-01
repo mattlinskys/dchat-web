@@ -13,6 +13,8 @@
   "common.disconnect": "Disconnect",
   "common.members": "Members",
   "common.you": "You",
+  "common.decrypt": "Decrypt",
+  "common.showMore": "Show More",
 
   "validation.name:required": "This field is required",
 
@@ -22,7 +24,5 @@
   "profile.setup.title": "Setup profile",
   "profile.edit.title": "Edit profile",
 
-  "profile.edit.form.avatar.popover.title": "Why not file upload?",
-  "profile.edit.form.avatar.popover.description": "Storing file on blockchain is not cheap operation so it's better to go with just the URL",
-  "profile.edit.form.description.placeholder": "You may want to describe yourself a little bit"
+  "chat.empty.description": "Write a first message\nand join the package\nof messages"
 }

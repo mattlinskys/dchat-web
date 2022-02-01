@@ -3,6 +3,7 @@ import type { BigNumber } from "ethers";
 export interface IChat {
   id: string;
   address: string;
+  ownerAccount: string;
   membersCount: BigNumber;
   messagesCount: BigNumber;
 }

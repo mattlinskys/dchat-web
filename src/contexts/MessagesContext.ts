@@ -2,8 +2,7 @@ import { createContext } from "react";
 import { IMessage } from "types/message";
 
 export interface MessagesContextValue {
-  messages: IMessage[];
-  // isLoaded: boolean;
+  messages?: IMessage[];
 }
 
 const MessagesContext = createContext<MessagesContextValue>(

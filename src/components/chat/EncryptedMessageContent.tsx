@@ -1,12 +1,15 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import MessageContent from "components/chat/MessageContent";
 import ChatContext from "contexts/ChatContext";
 import { chatAbi } from "app/abis";
 import { utils, BigNumber } from "ethers";
-import { Button, useToast } from "@chakra-ui/react";
+import { Box, Button, HStack, Spinner, Text, useToast } from "@chakra-ui/react";
 import naclUtil from "tweetnacl-util";
 import { EPHEM_PUBLIC_KEY_LENGTH, NONCE_LENGTH } from "constants/crypto";
 import { useContractCall, useEthers } from "@usedapp/core";
+import InteractiveContent from "components/chat/InteractiveContent";
+import ClosedLockIcon from "components/icons/ClosedLockIcon";
+import { FormattedMessage } from "react-intl";
+import ShowMoreText from "components/shared/ShowMoreText";
 
 export interface EncryptedMessageContentProps {
   messageId: BigNumber;
@@ -81,21 +84,47 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
     }
   }, [connector, data]);
 
-  return content ? (
-    <MessageContent content={content} />
-  ) : (
-    <>
-      {data &&
-        (data === "0x" ? (
-          <i>Missing encrypted data</i>
+  return (
+    <Box
+      px="3"
+      py="2"
+      bg="gray.400"
+      rounded="md"
+      {...(content || data === "0x"
+        ? { display: "inline-block" }
+        : {
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          })}
+    >
+      {content ? (
+        <ShowMoreText
+          noOfLines={3}
+          whiteSpace="pre-wrap"
+          wordBreak="break-word"
+        >
+          <InteractiveContent content={content} />
+        </ShowMoreText>
+      ) : data ? (
+        data === "0x" ? (
+          <Text as="i">Missing encrypted data</Text>
         ) : (
           <>
-            <Button isLoading={decrypting} onClick={() => decrypt()}>
-              Decrypt
+            <HStack align="center" spacing="1">
+              <ClosedLockIcon />
+              <Text>Message decrypted</Text>
+            </HStack>
+
+            <Button isLoading={decrypting} onClick={() => decrypt()} size="sm">
+              <FormattedMessage id="common.decrypt" ignoreTag />
             </Button>
           </>
-        ))}
-    </>
+        )
+      ) : (
+        <Spinner opacity="0.8" />
+      )}
+    </Box>
   );
 };
 

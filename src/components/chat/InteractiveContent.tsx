@@ -56,10 +56,10 @@ const InteractiveContent: React.FC<InteractiveContentProps> = ({ content }) => {
       } else if (name) {
         parts.push(
           <>
-            <Text as="span" opacity="0.8">
-              @
-            </Text>
             <Text as="span" fontWeight="medium">
+              <Text as="span" opacity="0.8">
+                @
+              </Text>
               {name}
             </Text>
           </>

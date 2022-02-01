@@ -1,3 +1,13 @@
+body {
+  overflow-x: hidden;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
 .hyphens-auto {
   hyphens: auto;
 }

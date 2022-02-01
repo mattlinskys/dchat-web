@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import {
   VStack,
   List,
@@ -39,10 +39,7 @@ const CreateChatForm: React.FC = () => {
   const { account } = useEthers();
   const navigate = useNavigate();
   const factoryContract = useFactoryContract();
-  const { state, send, events } = useContractFunction(
-    factoryContract!,
-    "createChat"
-  );
+  const { state, send } = useContractFunction(factoryContract!, "createChat");
   useContractFunctionErrorToast(state);
 
   const initialValues = useMemo<CreateChatFormValues>(
@@ -67,18 +64,12 @@ const CreateChatForm: React.FC = () => {
   const handleSubmit = useCallback(
     async ({ id, addresses }: CreateChatFormValues) => {
       await send(utils.id(id), addresses);
-    },
-    [send]
-  );
-
-  useEffect(() => {
-    const [event] = events ?? [];
-    if (state.status === "Success" && event) {
-      navigate(getChatPath(utils.parseBytes32String(event.args.id)), {
+      navigate(getChatPath(id), {
         state: { new: true },
       });
-    }
-  }, [state.status, events?.length]);
+    },
+    [send, navigate]
+  );
 
   return (
     <Formik
@@ -115,7 +106,7 @@ const CreateChatForm: React.FC = () => {
                           justifyContent="space-between"
                           alignItems="center"
                         >
-                          <ProfileVCard account={address} avatarSize="7" />
+                          <ProfileVCard account={address} avatarSize="8" />
 
                           {address !== account && (
                             <IconButton

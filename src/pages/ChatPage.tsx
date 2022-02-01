@@ -7,13 +7,13 @@ import {
   Location,
 } from "react-router-dom";
 import { HOME_PATH } from "constants/routes";
-import { Box, VStack, Spinner, useToast } from "@chakra-ui/react";
+import { Box, Spinner, useToast, Text, HStack } from "@chakra-ui/react";
 import ChatContext from "contexts/ChatContext";
 import ms from "ms";
-import MessagesList from "components/chat/MessagesList";
-import SendMsgForm from "components/chat/SendMsgForm";
 import useChatMembers from "hooks/useChatMembers";
 import MessagesProvider from "providers/MessagesProvider";
+import Chat from "components/chat/Chat";
+import ChatMetaTitle from "components/chat/ChatMetaTitle";
 
 const ChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -70,37 +70,33 @@ const ChatPage: React.FC = () => {
     [chat, isLoaded]
   );
 
-  return contextValue ? (
-    <ChatContext.Provider value={contextValue}>
-      <MessagesProvider>
-        <VStack
-          maxW="sm"
-          mx="auto"
-          my="8"
-          p="4"
-          spacing="4"
-          align="stretch"
-          rounded="md"
-          border="1px"
-          borderColor="gray.200"
+  return (
+    <>
+      {contextValue ? (
+        <ChatContext.Provider value={contextValue}>
+          <MessagesProvider>
+            <ChatMetaTitle />
+            <Chat />
+          </MessagesProvider>
+        </ChatContext.Provider>
+      ) : (
+        <Box
+          position="fixed"
+          top="50%"
+          left="50%"
+          lineHeight="none"
+          transform="auto-gpu"
+          translateX="-50%"
+          translateY="-50%"
         >
-          <MessagesList />
-          <SendMsgForm />
-        </VStack>
-      </MessagesProvider>
-    </ChatContext.Provider>
-  ) : (
-    <Box
-      position="fixed"
-      top="50%"
-      left="50%"
-      lineHeight="none"
-      transform="auto-gpu"
-      translateX="-50%"
-      translateY="-50%"
-    >
-      <Spinner size="xl" />
-    </Box>
+          <Spinner size="xl" />
+        </Box>
+      )}
+
+      <HStack mt="auto" justify="center" p="4">
+        <Text color="gray.200">Footer</Text>
+      </HStack>
+    </>
   );
 };
 

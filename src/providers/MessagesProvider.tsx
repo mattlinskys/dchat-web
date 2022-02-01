@@ -16,10 +16,11 @@ const MessagesProvider: React.FC = ({ children }) => {
     chat: { address, messagesCount },
   } = useContext(ChatContext);
   const chatContract = useConnectedContract(chatAbi, address);
-  const [messages, setMessages] = useState<IMessage[]>([]);
+  const [messages, setMessages] = useState<IMessage[]>();
 
-  const fetchMessages = useCallback(() => {
-    // chatContract!.functions
+  const fetchMessages = useCallback(async () => {
+    const messages = await chatContract!.functions.paginateMessages(0, 10);
+    console.log(messages);
   }, [messages]);
 
   useEffect(() => {
