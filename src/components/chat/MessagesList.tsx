@@ -1,75 +1,63 @@
-import React, { memo, useCallback, useContext, useMemo, useState } from "react";
-import ChatContext from "contexts/ChatContext";
+import React, { useCallback, useContext } from "react";
 import Message from "components/chat/Message";
-import { Box, Stack, Text, VStack } from "@chakra-ui/react";
-import useContractEvents from "hooks/useContractEvents";
-import { Contract } from "ethers";
-import { chatAbi } from "app/abis";
+import { Spinner, Stack, Text, VStack } from "@chakra-ui/react";
 import EmptyChat from "components/assets/EmptyChat";
 import { FormattedMessage } from "react-intl";
+import MessagesContext from "contexts/MessagesContext";
 
-export interface MessagesListProps {
-  take?: number;
-}
-
-const MessagesList: React.FC<MessagesListProps> = ({ take = 10 }) => {
-  const { chat } = useContext(ChatContext);
-  const [page, setPage] = useState(0);
-  const range = useMemo(() => {
-    if (chat.messagesCount.isZero()) {
-      return [];
-    }
-    const to = chat.messagesCount.toNumber();
-    const from = Math.max(to - take * (page + 1), 0);
-    return new Array(to - from)
-      .fill(null)
-      .map((_, i) => i + from + 1)
-      .reverse();
-  }, [take, page, chat.messagesCount]);
+const MessagesList: React.FC = () => {
+  const { messages, isFetching, fetchNextMessages } =
+    useContext(MessagesContext);
 
   const handleScroll = useCallback(
     (e: React.UIEvent<HTMLDivElement, UIEvent>) => {
-      if (!chat) {
+      if (isFetching) {
         return;
       }
-      // TODO:
+
+      const list = e.target as HTMLElement;
+      if (list.offsetHeight - list.scrollTop + 48 > list.scrollHeight) {
+        fetchNextMessages();
+      }
     },
-    [range.length, chat.messagesCount]
+    [isFetching, fetchNextMessages]
   );
 
-  useContractEvents(new Contract(chat.address, chatAbi), "MsgSent", (id) => {
-    // TODO:
-  });
-
   return (
-    <Box h="md" display="flex">
-      {range.length === 0 ? (
-        <VStack mt="auto" mb="8" w="full" spacing="3">
-          <EmptyChat />
-          <Text
-            color="gray.300"
-            whiteSpace="pre-wrap"
-            textAlign="center"
-            lineHeight="5"
-          >
-            <FormattedMessage id="chat.empty.description" ignoreTag />
-          </Text>
-        </VStack>
+    <Stack
+      w="full"
+      h="md"
+      direction="column-reverse"
+      overflowY="auto"
+      align="center"
+      spacing="2"
+      py="3"
+      onScroll={handleScroll}
+    >
+      {messages.length === 0 && !isFetching ? (
+        <>
+          <VStack mb="8" w="full" spacing="3">
+            <EmptyChat />
+            <Text
+              color="gray.300"
+              whiteSpace="pre-wrap"
+              textAlign="center"
+              lineHeight="5"
+            >
+              <FormattedMessage id="chat.empty.description" ignoreTag />
+            </Text>
+          </VStack>
+        </>
       ) : (
-        <Stack
-          w="full"
-          direction="column-reverse"
-          overflowY="auto"
-          align="stretch"
-          spacing="2"
-          py="3"
-          onScroll={handleScroll}
-        >
-          {chat && range.map((id) => <Message key={id} id={id} />)}
-        </Stack>
+        <>
+          {messages.map((message) => (
+            <Message key={message.id.toString()} message={message} />
+          ))}
+        </>
       )}
-    </Box>
+      {isFetching && <Spinner flexShrink="0" mb="4" opacity="0.8" />}
+    </Stack>
   );
 };
 
-export default memo(MessagesList);
+export default MessagesList;
