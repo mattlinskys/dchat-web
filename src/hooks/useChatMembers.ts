@@ -31,20 +31,14 @@ const useChatMembers = (address?: string) => {
   const membersProfiles = (useContractCalls(
     membersAddresses
       ? membersAddresses
-          .map((address: string) => [
-            {
+          .map((address: string) =>
+            ["name", "encryptionPublicKey"].map((method) => ({
               abi: profileAbi,
               address,
-              method: "name",
+              method,
               args: [],
-            },
-            {
-              abi: profileAbi,
-              address,
-              method: "encryptionPublicKey",
-              args: [],
-            },
-          ])
+            }))
+          )
           .flat()
       : []
   ) ?? []) as (undefined | any)[];
@@ -57,10 +51,13 @@ const useChatMembers = (address?: string) => {
 
       if (name !== undefined) {
         members.push({
-          name: utils.parseBytes32String(name),
           account: membersAccounts[i],
-          address: membersAddresses[i],
-          encryptionPublicKey: encryptionPublicKey!,
+          profile: {
+            name: utils.parseBytes32String(name),
+            account: membersAccounts[i],
+            address: membersAddresses[i],
+            encryptionPublicKey: encryptionPublicKey!,
+          },
         });
       }
     }

@@ -3,7 +3,7 @@ import { chakra, Box, BoxProps } from "@chakra-ui/react";
 import { sumChars } from "utils/stringUtils";
 
 export interface AvatarProps extends Omit<BoxProps, "rounded" | "bg"> {
-  name: string;
+  address: string;
   size: BoxProps["w"];
 }
 
@@ -73,8 +73,8 @@ const colors = [
   "#A2B2F9",
 ];
 
-const Avatar: React.FC<AvatarProps> = ({ name, size, ...rest }) => {
-  const num = sumChars(name);
+const Avatar: React.FC<AvatarProps> = ({ address, size, ...rest }) => {
+  const num = sumChars(address);
   const path = avatarPaths[num % avatarPaths.length];
   const color = colors[num % colors.length];
 

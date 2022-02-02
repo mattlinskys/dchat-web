@@ -41,8 +41,8 @@ const Message: React.FC<MessageProps> = ({ id }) => {
         <>
           <VCard
             user={sender}
-            account={message?.sender}
-            isMe={message?.sender === account}
+            account={message.sender}
+            isMe={message.sender === account}
             avatarSize="9"
             details={
               <Text

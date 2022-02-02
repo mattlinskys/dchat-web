@@ -1,4 +1,6 @@
 import type { BigNumber } from "ethers";
+import type { IMessage } from "types/message";
+import { IProfile } from "types/profile";
 
 export interface IChat {
   id: string;
@@ -9,9 +11,32 @@ export interface IChat {
 }
 
 export interface IMember {
-  name: string;
-  address: string;
   account: string;
-  encryptionPublicKey: string;
-  // avatarUrl?: string;
+  profile?: IProfile;
 }
+
+export interface IChatMessageEntry {
+  type: "msg";
+  entity: IMessage;
+}
+
+export interface IChatMemberAddedEntry {
+  type: "member-added";
+  entity: {
+    member: IMember;
+    addedAt: Date;
+  };
+}
+
+export interface IChatMemberRemovedEntry {
+  type: "member-removed";
+  entity: {
+    member: IMember;
+    removedAt: Date;
+  };
+}
+
+export type TChatEntry =
+  | IChatMessageEntry
+  | IChatMemberAddedEntry
+  | IChatMemberRemovedEntry;

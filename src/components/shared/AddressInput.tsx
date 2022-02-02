@@ -24,7 +24,7 @@ const AddressInput: React.FC<AddressInputProps> = ({
       onPaste={(e) => {
         const el = e.currentTarget;
         setTimeout(() => {
-          if (!utils.isAddress(el.value) && !isAddressZero(el.value)) {
+          if (utils.isAddress(el.value) && !isAddressZero(el.value)) {
             onAddress(el.value);
             setValue("");
           }
@@ -34,7 +34,7 @@ const AddressInput: React.FC<AddressInputProps> = ({
         if (e.key === "Enter") {
           e.preventDefault();
 
-          if (isInvalid) {
+          if (!isInvalid) {
             onAddress(value);
             setValue("");
           }

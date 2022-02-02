@@ -22,20 +22,21 @@ const SendMsgForm: React.FC = () => {
     }
 
     try {
+      const accounts = [];
       const ciphertexts = [];
+
       for (const member of members) {
-        const { nonce, ephemPublicKey, ciphertext } = encrypt(
-          utils.arrayify(member.encryptionPublicKey),
-          formattedValue
-        );
-        ciphertexts.push(utils.concat([nonce, ephemPublicKey, ciphertext]));
+        if (member.profile) {
+          const { nonce, ephemPublicKey, ciphertext } = encrypt(
+            utils.arrayify(member.profile.encryptionPublicKey),
+            formattedValue
+          );
+          accounts.push(member.account);
+          ciphertexts.push(utils.concat([nonce, ephemPublicKey, ciphertext]));
+        }
       }
 
-      await send(
-        members.map(({ account }) => account),
-        ciphertexts,
-        0
-      );
+      await send(accounts, ciphertexts, 0);
       setValue("");
     } catch (err: any) {
       toast({

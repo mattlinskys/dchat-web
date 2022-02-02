@@ -113,7 +113,7 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
           <>
             <HStack align="center" spacing="1">
               <ClosedLockIcon />
-              <Text>Message decrypted</Text>
+              <Text>Message encrypted</Text>
             </HStack>
 
             <Button isLoading={decrypting} onClick={() => decrypt()} size="sm">
