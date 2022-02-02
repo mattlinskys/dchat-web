@@ -1,7 +1,8 @@
 import React from "react";
-import { Box, Heading, HStack } from "@chakra-ui/react";
+import { Box, HStack } from "@chakra-ui/react";
 import MessagesList from "components/chat/MessagesList";
 import SendMsgForm from "components/chat/SendMsgForm";
+import ChatHeader from "components/chat/ChatHeader";
 
 const Chat: React.FC = () => {
   return (
@@ -15,15 +16,7 @@ const Chat: React.FC = () => {
       border="1px"
       borderColor="gray.500"
     >
-      <HStack
-        p="3"
-        borderBottom="1px"
-        borderBottomColor="gray.500"
-        borderStyle="solid"
-      >
-        <Heading fontSize="lg">Chat #id</Heading>
-      </HStack>
-
+      <ChatHeader />
       <MessagesList />
 
       <HStack

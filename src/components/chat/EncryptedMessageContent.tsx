@@ -5,11 +5,12 @@ import { utils, BigNumber } from "ethers";
 import { Box, Button, HStack, Spinner, Text, useToast } from "@chakra-ui/react";
 import naclUtil from "tweetnacl-util";
 import { EPHEM_PUBLIC_KEY_LENGTH, NONCE_LENGTH } from "constants/crypto";
-import { useContractCall, useEthers } from "@usedapp/core";
+import { useEthers } from "@usedapp/core";
 import InteractiveContent from "components/chat/InteractiveContent";
 import ClosedLockIcon from "components/icons/ClosedLockIcon";
 import { FormattedMessage } from "react-intl";
 import ShowMoreText from "components/shared/ShowMoreText";
+import useConnectedContract from "hooks/useConnectedContract";
 
 export interface EncryptedMessageContentProps {
   messageId: BigNumber;
@@ -18,25 +19,31 @@ export interface EncryptedMessageContentProps {
 const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
   messageId,
 }) => {
+  const toast = useToast();
   const { account, connector } = useEthers();
   const { chat } = useContext(ChatContext);
-  const toast = useToast();
+  const chatContract = useConnectedContract(chatAbi, chat.address);
+  const [data, setData] = useState<string>();
   const [decrypting, setDecrypting] = useState(false);
   const [content, setContent] = useState<string>();
-  const [data] =
-    useContractCall(
-      account && {
-        abi: chatAbi,
-        address: chat.address,
-        method: "messagesCiphertext",
-        args: [
-          utils.keccak256(
-            utils.defaultAbiCoder.encode(["uint256"], [messageId]) +
-              account.replace(/^0x/, "")
-          ),
-        ],
-      }
-    ) ?? [];
+
+  useEffect(() => {
+    if (!chatContract || !account) {
+      return;
+    }
+
+    const fetchData = async () => {
+      const [data] = await chatContract.functions.messagesCiphertext(
+        utils.keccak256(
+          utils.defaultAbiCoder.encode(["uint256"], [messageId]) +
+            account.replace(/^0x/, "")
+        )
+      );
+      setData(data);
+    };
+
+    fetchData();
+  }, [messageId, chatContract, account]);
 
   useEffect(() => {
     if (content) {
@@ -108,15 +115,19 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
         </ShowMoreText>
       ) : data ? (
         data === "0x" ? (
-          <Text as="i">Missing encrypted data</Text>
+          <Text as="i">
+            <FormattedMessage id="message.missingData" ignoreTag />
+          </Text>
         ) : (
           <>
             <HStack align="center" spacing="1">
               <ClosedLockIcon />
-              <Text>Message encrypted</Text>
+              <Text>
+                <FormattedMessage id="message.encrypted" ignoreTag />
+              </Text>
             </HStack>
 
-            <Button isLoading={decrypting} onClick={() => decrypt()} size="sm">
+            <Button isLoading={decrypting} onClick={() => decrypt()} size="xs">
               <FormattedMessage id="common.decrypt" ignoreTag />
             </Button>
           </>

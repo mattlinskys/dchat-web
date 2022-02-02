@@ -12,6 +12,7 @@ import useConnectedContract from "hooks/useConnectedContract";
 import { chatAbi } from "app/abis";
 import useContractEvents from "hooks/useContractEvents";
 import { BigNumber } from "ethers";
+import { rawResultToMessage } from "utils/abiUtils";
 
 interface State {
   messages: IMessage[];
@@ -25,6 +26,10 @@ type Action =
   | {
       type: "fetch-fulfilled";
       messages: IMessage[];
+    }
+  | {
+      type: "add-msg";
+      message: IMessage;
     }
   | {
       type: "remove-msg";
@@ -43,10 +48,20 @@ const reducer = (state: State, action: Action): State => {
         ...state,
         isFetching: false,
         messages: [
-          ...state.messages,
           ...action.messages.filter(
             (msg) => !state.messages.some(({ id }) => msg.id.eq(id))
           ),
+          ...state.messages,
+        ],
+      };
+    case "add-msg":
+      return {
+        ...state,
+        messages: [
+          ...state.messages,
+          ...(state.messages.some(({ id }) => action.message.id.eq(id))
+            ? []
+            : [action.message]),
         ],
       };
     case "remove-msg":
@@ -72,7 +87,7 @@ const MessagesProvider: React.FC = ({ children }) => {
   const fetchMessages = useCallback(async () => {
     const take = Math.min(messagesCount.toNumber() - messages.length, 5);
     const skip = Math.max(messagesCount.toNumber() - messages.length - take, 0);
-    if (take === 0) {
+    if (take <= 0) {
       return;
     }
 
@@ -83,17 +98,7 @@ const MessagesProvider: React.FC = ({ children }) => {
       skip,
       take
     )) as [any[]];
-    const newMessages = results
-      .map(
-        (res) =>
-          ({
-            id: res.id,
-            ...(res.replyTo.isZero() ? {} : { replyTo: res.replyTo }),
-            sender: res.sender,
-            sentAt: new Date(res.time.toNumber() * 1000),
-          } as IMessage)
-      )
-      .reverse();
+    const newMessages = results.map(rawResultToMessage);
 
     dispatch({ type: "fetch-fulfilled", messages: newMessages });
   }, [messages.length, messagesCount]);
@@ -104,9 +109,12 @@ const MessagesProvider: React.FC = ({ children }) => {
     }
   }, [chatContract]);
 
-  useContractEvents(chatContract, "MsgSent", (...args) => {
-    // TODO:
-    console.log("MsgSent", ...args);
+  useContractEvents(chatContract, "MsgSent", async (id: BigNumber) => {
+    const result = await chatContract!.functions.messages(id);
+    dispatch({
+      type: "add-msg",
+      message: rawResultToMessage(result),
+    });
   });
 
   useContractEvents(chatContract, "MsgRemoved", (id: BigNumber) => {

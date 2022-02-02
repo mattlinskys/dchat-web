@@ -9,12 +9,13 @@ export interface ProfileVCardProps
 }
 
 const ProfileVCard: React.FC<ProfileVCardProps> = ({ account, ...rest }) => {
-  const { profile } = useProfile(account);
+  const { profile, isLoaded } = useProfile(account);
   const { account: userAccount } = useEthers();
 
   return (
     <VCard
       user={profile}
+      isLoaded={isLoaded}
       account={account}
       isMe={account === userAccount}
       {...rest}

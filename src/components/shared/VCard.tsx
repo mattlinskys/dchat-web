@@ -14,6 +14,7 @@ import Avatar from "components/shared/Avatar";
 
 export interface VCardProps {
   user?: Pick<IProfile, "name">;
+  isLoaded?: boolean;
   account: string;
   avatarSize: BoxProps["w"];
   isMe?: boolean;
@@ -22,6 +23,7 @@ export interface VCardProps {
 
 const VCard: React.FC<VCardProps> = ({
   user,
+  isLoaded,
   account,
   avatarSize,
   isMe,
@@ -33,13 +35,13 @@ const VCard: React.FC<VCardProps> = ({
         <Avatar address={account} size={avatarSize} />
         <Box overflow="hidden">
           <Text fontSize="sm" fontWeight="bold" opacity={0.9} isTruncated>
-            {user ? (
-              user.name
-            ) : (
-              <Text as="i" opacity={0.6}>
-                (No profile)
-              </Text>
-            )}{" "}
+            {user
+              ? user.name
+              : isLoaded && (
+                  <Text as="i" opacity={0.6}>
+                    (<FormattedMessage id="common.noProfile" ignoreTag />)
+                  </Text>
+                )}{" "}
             {isMe && (
               <Text as="i" fontSize="xs">
                 (<FormattedMessage id="common.you" ignoreTag />)

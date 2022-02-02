@@ -112,7 +112,7 @@ const CreateChatForm: React.FC = () => {
                             <IconButton
                               aria-label="Remove"
                               variant="ghost"
-                              opacity={0.8}
+                              color="gray.200"
                               size="lg"
                               mx="1"
                               minW="6"

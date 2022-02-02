@@ -49,11 +49,11 @@ const MessagesList: React.FC = () => {
           </VStack>
         </>
       ) : (
-        <>
+        <VStack w="full" spacing="2">
           {messages.map((message) => (
             <Message key={message.id.toString()} message={message} />
           ))}
-        </>
+        </VStack>
       )}
       {isFetching && <Spinner flexShrink="0" mb="4" opacity="0.8" />}
     </Stack>

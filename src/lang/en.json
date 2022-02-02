@@ -15,10 +15,14 @@
   "common.you": "You",
   "common.decrypt": "Decrypt",
   "common.showMore": "Show More",
+  "common.noProfile": "No profile",
 
   "validation.name:required": "This field is required",
 
   "erros.default": "Something went wrong, please try again",
+
+  "message.missingData": "Missing encrypted data",
+  "message.encrypted": "Message encrypted",
 
   "profile.title": "Profile",
   "profile.setup.title": "Setup profile",
