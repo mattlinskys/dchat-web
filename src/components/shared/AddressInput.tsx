@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Input } from "@chakra-ui/react";
 import { utils } from "ethers";
 import { isAddressZero } from "utils/addressUtils";
@@ -15,6 +15,14 @@ const AddressInput: React.FC<AddressInputProps> = ({
   const [value, setValue] = useState("");
   const isInvalid = !utils.isAddress(value) || isAddressZero(value);
 
+  const handleNewAddress = useCallback(
+    (address: string) => {
+      onAddress(utils.getAddress(address));
+      setValue("");
+    },
+    [onAddress]
+  );
+
   return (
     <Input
       value={value}
@@ -25,8 +33,7 @@ const AddressInput: React.FC<AddressInputProps> = ({
         const el = e.currentTarget;
         setTimeout(() => {
           if (utils.isAddress(el.value) && !isAddressZero(el.value)) {
-            onAddress(el.value);
-            setValue("");
+            handleNewAddress(el.value);
           }
         });
       }}
@@ -35,8 +42,7 @@ const AddressInput: React.FC<AddressInputProps> = ({
           e.preventDefault();
 
           if (!isInvalid) {
-            onAddress(value);
-            setValue("");
+            handleNewAddress(value);
           }
         }
       }}

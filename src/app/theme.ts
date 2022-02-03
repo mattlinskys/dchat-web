@@ -2,6 +2,10 @@ import { extendTheme, withDefaultColorScheme } from "@chakra-ui/react";
 
 const theme = extendTheme(
   {
+    config: {
+      initialColorMode: "dark",
+      useSystemColorMode: false,
+    },
     colors: {
       gray: {
         300: "#999999",
@@ -12,7 +16,6 @@ const theme = extendTheme(
       },
       brand: {
         500: "#FFB74E",
-        // 600: "#303CBE",
       },
     },
     fonts: {
@@ -80,8 +83,15 @@ const theme = extendTheme(
       Button: {
         variants: {
           solid: {
+            bg: "brand.500",
             color: "gray.700",
           },
+        },
+      },
+      Tooltip: {
+        baseStyle: {
+          bg: "gray.700",
+          color: "whiteAlpha.900",
         },
       },
     },

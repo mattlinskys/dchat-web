@@ -14,6 +14,7 @@ import useChatMembers from "hooks/useChatMembers";
 import MessagesProvider from "providers/MessagesProvider";
 import Chat from "components/chat/Chat";
 import ChatMetaTitle from "components/chat/ChatMetaTitle";
+import MembersProvider from "providers/MembersProvider";
 
 const ChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -74,10 +75,12 @@ const ChatPage: React.FC = () => {
     <>
       {contextValue ? (
         <ChatContext.Provider value={contextValue}>
-          <MessagesProvider>
-            <ChatMetaTitle />
-            <Chat />
-          </MessagesProvider>
+          <MembersProvider>
+            <MessagesProvider>
+              <ChatMetaTitle />
+              <Chat />
+            </MessagesProvider>
+          </MembersProvider>
         </ChatContext.Provider>
       ) : (
         <Box

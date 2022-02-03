@@ -38,8 +38,8 @@ const VCard: React.FC<VCardProps> = ({
             {user
               ? user.name
               : isLoaded && (
-                  <Text as="i" opacity={0.6}>
-                    (<FormattedMessage id="common.noProfile" ignoreTag />)
+                  <Text as="i" opacity={0.75}>
+                    <FormattedMessage id="common.noProfile" ignoreTag />
                   </Text>
                 )}{" "}
             {isMe && (

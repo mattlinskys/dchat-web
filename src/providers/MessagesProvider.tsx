@@ -13,73 +13,16 @@ import { chatAbi } from "app/abis";
 import useContractEvents from "hooks/useContractEvents";
 import { BigNumber } from "ethers";
 import { rawResultToMessage } from "utils/abiUtils";
+import { createEntitiesReducer } from "reducers/entitiesReducer";
 
-interface State {
-  messages: IMessage[];
-  isFetching: boolean;
-}
-
-type Action =
-  | {
-      type: "fetch-pending";
-    }
-  | {
-      type: "fetch-fulfilled";
-      messages: IMessage[];
-    }
-  | {
-      type: "add-msg";
-      message: IMessage;
-    }
-  | {
-      type: "remove-msg";
-      id: BigNumber;
-    };
-
-const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case "fetch-pending":
-      return {
-        ...state,
-        isFetching: true,
-      };
-    case "fetch-fulfilled":
-      return {
-        ...state,
-        isFetching: false,
-        messages: [
-          ...action.messages.filter(
-            (msg) => !state.messages.some(({ id }) => msg.id.eq(id))
-          ),
-          ...state.messages,
-        ],
-      };
-    case "add-msg":
-      return {
-        ...state,
-        messages: [
-          ...state.messages,
-          ...(state.messages.some(({ id }) => action.message.id.eq(id))
-            ? []
-            : [action.message]),
-        ],
-      };
-    case "remove-msg":
-      return {
-        ...state,
-        messages: state.messages.filter(({ id }) => !id.eq(action.id)),
-      };
-    default:
-      return state;
-  }
-};
+const reducer = createEntitiesReducer<IMessage, "id">("id", (a, b) => a.eq(b));
 
 const MessagesProvider: React.FC = ({ children }) => {
   const {
     chat: { address, messagesCount },
   } = useContext(ChatContext);
-  const [{ messages, isFetching }, dispatch] = useReducer(reducer, {
-    messages: [],
+  const [{ entities: messages, isFetching }, dispatch] = useReducer(reducer, {
+    entities: [],
     isFetching: !messagesCount.isZero(),
   });
   const chatContract = useConnectedContract(chatAbi, address);
@@ -91,17 +34,20 @@ const MessagesProvider: React.FC = ({ children }) => {
       return;
     }
 
-    // TODO: fetch-rejected action
     dispatch({ type: "fetch-pending" });
 
-    const [results] = (await chatContract!.functions.paginateMessages(
-      skip,
-      take
-    )) as [any[]];
-    const newMessages = results.map(rawResultToMessage);
+    try {
+      const [results] = (await chatContract!.functions.paginateMessages(
+        skip,
+        take
+      )) as [any[]];
+      const entities = results.map(rawResultToMessage);
 
-    dispatch({ type: "fetch-fulfilled", messages: newMessages });
-  }, [messages.length, messagesCount]);
+      dispatch({ type: "fetch-fulfilled", entities });
+    } catch (err) {
+      // TODO: fetch-rejected action
+    }
+  }, [messages.length, messagesCount, chatContract]);
 
   useEffect(() => {
     if (!messagesCount.isZero() && chatContract) {
@@ -112,13 +58,13 @@ const MessagesProvider: React.FC = ({ children }) => {
   useContractEvents(chatContract, "MsgSent", async (id: BigNumber) => {
     const result = await chatContract!.functions.messages(id);
     dispatch({
-      type: "add-msg",
-      message: rawResultToMessage(result),
+      type: "add-one",
+      entity: rawResultToMessage(result),
     });
   });
 
   useContractEvents(chatContract, "MsgRemoved", (id: BigNumber) => {
-    dispatch({ type: "remove-msg", id });
+    dispatch({ type: "remove-one", id });
   });
 
   const value = useMemo(

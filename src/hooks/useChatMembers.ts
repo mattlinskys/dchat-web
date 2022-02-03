@@ -49,17 +49,18 @@ const useChatMembers = (address?: string) => {
       const [name] = membersProfiles[i * 2] ?? [];
       const [encryptionPublicKey] = membersProfiles[i * 2 + 1] ?? [];
 
-      if (name !== undefined) {
-        members.push({
-          account: membersAccounts[i],
-          profile: {
-            name: utils.parseBytes32String(name),
-            account: membersAccounts[i],
-            address: membersAddresses[i],
-            encryptionPublicKey: encryptionPublicKey!,
-          },
-        });
-      }
+      members.push({
+        account: membersAccounts[i],
+        profile:
+          name !== undefined
+            ? {
+                name: utils.parseBytes32String(name),
+                account: membersAccounts[i],
+                address: membersAddresses[i],
+                encryptionPublicKey: encryptionPublicKey!,
+              }
+            : undefined,
+      });
     }
     return members;
   }, [membersProfiles]);
