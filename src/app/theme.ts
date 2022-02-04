@@ -9,8 +9,8 @@ const theme = extendTheme(
     colors: {
       gray: {
         300: "#999999",
-        400: "#4E4E4E",
-        500: "#6A6A6A",
+        400: "#6A6A6A",
+        500: "#4E4E4E",
         600: "#343434",
         700: "#2A2A2A",
       },
@@ -92,6 +92,11 @@ const theme = extendTheme(
         baseStyle: {
           bg: "gray.700",
           color: "whiteAlpha.900",
+        },
+      },
+      Divider: {
+        baseStyle: {
+          bg: "gray.400",
         },
       },
     },

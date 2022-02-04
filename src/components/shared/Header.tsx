@@ -1,6 +1,8 @@
 import React from "react";
 import { Box } from "@chakra-ui/react";
 import Logo from "components/assets/Logo";
+import { Link } from "react-router-dom";
+import { HOME_PATH } from "constants/routes";
 
 const Header: React.FC = () => {
   return (
@@ -12,7 +14,9 @@ const Header: React.FC = () => {
       px="8"
       py="6"
     >
-      <Logo />
+      <Link to={HOME_PATH}>
+        <Logo />
+      </Link>
     </Box>
   );
 };

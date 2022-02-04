@@ -95,7 +95,7 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
     <Box
       px="3"
       py="2"
-      bg="gray.400"
+      bg="gray.500"
       rounded="md"
       {...(content || data === "0x"
         ? { display: "inline-block" }

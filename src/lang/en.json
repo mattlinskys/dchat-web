@@ -4,6 +4,7 @@
   "common.chatId": "Chat ID",
   "common.wallet": "Wallet",
   "common.address": "Address",
+  "common.address.placeholder": "Type address..",
   "common.avatar": "Avatar",
   "common.avatarUrl": "Avatar URL",
   "common.description": "Description",
@@ -18,9 +19,12 @@
   "common.decrypt": "Decrypt",
   "common.showMore": "Show More",
   "common.noProfile": "No profile",
+  "common.today": "Today",
+  "common.yesterday": "Yesterday",
 
   "validation:required": "Required field",
   "validation:invalid": "Invalid field",
+  "validation:already-member": "This user is already a member",
 
   "erros.default": "Something went wrong, please try again",
 
@@ -28,6 +32,7 @@
   "message.encrypted": "Message encrypted",
 
   "members.list.title": "Members ({count})",
+  "members.list.remove.success": "Member removed successfully",
 
   "members.add.title": "Add member",
   "members.add.success": "Member added successfully",

@@ -63,13 +63,13 @@ const VCard: React.FC<VCardProps> = ({
           // @ts-ignore
           size={avatarSize}
           startColor="gray.300"
-          endColor="gray.400"
+          endColor="gray.500"
         />
         <SkeletonText
           noOfLines={2}
           w="20"
           startColor="gray.300"
-          endColor="gray.400"
+          endColor="gray.500"
         />
       </>
     )}

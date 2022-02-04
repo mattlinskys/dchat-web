@@ -1,7 +1,7 @@
 import React from "react";
 import Dialog, { DialogProps } from "components/shared/Dialog";
 import { FormattedMessage } from "react-intl";
-import AddMemberForm from "components/chat/AddMemberForm";
+import AddMemberForm from "components/chat/AddMember/AddMemberForm";
 
 interface AddMemberDialogProps extends Omit<DialogProps, "title"> {}
 

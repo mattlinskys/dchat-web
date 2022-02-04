@@ -18,7 +18,7 @@ const HomePage: React.FC = () => {
             <JoinChatForm />
             <Box rounded="md" p="4" bg="gray.600">
               <Heading fontSize="xl">Create chat</Heading>
-              <Divider my="3" borderColor="gray.300" />
+              <Divider my="3" />
               <CreateChatForm />
             </Box>
             <ProfileTrigger />

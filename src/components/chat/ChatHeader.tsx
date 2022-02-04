@@ -1,21 +1,21 @@
 import React, { useContext } from "react";
 import {
-  Box,
   HStack,
-  Heading,
   IconButton,
   Icon,
   useDisclosure,
+  Tooltip,
 } from "@chakra-ui/react";
 import ChatContext from "contexts/ChatContext";
 import AddMemberIcon from "components/icons/AddMemberIcon";
 import { useEthers } from "@usedapp/core";
-import AddMemberDialog from "components/chat/AddMemberDialog";
+import AddMemberDialog from "components/chat/AddMember/AddMemberDialog";
 import ChatMemberAvatars from "components/chat/ChatMemberAvatars";
+import { FormattedMessage } from "react-intl";
 
 const ChatHeader: React.FC = () => {
   const {
-    chat: { messagesCount, ownerAccount },
+    chat: { ownerAccount },
   } = useContext(ChatContext);
   const { account } = useEthers();
   const {
@@ -29,37 +29,31 @@ const ChatHeader: React.FC = () => {
       px="3"
       py="2"
       borderBottom="1px"
-      borderBottomColor="gray.500"
+      borderBottomColor="gray.400"
       borderStyle="solid"
       alignItems="center"
+      justifyContent="space-between"
       minH="50px"
     >
-      <Heading
-        w="full"
-        fontSize="lg"
-        title={messagesCount.toString()}
-        isTruncated
-      >
-        Messages ({messagesCount.toString()})
-      </Heading>
-
-      <Box flexShrink="0">
+      <HStack spacing="1">
         <ChatMemberAvatars />
-      </Box>
-
-      <HStack w="full" justifyContent="flex-end">
         {ownerAccount === account && (
           <>
-            <IconButton
-              aria-label="Add member"
-              variant="ghost"
-              size="lg"
-              mx="1"
-              minW="6"
-              h="6"
-              icon={<Icon as={AddMemberIcon} />}
-              onClick={() => onAddMemberOpen()}
-            />
+            <Tooltip
+              label={<FormattedMessage id="members.add.title" ignoreTag />}
+              placement="top"
+            >
+              <IconButton
+                aria-label="Add member"
+                variant="ghost"
+                size="lg"
+                mx="1"
+                minW="6"
+                h="6"
+                icon={<Icon as={AddMemberIcon} />}
+                onClick={() => onAddMemberOpen()}
+              />
+            </Tooltip>
 
             <AddMemberDialog
               isOpen={isAddMemberOpen}

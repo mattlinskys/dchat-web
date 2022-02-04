@@ -3,7 +3,7 @@ import { Stack, Center, Text, useDisclosure, Tooltip } from "@chakra-ui/react";
 import Avatar from "components/shared/Avatar";
 import ChatContext from "contexts/ChatContext";
 import { FormattedMessage } from "react-intl";
-import MembersListDialog from "components/chat/MembersListDialog";
+import MembersListDialog from "components/chat/MembersList/MembersListDialog";
 
 interface ChatMemberAvatarsProps {
   maxItems?: number;
@@ -35,7 +35,7 @@ const ChatMemberAvatars: React.FC<ChatMemberAvatarsProps> = ({
             <Center
               w="8"
               h="8"
-              bg="gray.400"
+              bg="gray.500"
               border="2px"
               borderStyle="solid"
               borderColor="gray.700"

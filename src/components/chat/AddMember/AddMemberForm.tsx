@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useContext, useEffect, useMemo } from "react";
 import { FormLabel } from "@chakra-ui/react";
 import ActionsFooter from "components/shared/ActionsFooter";
 import FormControlField from "components/shared/FormControlField";
@@ -12,6 +12,7 @@ import { useContractFunction } from "@usedapp/core";
 import useChatContract from "hooks/useChatContract";
 import useContractFunctionSuccessToast from "hooks/useContractFunctionSuccessToast";
 import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
+import ChatContext from "contexts/ChatContext";
 
 interface AddMemberFormValues {
   address: string;
@@ -23,6 +24,7 @@ export interface AddMemberFormProps {
 
 const AddMemberForm: React.FC<AddMemberFormProps> = ({ onClose }) => {
   const { formatMessage } = useIntl();
+  const { members } = useContext(ChatContext);
   const contract = useChatContract();
   const { send, state } = useContractFunction(contract, "addMember");
   useContractFunctionSuccessToast(
@@ -30,6 +32,26 @@ const AddMemberForm: React.FC<AddMemberFormProps> = ({ onClose }) => {
     formatMessage({ id: "members.add.success" })
   );
   useContractFunctionErrorToast(state);
+
+  const validationSchema = useMemo(
+    () =>
+      Yup.object().shape({
+        address: Yup.string()
+          .required("required")
+          .test("address", "invalid", (value) => utils.isAddress(value!))
+          .test(
+            "already-member",
+            "already-member",
+            (value) =>
+              !members.some(
+                (member) =>
+                  utils.isAddress(value!) &&
+                  member.account === utils.getAddress(value!)
+              )
+          ),
+      }),
+    [members]
+  );
 
   const handleSubmit = useCallback(async ({ address }: AddMemberFormValues) => {
     await send(address);
@@ -47,18 +69,18 @@ const AddMemberForm: React.FC<AddMemberFormProps> = ({ onClose }) => {
         address: "",
       }}
       onSubmit={handleSubmit}
-      validationSchema={Yup.object().shape({
-        address: Yup.string()
-          .required("required")
-          .test("address", "invalid", (value) => utils.isAddress(value!)),
-      })}
+      validationSchema={validationSchema}
     >
       <Form noValidate>
         <FormControlField name="address" isRequired>
           <FormLabel>
             <FormattedMessage id="common.address" />
           </FormLabel>
-          <InputField name="address" autoFocus />
+          <InputField
+            name="address"
+            placeholder={formatMessage({ id: "common.address.placeholder" })}
+            autoFocus
+          />
         </FormControlField>
 
         <ActionsFooter>
@@ -69,7 +91,7 @@ const AddMemberForm: React.FC<AddMemberFormProps> = ({ onClose }) => {
               state.status === "Success"
             }
           >
-            <FormattedMessage id="common.save" />
+            <FormattedMessage id="common.add" />
           </SubmitButton>
         </ActionsFooter>
       </Form>

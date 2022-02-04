@@ -4,6 +4,9 @@ import { Spinner, Stack, Text, VStack } from "@chakra-ui/react";
 import EmptyChat from "components/assets/EmptyChat";
 import { FormattedMessage } from "react-intl";
 import MessagesContext from "contexts/MessagesContext";
+import DateBreaker from "components/shared/DateBreaker";
+import { IMessage } from "types/message";
+import ChatIndent from "components/chat/ChatIndent";
 
 const MessagesList: React.FC = () => {
   const { messages, isFetching, fetchNextMessages } =
@@ -35,26 +38,42 @@ const MessagesList: React.FC = () => {
       onScroll={handleScroll}
     >
       {messages.length === 0 && !isFetching ? (
-        <>
-          <VStack mb="8" w="full" spacing="3">
-            <EmptyChat />
-            <Text
-              color="gray.300"
-              whiteSpace="pre-wrap"
-              textAlign="center"
-              lineHeight="5"
-            >
-              <FormattedMessage id="chat.empty.description" ignoreTag />
-            </Text>
-          </VStack>
-        </>
+        <VStack mb="8" w="full" spacing="3">
+          <EmptyChat />
+          <Text
+            color="gray.300"
+            whiteSpace="pre-wrap"
+            textAlign="center"
+            lineHeight="5"
+          >
+            <FormattedMessage id="chat.empty.description" ignoreTag />
+          </Text>
+        </VStack>
       ) : (
         <VStack w="full" spacing="2">
-          {messages.map((message) => (
-            <Message key={message.id.toString()} message={message} />
-          ))}
+          <DateBreaker<IMessage>
+            items={messages}
+            getItemKey={(msg) => msg.id.toString()}
+            getItemDate={(msg) => msg.sentAt}
+            renderItem={(msg) => <Message message={msg} />}
+            renderBreak={(localeDate) => (
+              <ChatIndent>
+                {localeDate === new Date().toLocaleDateString() ? (
+                  <FormattedMessage id="common.today" ignoreTag />
+                ) : localeDate ===
+                  new Date(
+                    new Date().setDate(new Date().getDate() - 1)
+                  ).toLocaleDateString() ? (
+                  <FormattedMessage id="common.yesterday" ignoreTag />
+                ) : (
+                  localeDate
+                )}
+              </ChatIndent>
+            )}
+          />
         </VStack>
       )}
+
       {isFetching && <Spinner flexShrink="0" mb="4" opacity="0.8" />}
     </Stack>
   );
