@@ -1,44 +1,27 @@
 import React from "react";
-import {
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-} from "@chakra-ui/modal";
 import { FormattedMessage } from "react-intl";
 import EditProfileForm, {
   EditProfileFormProps,
 } from "components/profile/EditProfileForm";
 import { IProfile } from "types/profile";
+import Dialog, { DialogProps } from "components/shared/Dialog";
 
-export interface EditProfileDialogProps
-  extends Pick<EditProfileFormProps, "onSubmit"> {
+export interface EditProfileDialogProps extends Omit<DialogProps, "title"> {
   profile: IProfile;
-  isOpen: boolean;
-  onClose: () => void;
+  onSubmit: EditProfileFormProps["onSubmit"];
 }
 
 const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
-  isOpen,
-  onClose,
   onSubmit,
   profile,
+  ...rest
 }) => (
-  <Modal isOpen={isOpen} onClose={onClose}>
-    <ModalOverlay />
-    <ModalContent>
-      <ModalHeader>
-        <FormattedMessage id="profile.edit.title" />
-      </ModalHeader>
-      <ModalCloseButton />
-
-      <ModalBody pb={4}>
-        <EditProfileForm defaultValues={profile} onSubmit={onSubmit} />
-      </ModalBody>
-    </ModalContent>
-  </Modal>
+  <Dialog
+    title={<FormattedMessage id="profile.edit.title" ignoreTag />}
+    {...rest}
+  >
+    <EditProfileForm defaultValues={profile} onSubmit={onSubmit} />
+  </Dialog>
 );
 
 export default EditProfileDialog;

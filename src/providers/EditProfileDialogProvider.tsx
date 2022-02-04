@@ -4,10 +4,11 @@ import EditProfileDialog, {
   EditProfileDialogProps,
 } from "components/profile/EditProfileDialog";
 import { utils } from "ethers";
-import useProfileContract from "hooks/useProfileContract";
+import useContract from "hooks/useContract";
 import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 import useContractFunctionSuccessToast from "hooks/useContractFunctionSuccessToast";
 import { IProfile } from "types/profile";
+import { profileAbi } from "app/abis";
 
 interface EditProfileDialogProviderProps {
   profile: IProfile;
@@ -20,7 +21,7 @@ const EditProfileDialogProvider: React.FC<EditProfileDialogProviderProps> = ({
   onClose,
   ...rest
 }) => {
-  const contract = useProfileContract(profile.address);
+  const contract = useContract(profileAbi, profile.address);
   const { send, state } = useContractFunction(contract, "updateName");
   useContractFunctionErrorToast(state);
   useContractFunctionSuccessToast(state, "Chages saved successfully");

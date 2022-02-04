@@ -10,8 +10,8 @@ import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 const SendMsgForm: React.FC = () => {
   const toast = useToast();
   const [value, setValue] = useState("");
-  const { chat, members } = useContext(ChatContext);
-  const chatContract = useChatContract(chat.address);
+  const { members } = useContext(ChatContext);
+  const chatContract = useChatContract();
   const { state, send } = useContractFunction(chatContract, "sendCipherMsg");
   useContractFunctionErrorToast(state);
 

@@ -1,41 +1,24 @@
 import React from "react";
-import {
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-} from "@chakra-ui/modal";
 import { FormattedMessage } from "react-intl";
 import EditProfileForm, {
   EditProfileFormProps,
 } from "components/profile/EditProfileForm";
+import Dialog, { DialogProps } from "components/shared/Dialog";
 
-export interface SetupProfileDialogProps
-  extends Pick<EditProfileFormProps, "onSubmit" | "isLoading"> {
-  isOpen: boolean;
-  onClose: () => void;
-}
+export type SetupProfileDialogProps = Pick<
+  EditProfileFormProps,
+  "onSubmit" | "isLoading"
+> &
+  Omit<DialogProps, "title">;
 
 const SetupProfileDialog: React.FC<SetupProfileDialogProps> = ({
-  isOpen,
-  onClose,
+  isLoading,
+  onSubmit,
   ...rest
 }) => (
-  <Modal isOpen={isOpen} onClose={onClose}>
-    <ModalOverlay />
-    <ModalContent>
-      <ModalHeader>
-        <FormattedMessage id="profile.setup.title" />
-      </ModalHeader>
-      <ModalCloseButton />
-
-      <ModalBody pb={4}>
-        <EditProfileForm {...rest} />
-      </ModalBody>
-    </ModalContent>
-  </Modal>
+  <Dialog title={<FormattedMessage id="profile.setup.title" />} {...rest}>
+    <EditProfileForm isLoading={isLoading} onSubmit={onSubmit} />
+  </Dialog>
 );
 
 export default SetupProfileDialog;

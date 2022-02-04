@@ -1,33 +1,21 @@
 import React from "react";
-import {
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
-} from "@chakra-ui/modal";
+import Dialog, { DialogProps } from "components/shared/Dialog";
+import { FormattedMessage } from "react-intl";
+import AddMemberForm from "components/chat/AddMemberForm";
 
-interface AddMemberDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+interface AddMemberDialogProps extends Omit<DialogProps, "title"> {}
 
 const AddMemberDialog: React.FC<AddMemberDialogProps> = ({
   isOpen,
   onClose,
-}) => {
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Add member</ModalHeader>
-        <ModalCloseButton />
-
-        <ModalBody pb="4">TODO</ModalBody>
-      </ModalContent>
-    </Modal>
-  );
-};
+}) => (
+  <Dialog
+    title={<FormattedMessage id="members.add.title" />}
+    isOpen={isOpen}
+    onClose={onClose}
+  >
+    <AddMemberForm onClose={onClose} />
+  </Dialog>
+);
 
 export default AddMemberDialog;

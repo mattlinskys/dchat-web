@@ -3,6 +3,7 @@
   "common.id": "ID",
   "common.chatId": "Chat ID",
   "common.wallet": "Wallet",
+  "common.address": "Address",
   "common.avatar": "Avatar",
   "common.avatarUrl": "Avatar URL",
   "common.description": "Description",
@@ -18,12 +19,18 @@
   "common.showMore": "Show More",
   "common.noProfile": "No profile",
 
-  "validation.name:required": "This field is required",
+  "validation:required": "Required field",
+  "validation:invalid": "Invalid field",
 
   "erros.default": "Something went wrong, please try again",
 
   "message.missingData": "Missing encrypted data",
   "message.encrypted": "Message encrypted",
+
+  "members.list.title": "Members ({count})",
+
+  "members.add.title": "Add member",
+  "members.add.success": "Member added successfully",
 
   "profile.title": "Profile",
   "profile.setup.title": "Setup profile",
