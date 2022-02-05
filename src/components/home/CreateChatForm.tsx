@@ -6,6 +6,7 @@ import {
   ListItem,
   IconButton,
   Icon,
+  Tooltip,
 } from "@chakra-ui/react";
 import { useContractFunction, useEthers } from "@usedapp/core";
 import { utils } from "ethers";
@@ -28,7 +29,7 @@ import InputField from "components/shared/InputField";
 import SubmitButton from "components/shared/SubmitButton";
 import AddressInput from "components/shared/AddressInput";
 import ProfileVCard from "components/shared/ProfileVCard";
-import CloseIcon from "components/icons/CloseIcon";
+import TrashIcon from "components/icons/TrashIcon";
 
 interface CreateChatFormValues {
   id: string;
@@ -109,17 +110,26 @@ const CreateChatForm: React.FC = () => {
                           <ProfileVCard account={address} avatarSize="8" />
 
                           {address !== account && (
-                            <IconButton
-                              aria-label="Remove"
-                              variant="ghost"
-                              color="gray.200"
-                              size="lg"
-                              mx="1"
-                              minW="6"
-                              h="6"
-                              icon={<Icon as={CloseIcon} />}
-                              onClick={() => remove(i)}
-                            />
+                            <Tooltip
+                              label={
+                                <FormattedMessage
+                                  id="common.remove"
+                                  ignoreTag
+                                />
+                              }
+                              placement="top"
+                            >
+                              <IconButton
+                                aria-label="Remove"
+                                variant="ghost"
+                                color="gray.200"
+                                size="lg"
+                                minW="6"
+                                h="6"
+                                icon={<Icon as={TrashIcon} />}
+                                onClick={() => remove(i)}
+                              />
+                            </Tooltip>
                           )}
                         </ListItem>
                       ))}

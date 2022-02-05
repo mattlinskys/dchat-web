@@ -1,14 +1,21 @@
 import React from "react";
 
-export interface IconBaseProps extends React.SVGProps<SVGSVGElement> {}
+export interface IconBaseProps extends React.SVGProps<SVGSVGElement> {
+  width?: string | number;
+  height?: string | number;
+}
 
-const IconBase: React.FC<IconBaseProps> = (props) => (
+const IconBase: React.FC<IconBaseProps> = ({
+  width = "20",
+  height = "20",
+  ...rest
+}) => (
   <svg
-    width="20"
-    height="20"
-    viewBox="0 0 20 20"
+    width={width}
+    height={height}
+    viewBox={`0 0 ${width} ${height}`}
     xmlns="http://www.w3.org/2000/svg"
-    {...props}
+    {...rest}
   />
 );
 

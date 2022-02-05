@@ -48,7 +48,6 @@ const ChatHeader: React.FC = () => {
                 aria-label="Add member"
                 variant="ghost"
                 size="lg"
-                mx="1"
                 minW="6"
                 h="6"
                 icon={<Icon as={AddMemberIcon} />}
