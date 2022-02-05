@@ -1,14 +1,16 @@
 import { useContractCall, useContractCalls } from "@usedapp/core";
+import useFactoryAddress from "hooks/useFactoryAddress";
 import { chatAbi, factoryAbi } from "app/abis";
 import { utils } from "ethers";
 import { constants } from "ethers";
 import { useMemo } from "react";
 
 const useChat = (id: string) => {
+  const factoryAddress = useFactoryAddress();
   const [address] =
     useContractCall({
       abi: factoryAbi,
-      address: process.env.REACT_APP_FACTORY_ADDRESS,
+      address: factoryAddress,
       method: "chats",
       args: [utils.id(id)],
     }) ?? [];

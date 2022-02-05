@@ -3,6 +3,4 @@ export interface IProfile {
   account: string;
   address: string;
   encryptionPublicKey: string;
-  // avatarUrl?: string;
-  // description?: string;
 }

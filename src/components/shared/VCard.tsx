@@ -52,6 +52,7 @@ const VCard: React.FC<VCardProps> = ({
 
           {account && (
             <Text fontSize="xs" opacity={0.5} title={account} isTruncated>
+              {/* //TODO: Click to copy + icon */}
               {shortenAddress(account, 3)}
             </Text>
           )}

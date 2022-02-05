@@ -1,9 +1,8 @@
 import { createContext } from "react";
-import { IChat, IMember } from "types/chat";
+import { IChat } from "types/chat";
 
 export interface ChatContextValue {
   chat: IChat;
-  members: IMember[];
   isLoaded: boolean;
 }
 

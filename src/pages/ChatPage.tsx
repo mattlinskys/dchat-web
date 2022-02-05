@@ -10,11 +10,10 @@ import { HOME_PATH } from "constants/routes";
 import { Box, Spinner, useToast, Text, HStack } from "@chakra-ui/react";
 import ChatContext from "contexts/ChatContext";
 import ms from "ms";
-import useChatMembers from "hooks/useChatMembers";
 import MessagesProvider from "providers/MessagesProvider";
+import MembersProvider from "providers/MembersProvider";
 import Chat from "components/chat/Chat";
 import ChatMetaTitle from "components/chat/ChatMetaTitle";
-import MembersProvider from "providers/MembersProvider";
 
 const ChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -24,7 +23,6 @@ const ChatPage: React.FC = () => {
   };
   const toast = useToast();
   const { chat, isLoaded } = useChat(id!);
-  const members = useChatMembers(chat?.address);
 
   useEffect(() => {
     if (!chat && isLoaded) {
@@ -65,7 +63,6 @@ const ChatPage: React.FC = () => {
         ? {
             chat,
             isLoaded,
-            members,
           }
         : undefined,
     [chat, isLoaded]

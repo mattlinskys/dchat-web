@@ -1,13 +1,20 @@
 import React, { useContext } from "react";
-import ChatContext from "contexts/ChatContext";
+import MembersContext from "contexts/MembersContext";
 import { FormattedMessage } from "react-intl";
 import Dialog, { DialogProps } from "components/shared/Dialog";
 import MembersList from "components/chat/MembersList/MembersList";
+import ActionsFooter from "components/shared/ActionsFooter";
+import { Button } from "@chakra-ui/react";
 
-interface MembersListDialogProps extends Omit<DialogProps, "title"> {}
+interface MembersListDialogProps extends Omit<DialogProps, "title"> {
+  onAddMemberOpen: () => void;
+}
 
-const MembersListDialog: React.FC<MembersListDialogProps> = (props) => {
-  const { members } = useContext(ChatContext);
+const MembersListDialog: React.FC<MembersListDialogProps> = ({
+  onAddMemberOpen,
+  ...props
+}) => {
+  const { members } = useContext(MembersContext);
 
   return (
     <Dialog
@@ -21,6 +28,12 @@ const MembersListDialog: React.FC<MembersListDialogProps> = (props) => {
       {...props}
     >
       <MembersList />
+
+      <ActionsFooter>
+        <Button onClick={() => onAddMemberOpen()} size="sm">
+          <FormattedMessage id="members.add.title" ignoreTag />
+        </Button>
+      </ActionsFooter>
     </Dialog>
   );
 };

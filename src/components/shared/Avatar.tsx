@@ -86,6 +86,7 @@ const Avatar: React.FC<AvatarProps> = ({ address, size, ...rest }) => {
       bg="white"
       position="relative"
       overflow="hidden"
+      flexShrink="0"
       {...rest}
     >
       <Box w="full" h="full" backgroundColor={color} opacity="0.4" />

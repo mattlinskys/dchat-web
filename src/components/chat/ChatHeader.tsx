@@ -36,7 +36,8 @@ const ChatHeader: React.FC = () => {
       minH="50px"
     >
       <HStack spacing="1">
-        <ChatMemberAvatars />
+        <ChatMemberAvatars onAddMemberOpen={() => onAddMemberOpen()} />
+
         {ownerAccount === account && (
           <>
             <Tooltip

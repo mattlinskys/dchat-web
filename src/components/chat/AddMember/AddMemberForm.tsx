@@ -12,7 +12,7 @@ import { useContractFunction } from "@usedapp/core";
 import useChatContract from "hooks/useChatContract";
 import useContractFunctionSuccessToast from "hooks/useContractFunctionSuccessToast";
 import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
-import ChatContext from "contexts/ChatContext";
+import MembersContext from "contexts/MembersContext";
 
 interface AddMemberFormValues {
   address: string;
@@ -24,7 +24,7 @@ export interface AddMemberFormProps {
 
 const AddMemberForm: React.FC<AddMemberFormProps> = ({ onClose }) => {
   const { formatMessage } = useIntl();
-  const { members } = useContext(ChatContext);
+  const { members } = useContext(MembersContext);
   const contract = useChatContract();
   const { send, state } = useContractFunction(contract, "addMember");
   useContractFunctionSuccessToast(

@@ -1,18 +1,20 @@
 import React, { useContext } from "react";
 import { Stack, Center, Text, useDisclosure, Tooltip } from "@chakra-ui/react";
 import Avatar from "components/shared/Avatar";
-import ChatContext from "contexts/ChatContext";
 import { FormattedMessage } from "react-intl";
 import MembersListDialog from "components/chat/MembersList/MembersListDialog";
+import MembersContext from "contexts/MembersContext";
 
 interface ChatMemberAvatarsProps {
   maxItems?: number;
+  onAddMemberOpen: () => void;
 }
 
 const ChatMemberAvatars: React.FC<ChatMemberAvatarsProps> = ({
   maxItems = 3,
+  onAddMemberOpen,
 }) => {
-  const { members } = useContext(ChatContext);
+  const { members } = useContext(MembersContext);
   const {
     isOpen: isMembersListOpen,
     onOpen: onMembersListOpen,
@@ -65,6 +67,7 @@ const ChatMemberAvatars: React.FC<ChatMemberAvatarsProps> = ({
       <MembersListDialog
         isOpen={isMembersListOpen}
         onClose={onMembersListClose}
+        onAddMemberOpen={onAddMemberOpen}
       />
     </>
   );

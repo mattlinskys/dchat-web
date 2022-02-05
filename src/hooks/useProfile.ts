@@ -1,15 +1,17 @@
 import { useMemo } from "react";
+import useFactoryAddress from "hooks/useFactoryAddress";
 import { factoryAbi, profileAbi } from "app/abis";
 import { constants, utils } from "ethers";
 import { useContractCall, useContractCalls } from "@usedapp/core";
 import { IProfile } from "types/profile";
 
 const useProfile = (account?: string) => {
+  const factoryAddress = useFactoryAddress();
   const [address] =
     useContractCall(
       account && {
         abi: factoryAbi,
-        address: process.env.REACT_APP_FACTORY_ADDRESS,
+        address: factoryAddress,
         method: "profiles",
         args: [account],
       }

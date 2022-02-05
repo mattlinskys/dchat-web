@@ -1,11 +1,7 @@
-import { useMemo } from "react";
-import { Contract } from "ethers";
+import useContract from "hooks/useContract";
+import useFactoryAddress from "hooks/useFactoryAddress";
 import { factoryAbi } from "app/abis";
 
-const useFactoryContract = () =>
-  useMemo(
-    () => new Contract(process.env.REACT_APP_FACTORY_ADDRESS, factoryAbi),
-    []
-  );
+const useFactoryContract = () => useContract(factoryAbi, useFactoryAddress());
 
 export default useFactoryContract;
