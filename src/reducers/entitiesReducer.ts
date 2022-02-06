@@ -18,6 +18,10 @@ type Action<ID, T> =
   | {
       type: "remove-one";
       id: ID;
+    }
+  | {
+      type: "upsert-one";
+      entity: T;
     };
 
 export const createEntitiesReducer =
@@ -62,6 +66,26 @@ export const createEntitiesReducer =
             (entity) => !compareIds(entity[id], action.id)
           ),
         };
+      case "upsert-one":
+        const entityIndex = state.entities.findIndex((entity) =>
+          compareIds(entity[id], action.entity[id])
+        );
+        if (entityIndex !== -1) {
+          const entities = [...state.entities];
+          entities[entityIndex] = {
+            ...entities[entityIndex],
+            ...action.entity,
+          };
+          return {
+            ...state,
+            entities,
+          };
+        } else {
+          return {
+            ...state,
+            entities: [...state.entities, action.entity],
+          };
+        }
       default:
         return state;
     }

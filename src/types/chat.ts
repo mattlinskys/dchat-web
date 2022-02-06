@@ -21,7 +21,12 @@ export interface IChatEntry {
 }
 
 export interface IChatEntryMessage extends IChatEntry {
-  type: "msg";
+  type: "message";
+  item: IMessage;
+}
+
+export interface IChatEntryPendingMessage extends IChatEntry {
+  type: "pending-message";
   item: IMessage;
 }
 
@@ -37,5 +42,6 @@ export interface IChatEntryMemberRemoved extends IChatEntry {
 
 export type TChatEntry =
   | IChatEntryMessage
+  | IChatEntryPendingMessage
   | IChatEntryMemberAdded
   | IChatEntryMemberRemoved;

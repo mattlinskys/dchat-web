@@ -36,7 +36,7 @@ const MessagesProvider: React.FC<MessagesProviderProps> = ({
     }
   );
   const messageEntriesCount = useMemo(
-    () => chatEntries.filter((entry) => entry.type === "msg").length,
+    () => chatEntries.filter((entry) => entry.type === "message").length,
     [chatEntries]
   );
   const chatContract = useConnectedContract(chatAbi, address);
@@ -66,7 +66,7 @@ const MessagesProvider: React.FC<MessagesProviderProps> = ({
         type: "fetch-fulfilled",
         entities: results.map(rawResultToMessage).map((msg) => ({
           id: msg.id.toString(),
-          type: "msg",
+          type: "message",
           item: msg,
           createdAt: msg.sentAt,
         })),
@@ -86,10 +86,10 @@ const MessagesProvider: React.FC<MessagesProviderProps> = ({
     const result = await chatContract!.functions.messages(id);
     const message = rawResultToMessage(result);
     dispatch({
-      type: "add-one",
+      type: "upsert-one",
       entity: {
         id: message.id.toString(),
-        type: "msg",
+        type: "message",
         item: message,
         createdAt: message.sentAt,
       },
@@ -132,13 +132,31 @@ const MessagesProvider: React.FC<MessagesProviderProps> = ({
     }
   );
 
+  const addPendingMessage = useCallback((id: BigNumber, sender: string) => {
+    const message = {
+      id,
+      sender,
+      sentAt: new Date(),
+    };
+    dispatch({
+      type: "add-one",
+      entity: {
+        id: message.id.toString(),
+        type: "pending-message",
+        item: message,
+        createdAt: message.sentAt,
+      },
+    });
+  }, []);
+
   const value = useMemo(
     () => ({
       chatEntries,
       isFetching,
       fetchNextMessages: fetchMessages,
+      addPendingMessage,
     }),
-    [chatEntries, isFetching]
+    [chatEntries, isFetching, fetchMessages, addPendingMessage]
   );
 
   return (

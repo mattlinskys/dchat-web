@@ -14,10 +14,12 @@ import useConnectedContract from "hooks/useConnectedContract";
 
 export interface EncryptedMessageContentProps {
   messageId: BigNumber;
+  isPending?: boolean;
 }
 
 const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
   messageId,
+  isPending,
 }) => {
   const toast = useToast();
   const { account, connector } = useEthers();
@@ -113,7 +115,7 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
         >
           <InteractiveContent content={content} />
         </ShowMoreText>
-      ) : data ? (
+      ) : data && !isPending ? (
         data === "0x" ? (
           <Text as="i">
             <FormattedMessage id="message.missingData" ignoreTag />

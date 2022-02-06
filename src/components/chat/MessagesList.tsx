@@ -57,8 +57,11 @@ const MessagesList: React.FC = () => {
             getItemKey={(entry) => entry.id.toString()}
             getItemDate={(entry) => entry.createdAt}
             renderItem={(entry) =>
-              entry.type === "msg" ? (
-                <Message message={entry.item} />
+              entry.type === "message" || entry.type === "pending-message" ? (
+                <Message
+                  message={entry.item}
+                  isPending={entry.type === "pending-message"}
+                />
               ) : entry.type === "member-added" ||
                 entry.type === "member-removed" ? (
                 <ChatMemberNotification

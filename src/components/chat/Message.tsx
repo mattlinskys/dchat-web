@@ -8,10 +8,12 @@ import { useEthers } from "@usedapp/core";
 
 export interface MessageProps {
   message: IMessage;
+  isPending?: boolean;
 }
 
 const Message: React.FC<MessageProps> = ({
   message: { id, sender: senderAccount, sentAt },
+  isPending,
 }) => {
   const { account } = useEthers();
   const { profile: sender } = useProfile(senderAccount);
@@ -39,7 +41,7 @@ const Message: React.FC<MessageProps> = ({
         }
       />
       <Box pl="10" mt="2">
-        <EncryptedMessageContent messageId={id} />
+        <EncryptedMessageContent messageId={id} isPending={isPending} />
       </Box>
     </Box>
   );

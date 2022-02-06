@@ -1,4 +1,10 @@
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import {
   Box,
   Button,
@@ -28,6 +34,7 @@ import EmojiPicker from "components/shared/EmojiPicker";
 import { FormattedMessage, useIntl } from "react-intl";
 import ExpandUpIcon from "components/icons/ExpandUpIcon";
 import PlainIconButton from "components/shared/PlainIconButton";
+import MessagesContext from "contexts/MessagesContext";
 
 const SendMsgForm: React.FC = () => {
   const toast = useToast();
@@ -39,6 +46,7 @@ const SendMsgForm: React.FC = () => {
     onOpen: onOpenEmoji,
     onClose: onCloseEmoji,
   } = useDisclosure();
+  const { addPendingMessage } = useContext(MessagesContext);
   const { members } = useContext(MembersContext);
   const { account } = useEthers();
   const isUserMember = useMemo(
@@ -46,12 +54,14 @@ const SendMsgForm: React.FC = () => {
     [members, account]
   );
   const chatContract = useChatContract();
-  const { state, send } = useContractFunction(chatContract, "sendCipherMsg");
+  const { send, state, events } = useContractFunction(
+    chatContract,
+    "sendCipherMsg"
+  );
   useContractFunctionErrorToast(state);
-  const isDisabled =
-    !isUserMember ||
-    state.status === "PendingSignature" ||
-    state.status === "Mining";
+  const isLoading =
+    state.status === "PendingSignature" || state.status === "Mining";
+  const isDisabled = !isUserMember || isLoading;
 
   const handleSend = useCallback(async () => {
     const formattedValue = value.trim();
@@ -85,6 +95,14 @@ const SendMsgForm: React.FC = () => {
       });
     }
   }, [value, members, send]);
+
+  useEffect(() => {
+    const [event] = events ?? [];
+    if (state.status === "Success" && event) {
+      const { id, sender } = event.args;
+      addPendingMessage(id, sender);
+    }
+  }, [events]);
 
   return (
     <VStack w="full" spacing="1">
@@ -142,7 +160,8 @@ const SendMsgForm: React.FC = () => {
 
         {isExpanded ? (
           <Button
-            isLoading={isDisabled}
+            isLoading={isLoading}
+            isDisabled={isDisabled}
             onClick={() => handleSend()}
             leftIcon={<Icon as={EnterIcon} />}
             size="sm"
@@ -173,7 +192,8 @@ const SendMsgForm: React.FC = () => {
                 color="gray.300"
                 h="6"
                 icon={<Icon w="4.5" h="auto" as={EnterIcon} />}
-                isLoading={isDisabled}
+                isLoading={isLoading}
+                isDisabled={isDisabled}
                 onClick={() => handleSend()}
               />
             </InputRightElement>
