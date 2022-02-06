@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import {
+  Button,
   HStack,
   Icon,
   IconButton,
@@ -9,8 +10,10 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
+  Textarea,
   useDisclosure,
   useToast,
+  VStack,
 } from "@chakra-ui/react";
 import { useContractFunction, useEthers } from "@usedapp/core";
 import { encrypt } from "utils/cryptoUtils";
@@ -21,11 +24,17 @@ import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 import EmojiIcon from "components/icons/EmojiIcon";
 import EnterIcon from "components/icons/EnterIcon";
 import EmojiPicker from "components/shared/EmojiPicker";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const SendMsgForm: React.FC = () => {
   const toast = useToast();
+  const { formatMessage } = useIntl();
   const [value, setValue] = useState("");
-  // const [isExpanded, setExpanded] = useState(false);
+  const {
+    isOpen: isExpanded,
+    onOpen: onExpand,
+    onClose: onShrink,
+  } = useDisclosure();
   const {
     isOpen: isEmojiOpen,
     onOpen: onOpenEmoji,
@@ -40,6 +49,10 @@ const SendMsgForm: React.FC = () => {
   const chatContract = useChatContract();
   const { state, send } = useContractFunction(chatContract, "sendCipherMsg");
   useContractFunctionErrorToast(state);
+  const isDisabled =
+    !isUserMember ||
+    state.status === "PendingSignature" ||
+    state.status === "Mining";
 
   const handleSend = useCallback(async () => {
     const formattedValue = value.trim();
@@ -75,63 +88,88 @@ const SendMsgForm: React.FC = () => {
   }, [value, members, send]);
 
   return (
-    <HStack w="full" spacing="2">
-      <Popover
-        isOpen={isEmojiOpen}
-        onOpen={onOpenEmoji}
-        onClose={onCloseEmoji}
-        closeOnBlur
-        closeOnEsc
-        returnFocusOnClose
-        placement="top"
-        isLazy
-      >
-        <PopoverTrigger>
-          <IconButton
-            aria-label="Emoji"
-            variant="ghost"
-            minW="6"
-            color="gray.300"
-            h="6"
-            icon={<Icon w="6" h="auto" as={EmojiIcon} />}
-          />
-        </PopoverTrigger>
-        <PopoverContent w="auto">
-          <EmojiPicker onEmojiSelect={({ emoji }) => setValue(value + emoji)} />
-        </PopoverContent>
-      </Popover>
-
-      <InputGroup>
-        <Input
-          placeholder="Type message..."
+    <VStack w="full" spacing="2">
+      {isExpanded && (
+        <Textarea
+          placeholder={formatMessage({ id: "common.typeMessage" })}
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          onKeyUp={(e) => {
-            if (e.key === "Enter") {
-              handleSend();
-            }
-          }}
-          rounded="full"
-          h="9"
-          isDisabled={
-            !isUserMember ||
-            state.status === "PendingSignature" ||
-            state.status === "Mining"
-          }
+          rounded="xl"
+          isDisabled={isDisabled}
+          resize="none"
         />
-        <InputRightElement h="9">
-          <IconButton
-            aria-label="Emoji"
-            variant="ghost"
-            minW="6"
-            color="gray.300"
-            h="6"
-            icon={<Icon w="4.5" h="auto" as={EnterIcon} />}
+      )}
+
+      <HStack w="full" justifyContent="space-between" spacing="2">
+        <Popover
+          isOpen={isEmojiOpen}
+          onOpen={onOpenEmoji}
+          onClose={onCloseEmoji}
+          closeOnBlur
+          closeOnEsc
+          returnFocusOnClose
+          placement="top"
+          isLazy
+        >
+          <PopoverTrigger>
+            <IconButton
+              aria-label="Emoji"
+              variant="ghost"
+              minW="6"
+              color="gray.300"
+              h="6"
+              icon={<Icon w="6" h="auto" as={EmojiIcon} />}
+              isDisabled={isDisabled}
+            />
+          </PopoverTrigger>
+          <PopoverContent w="auto">
+            <EmojiPicker
+              onEmojiSelect={({ emoji }) => setValue(value + emoji)}
+            />
+          </PopoverContent>
+        </Popover>
+
+        {isExpanded ? (
+          <Button
+            isLoading={isDisabled}
             onClick={() => handleSend()}
-          />
-        </InputRightElement>
-      </InputGroup>
-    </HStack>
+            leftIcon={<Icon as={EnterIcon} />}
+            size="sm"
+            variant="ghost"
+          >
+            <FormattedMessage id="common.send" ignoreTag />
+          </Button>
+        ) : (
+          <InputGroup>
+            <Input
+              placeholder={formatMessage({ id: "common.typeMessage" })}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              onKeyUp={(e) => {
+                if (e.key === "Enter") {
+                  handleSend();
+                }
+              }}
+              rounded="full"
+              h="9"
+              isDisabled={isDisabled}
+            />
+            <InputRightElement h="9">
+              <IconButton
+                aria-label="Send"
+                variant="ghost"
+                minW="6"
+                color="gray.300"
+                h="6"
+                icon={<Icon w="4.5" h="auto" as={EnterIcon} />}
+                isLoading={isDisabled}
+                onClick={() => handleSend()}
+              />
+            </InputRightElement>
+          </InputGroup>
+        )}
+      </HStack>
+    </VStack>
   );
 };
 

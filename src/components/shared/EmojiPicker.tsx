@@ -13,9 +13,6 @@ const EmojiPicker: React.FC<EmojiPickerProps> = ({ onEmojiSelect }) => (
     disableSearchBar
     disableSkinTonePicker
     native
-    pickerStyle={{
-      boxShadow: "none",
-    }}
   />
 );
 

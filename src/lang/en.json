@@ -11,6 +11,7 @@
   "common.edit": "Edit",
   "common.save": "Save",
   "common.add": "Add",
+  "common.send": "Send",
   "common.create": "Create",
   "common.remove": "Remove",
   "common.disconnect": "Disconnect",
@@ -21,6 +22,7 @@
   "common.noProfile": "No profile",
   "common.today": "Today",
   "common.yesterday": "Yesterday",
+  "common.typeMessage": "Type message...",
 
   "validation:required": "Required field",
   "validation:invalid": "Invalid field",

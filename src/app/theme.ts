@@ -34,6 +34,24 @@ const theme = extendTheme(
             textDecoration: "underline",
           },
         },
+        "aside.emoji-picker-react": {
+          boxShadow: "none",
+          bg: "gray.600",
+          borderColor: "gray.500",
+        },
+        ".emoji-picker-react .emoji-group:before": {
+          bg: "gray.600",
+        },
+        ".emoji-picker-react .emoji button": {
+          color: "gray.500",
+        },
+        ".emoji-picker-react .emoji-categories button": {
+          filter: "invert(1)",
+        },
+        ".emoji-picker-react .active-category-indicator-wrapper .active-category-indicator":
+          {
+            bg: "brand.500",
+          },
       },
     },
     components: {
