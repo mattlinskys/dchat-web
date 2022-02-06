@@ -30,11 +30,13 @@
 
   "erros.default": "Something went wrong, please try again",
 
+  "chat.title": "Chat #{id}",
+  "chat.notification.member-joined": "joined the chat",
+  "chat.notification.member-removed": "left the chat",
+
   "message.missingData": "Missing encrypted data",
   "message.encrypted": "Message encrypted",
 
-  "chat.notification.member-joined": "joined the chat",
-  "chat.notification.member-removed": "left the chat",
 
   "members.list.title": "Members ({count})",
   "members.list.remove.success": "Member removed successfully, you'll see changes in the next block",

@@ -1,5 +1,37 @@
 import { extendTheme, withDefaultColorScheme } from "@chakra-ui/react";
 
+const Input = {
+  baseStyle: {
+    field: {
+      _placeholder: { color: "gray.200" },
+    },
+  },
+  variants: {
+    filled: {
+      field: {
+        bg: "#5D5B5B",
+        _hover: {
+          bg: "#5D5B5B",
+        },
+        _focus: {
+          bg: "#5D5B5B",
+        },
+      },
+    },
+  },
+  sizes: {
+    md: {
+      field: {
+        px: 3,
+      },
+    },
+  },
+  defaultProps: {
+    variant: "filled",
+    focusBorderColor: "brand.500",
+  },
+};
+
 const theme = extendTheme(
   {
     config: {
@@ -67,36 +99,13 @@ const theme = extendTheme(
           },
         },
       },
-      Input: {
-        baseStyle: {
-          field: {
-            _placeholder: { color: "gray.200" },
-          },
-        },
+      Input,
+      Textarea: {
+        baseStyle: Input.baseStyle.field,
         variants: {
-          filled: {
-            field: {
-              bg: "#5D5B5B",
-              _hover: {
-                bg: "#5D5B5B",
-              },
-              _focus: {
-                bg: "#5D5B5B",
-              },
-            },
-          },
+          filled: Input.variants.filled.field,
         },
-        sizes: {
-          md: {
-            field: {
-              px: 3,
-            },
-          },
-        },
-        defaultProps: {
-          variant: "filled",
-          focusBorderColor: "brand.500",
-        },
+        defaultProps: Input.defaultProps,
       },
       Button: {
         variants: {

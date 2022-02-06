@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import {
+  Box,
   Button,
   HStack,
   Icon,
@@ -25,16 +26,14 @@ import EmojiIcon from "components/icons/EmojiIcon";
 import EnterIcon from "components/icons/EnterIcon";
 import EmojiPicker from "components/shared/EmojiPicker";
 import { FormattedMessage, useIntl } from "react-intl";
+import ExpandUpIcon from "components/icons/ExpandUpIcon";
+import PlainIconButton from "components/shared/PlainIconButton";
 
 const SendMsgForm: React.FC = () => {
   const toast = useToast();
   const { formatMessage } = useIntl();
   const [value, setValue] = useState("");
-  const {
-    isOpen: isExpanded,
-    onOpen: onExpand,
-    onClose: onShrink,
-  } = useDisclosure();
+  const [isExpanded, setExpanded] = useState(false);
   const {
     isOpen: isEmojiOpen,
     onOpen: onOpenEmoji,
@@ -88,7 +87,19 @@ const SendMsgForm: React.FC = () => {
   }, [value, members, send]);
 
   return (
-    <VStack w="full" spacing="2">
+    <VStack w="full" spacing="1">
+      <Box lineHeight="0" mt="-1">
+        <PlainIconButton onClick={() => setExpanded(!isExpanded)}>
+          <Icon
+            as={ExpandUpIcon}
+            w="auto"
+            h="auto"
+            transform="auto-gpu"
+            rotate={isExpanded ? "180deg" : undefined}
+          />
+        </PlainIconButton>
+      </Box>
+
       {isExpanded && (
         <Textarea
           placeholder={formatMessage({ id: "common.typeMessage" })}
