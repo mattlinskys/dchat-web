@@ -11,7 +11,7 @@ const InteractiveContent: React.FC<InteractiveContentProps> = ({ content }) => {
   const activeChain = useActiveChain();
   const children = useMemo(() => {
     const regex =
-      /(?<link>(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])|(?:@(?<name>[A-Z0-9-_]+))|(?::(?<iconKey>[a-z-]+):)|(?<address>0x[0-9A-F]{40})/gi;
+      /(?<link>(https?|ftp|file):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])|(?:@(?<name>[A-Z0-9-_]+))|(?<address>0x[0-9A-F]{40})/gi;
     let match = regex.exec(content);
 
     if (!match) {
@@ -23,7 +23,7 @@ const InteractiveContent: React.FC<InteractiveContentProps> = ({ content }) => {
     while (match) {
       parts.push(content.slice(lastIndex, match.index));
       lastIndex = match.index;
-      const { link, name, iconKey, address } = match.groups || {};
+      const { link, name, address } = match.groups || {};
 
       if (link) {
         try {
@@ -50,9 +50,6 @@ const InteractiveContent: React.FC<InteractiveContentProps> = ({ content }) => {
             {shortenAddress(address)}
           </Link>
         );
-      } else if (iconKey) {
-        // TODO: Icon
-        parts.push(<>{iconKey}</>);
       } else if (name) {
         parts.push(
           <>

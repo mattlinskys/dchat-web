@@ -7,29 +7,49 @@ import React, {
 } from "react";
 import MessagesContext from "contexts/MessagesContext";
 import ChatContext from "contexts/ChatContext";
-import { IMessage } from "types/message";
 import useConnectedContract from "hooks/useConnectedContract";
 import { chatAbi } from "app/abis";
 import useContractEvents from "hooks/useContractEvents";
 import { BigNumber } from "ethers";
 import { rawResultToMessage } from "utils/abiUtils";
 import { createEntitiesReducer } from "reducers/entitiesReducer";
+import { TChatEntry } from "types/chat";
 
-const reducer = createEntitiesReducer<IMessage, "id">("id", (a, b) => a.eq(b));
+interface MessagesProviderProps {
+  fetchTake?: number;
+}
 
-const MessagesProvider: React.FC = ({ children }) => {
+const reducer = createEntitiesReducer<TChatEntry, "id">("id");
+
+const MessagesProvider: React.FC<MessagesProviderProps> = ({
+  fetchTake = 10,
+  children,
+}) => {
   const {
     chat: { address, messagesCount },
   } = useContext(ChatContext);
-  const [{ entities: messages, isFetching }, dispatch] = useReducer(reducer, {
-    entities: [],
-    isFetching: !messagesCount.isZero(),
-  });
+  const [{ entities: chatEntries, isFetching }, dispatch] = useReducer(
+    reducer,
+    {
+      entities: [],
+      isFetching: !messagesCount.isZero(),
+    }
+  );
+  const messageEntriesCount = useMemo(
+    () => chatEntries.filter((entry) => entry.type === "msg").length,
+    [chatEntries]
+  );
   const chatContract = useConnectedContract(chatAbi, address);
 
   const fetchMessages = useCallback(async () => {
-    const take = Math.min(messagesCount.toNumber() - messages.length, 5);
-    const skip = Math.max(messagesCount.toNumber() - messages.length - take, 0);
+    const take = Math.min(
+      messagesCount.toNumber() - messageEntriesCount,
+      fetchTake
+    );
+    const skip = Math.max(
+      messagesCount.toNumber() - messageEntriesCount - take,
+      0
+    );
     if (take <= 0) {
       return;
     }
@@ -41,13 +61,20 @@ const MessagesProvider: React.FC = ({ children }) => {
         skip,
         take
       )) as [any[]];
-      const entities = results.map(rawResultToMessage);
 
-      dispatch({ type: "fetch-fulfilled", entities });
+      dispatch({
+        type: "fetch-fulfilled",
+        entities: results.map(rawResultToMessage).map((msg) => ({
+          id: msg.id.toString(),
+          type: "msg",
+          item: msg,
+          createdAt: msg.sentAt,
+        })),
+      });
     } catch (err) {
       // TODO: fetch-rejected action
     }
-  }, [messages.length, messagesCount, chatContract]);
+  }, [fetchTake, messageEntriesCount, messagesCount, chatContract]);
 
   useEffect(() => {
     if (!messagesCount.isZero() && chatContract) {
@@ -57,23 +84,61 @@ const MessagesProvider: React.FC = ({ children }) => {
 
   useContractEvents(chatContract, "MsgSent", async (id: BigNumber) => {
     const result = await chatContract!.functions.messages(id);
+    const message = rawResultToMessage(result);
     dispatch({
       type: "add-one",
-      entity: rawResultToMessage(result),
+      entity: {
+        id: message.id.toString(),
+        type: "msg",
+        item: message,
+        createdAt: message.sentAt,
+      },
     });
   });
 
   useContractEvents(chatContract, "MsgRemoved", (id: BigNumber) => {
-    dispatch({ type: "remove-one", id });
+    dispatch({ type: "remove-one", id: id.toString() });
   });
+
+  useContractEvents(
+    chatContract,
+    "MemberAdded",
+    (account: string, { transactionHash }) => {
+      dispatch({
+        type: "add-one",
+        entity: {
+          id: transactionHash + account,
+          type: "member-added",
+          item: { account },
+          createdAt: new Date(),
+        },
+      });
+    }
+  );
+
+  useContractEvents(
+    chatContract,
+    "MemberRemoved",
+    (account: string, { transactionHash }) => {
+      dispatch({
+        type: "add-one",
+        entity: {
+          id: transactionHash + account,
+          type: "member-removed",
+          item: { account },
+          createdAt: new Date(),
+        },
+      });
+    }
+  );
 
   const value = useMemo(
     () => ({
-      messages,
+      chatEntries,
       isFetching,
       fetchNextMessages: fetchMessages,
     }),
-    [messages, isFetching]
+    [chatEntries, isFetching]
   );
 
   return (

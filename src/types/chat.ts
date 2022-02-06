@@ -15,28 +15,27 @@ export interface IMember {
   profile?: IProfile;
 }
 
-export interface IChatMessageEntry {
+export interface IChatEntry {
+  id: string;
+  createdAt: Date;
+}
+
+export interface IChatEntryMessage extends IChatEntry {
   type: "msg";
-  entity: IMessage;
+  item: IMessage;
 }
 
-export interface IChatMemberAddedEntry {
+export interface IChatEntryMemberAdded extends IChatEntry {
   type: "member-added";
-  entity: {
-    member: IMember;
-    addedAt: Date;
-  };
+  item: IMember;
 }
 
-export interface IChatMemberRemovedEntry {
+export interface IChatEntryMemberRemoved extends IChatEntry {
   type: "member-removed";
-  entity: {
-    member: IMember;
-    removedAt: Date;
-  };
+  item: IMember;
 }
 
 export type TChatEntry =
-  | IChatMessageEntry
-  | IChatMemberAddedEntry
-  | IChatMemberRemovedEntry;
+  | IChatEntryMessage
+  | IChatEntryMemberAdded
+  | IChatEntryMemberRemoved;

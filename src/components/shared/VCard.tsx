@@ -19,6 +19,7 @@ export interface VCardProps {
   avatarSize: BoxProps["w"];
   isMe?: boolean;
   details?: React.ReactNode;
+  isAddressShorten?: boolean;
 }
 
 const VCard: React.FC<VCardProps> = ({
@@ -28,8 +29,9 @@ const VCard: React.FC<VCardProps> = ({
   avatarSize,
   isMe,
   details,
+  isAddressShorten = true,
 }) => (
-  <HStack spacing="2" maxW="48">
+  <HStack spacing="2" overflow="hidden">
     {user || account ? (
       <>
         <Avatar address={account} size={avatarSize} />
@@ -53,7 +55,7 @@ const VCard: React.FC<VCardProps> = ({
           {account && (
             <Text fontSize="xs" opacity={0.5} title={account} isTruncated>
               {/* //TODO: Click to copy + icon */}
-              {shortenAddress(account, 3)}
+              {isAddressShorten ? shortenAddress(account, 3) : account}
             </Text>
           )}
         </Box>

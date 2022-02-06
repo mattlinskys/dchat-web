@@ -1,8 +1,8 @@
 import { createContext } from "react";
-import { IMessage } from "types/message";
+import { TChatEntry } from "types/chat";
 
 export interface MessagesContextValue {
-  messages: IMessage[];
+  chatEntries: TChatEntry[];
   isFetching: boolean;
   fetchNextMessages: () => void;
 }

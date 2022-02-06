@@ -47,6 +47,7 @@ const MembersListItem: React.FC<MembersListItemProps> = ({
         isLoaded
         isMe={member.account === account}
         avatarSize="8"
+        isAddressShorten={false}
       />
 
       {canRemove && (
@@ -58,6 +59,7 @@ const MembersListItem: React.FC<MembersListItemProps> = ({
             aria-label="Remove"
             variant="ghost"
             minW="6"
+            ml="4"
             h="6"
             icon={<Icon as={TrashIcon} />}
             isLoading={isLoading}

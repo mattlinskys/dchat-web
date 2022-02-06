@@ -33,11 +33,14 @@
   "message.missingData": "Missing encrypted data",
   "message.encrypted": "Message encrypted",
 
+  "chat.notification.member-joined": "joined the chat",
+  "chat.notification.member-removed": "left the chat",
+
   "members.list.title": "Members ({count})",
-  "members.list.remove.success": "Member removed successfully",
+  "members.list.remove.success": "Member removed successfully, you'll see changes in the next block",
 
   "members.add.title": "Add member",
-  "members.add.success": "Member added successfully",
+  "members.add.success": "Member added successfully, you'll see changes in the next block",
 
   "profile.title": "Profile",
   "profile.setup.title": "Setup profile",

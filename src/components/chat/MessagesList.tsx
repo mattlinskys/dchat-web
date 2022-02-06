@@ -5,11 +5,12 @@ import EmptyChat from "components/assets/EmptyChat";
 import { FormattedMessage } from "react-intl";
 import MessagesContext from "contexts/MessagesContext";
 import DateBreaker from "components/shared/DateBreaker";
-import { IMessage } from "types/message";
 import ChatIndent from "components/chat/ChatIndent";
+import { TChatEntry } from "types/chat";
+import ChatMemberNotification from "components/chat/ChatMemberNotification";
 
 const MessagesList: React.FC = () => {
-  const { messages, isFetching, fetchNextMessages } =
+  const { chatEntries, isFetching, fetchNextMessages } =
     useContext(MessagesContext);
 
   const handleScroll = useCallback(
@@ -34,10 +35,10 @@ const MessagesList: React.FC = () => {
       overflowY="auto"
       align="center"
       spacing="2"
-      py="3"
+      py="4"
       onScroll={handleScroll}
     >
-      {messages.length === 0 && !isFetching ? (
+      {chatEntries.length === 0 && !isFetching ? (
         <VStack mb="8" w="full" spacing="3">
           <EmptyChat />
           <Text
@@ -51,11 +52,30 @@ const MessagesList: React.FC = () => {
         </VStack>
       ) : (
         <VStack w="full" spacing="2">
-          <DateBreaker<IMessage>
-            items={messages}
-            getItemKey={(msg) => msg.id.toString()}
-            getItemDate={(msg) => msg.sentAt}
-            renderItem={(msg) => <Message message={msg} />}
+          <DateBreaker<TChatEntry>
+            items={chatEntries}
+            getItemKey={(entry) => entry.id.toString()}
+            getItemDate={(entry) => entry.createdAt}
+            renderItem={(entry) =>
+              entry.type === "msg" ? (
+                <Message message={entry.item} />
+              ) : entry.type === "member-added" ||
+                entry.type === "member-removed" ? (
+                <ChatMemberNotification
+                  account={entry.item.account}
+                  suffix={
+                    <FormattedMessage
+                      id={
+                        entry.type === "member-added"
+                          ? "chat.notification.member-joined"
+                          : "chat.notification.member-removed"
+                      }
+                      ignoreTag
+                    />
+                  }
+                />
+              ) : null
+            }
             renderBreak={(localeDate) => (
               <ChatIndent>
                 {localeDate === new Date().toLocaleDateString() ? (
