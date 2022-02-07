@@ -8,6 +8,7 @@ import React, {
 import {
   Box,
   Button,
+  Center,
   HStack,
   Icon,
   IconButton,
@@ -19,8 +20,6 @@ import {
   PopoverTrigger,
   Textarea,
   useDisclosure,
-  useToast,
-  VStack,
 } from "@chakra-ui/react";
 import { useContractFunction, useEthers } from "@usedapp/core";
 import { encrypt } from "utils/cryptoUtils";
@@ -35,9 +34,10 @@ import { FormattedMessage, useIntl } from "react-intl";
 import ExpandUpIcon from "components/icons/ExpandUpIcon";
 import PlainIconButton from "components/shared/PlainIconButton";
 import MessagesContext from "contexts/MessagesContext";
+import useSnackbar from "hooks/useSnackbar";
 
 const SendMsgForm: React.FC = () => {
-  const toast = useToast();
+  const snackbar = useSnackbar();
   const { formatMessage } = useIntl();
   const [value, setValue] = useState("");
   const [isExpanded, setExpanded] = useState(false);
@@ -87,12 +87,7 @@ const SendMsgForm: React.FC = () => {
       await send(accounts, ciphertexts, 0);
       setValue("");
     } catch (err: any) {
-      toast({
-        title: err.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      snackbar("error", err.message);
     }
   }, [value, members, send]);
 
@@ -105,18 +100,47 @@ const SendMsgForm: React.FC = () => {
   }, [events]);
 
   return (
-    <VStack w="full" spacing="1">
-      <Box lineHeight="0" mt="-1">
-        <PlainIconButton onClick={() => setExpanded(!isExpanded)}>
-          <Icon
-            as={ExpandUpIcon}
-            w="auto"
-            h="auto"
-            transform="auto-gpu"
-            rotate={isExpanded ? "180deg" : undefined}
-          />
-        </PlainIconButton>
-      </Box>
+    <Box
+      w="full"
+      px="3"
+      py="2"
+      borderTop="1px"
+      borderTopColor="gray.400"
+      borderStyle="solid"
+      position="relative"
+    >
+      {isExpanded ? (
+        <Center lineHeight="0" mt="-1" mb="1">
+          <PlainIconButton onClick={() => setExpanded(false)}>
+            <Icon
+              as={ExpandUpIcon}
+              w="auto"
+              h="auto"
+              transform="auto-gpu"
+              rotate="180deg"
+            />
+          </PlainIconButton>
+        </Center>
+      ) : (
+        <Center
+          lineHeight="0"
+          position="absolute"
+          insetX="0"
+          bottom="100%"
+          pt="1"
+          pb="1.5"
+          mb="-0.5"
+          transition="100ms opacity"
+          opacity="0"
+          _hover={{
+            opacity: 1,
+          }}
+        >
+          <PlainIconButton onClick={() => setExpanded(true)}>
+            <Icon as={ExpandUpIcon} w="auto" h="auto" />
+          </PlainIconButton>
+        </Center>
+      )}
 
       {isExpanded && (
         <Textarea
@@ -126,6 +150,7 @@ const SendMsgForm: React.FC = () => {
           rounded="xl"
           isDisabled={isDisabled}
           resize="none"
+          mb="1"
         />
       )}
 
@@ -176,9 +201,7 @@ const SendMsgForm: React.FC = () => {
               value={value}
               onChange={(e) => setValue(e.target.value)}
               onKeyUp={(e) => {
-                if (e.key === "Enter") {
-                  handleSend();
-                }
+                e.key === "Enter" && handleSend();
               }}
               rounded="full"
               h="9"
@@ -200,7 +223,7 @@ const SendMsgForm: React.FC = () => {
           </InputGroup>
         )}
       </HStack>
-    </VStack>
+    </Box>
   );
 };
 

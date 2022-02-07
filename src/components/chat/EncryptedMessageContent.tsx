@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import ChatContext from "contexts/ChatContext";
 import { chatAbi } from "app/abis";
 import { utils, BigNumber } from "ethers";
-import { Box, Button, HStack, Spinner, Text, useToast } from "@chakra-ui/react";
+import { Box, Button, HStack, Spinner, Text } from "@chakra-ui/react";
 import naclUtil from "tweetnacl-util";
 import { EPHEM_PUBLIC_KEY_LENGTH, NONCE_LENGTH } from "constants/crypto";
 import { useEthers } from "@usedapp/core";
@@ -11,6 +11,7 @@ import ClosedLockIcon from "components/icons/ClosedLockIcon";
 import { FormattedMessage } from "react-intl";
 import ShowMoreText from "components/shared/ShowMoreText";
 import useConnectedContract from "hooks/useConnectedContract";
+import useSnackbar from "hooks/useSnackbar";
 
 export interface EncryptedMessageContentProps {
   messageId: BigNumber;
@@ -21,7 +22,7 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
   messageId,
   isPending,
 }) => {
-  const toast = useToast();
+  const snackbar = useSnackbar();
   const { account, connector } = useEthers();
   const { chat } = useContext(ChatContext);
   const chatContract = useConnectedContract(chatAbi, chat.address);
@@ -82,12 +83,7 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
       setContent(decrypted);
     } catch (err: any) {
       // err.code === 4001
-      toast({
-        title: err.message,
-        status: "error",
-        duration: 5000,
-        isClosable: true,
-      });
+      snackbar("error", err.message);
     } finally {
       setDecrypting(false);
     }

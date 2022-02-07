@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Box, VStack, HStack, Heading } from "@chakra-ui/react";
+import { Box, VStack, Heading } from "@chakra-ui/react";
 import { FormattedMessage } from "react-intl";
 import MessagesList from "components/chat/MessagesList";
 import SendMsgForm from "components/chat/SendMsgForm";
@@ -12,24 +12,23 @@ const Chat: React.FC = () => {
   } = useContext(ChatContext);
 
   return (
-    <VStack w="full" spacing="4">
+    <VStack w="full" spacing="4" flexGrow="1" justify="center">
       <Heading fontSize="xl">
         <FormattedMessage id="chat.title" values={{ id }} ignoreTag />
       </Heading>
 
-      <Box maxW="md" w="full" rounded="md" border="1px" borderColor="gray.400">
+      <Box
+        maxW="md"
+        w="full"
+        rounded="md"
+        border="1px"
+        borderColor="gray.400"
+        bg="gray.700"
+      >
         <ChatHeader />
         <MessagesList />
 
-        <HStack
-          px="3"
-          py="2"
-          borderTop="1px"
-          borderTopColor="gray.400"
-          borderStyle="solid"
-        >
-          <SendMsgForm />
-        </HStack>
+        <SendMsgForm />
       </Box>
     </VStack>
   );

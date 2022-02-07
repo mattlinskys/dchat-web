@@ -1,21 +1,16 @@
 import { useEffect } from "react";
-import { useToast } from "@chakra-ui/react";
+import useSnackbar from "hooks/useSnackbar";
 import type { TransactionStatus } from "@usedapp/core";
 
 const useContractFunctionSuccessToast = (
   state: TransactionStatus,
-  title: string
+  message: string
 ) => {
-  const toast = useToast();
+  const snackbar = useSnackbar();
 
   useEffect(() => {
     if (state.status === "Success") {
-      toast({
-        title: title,
-        status: "success",
-        duration: 7500,
-        isClosable: true,
-      });
+      snackbar("success", message);
     }
   }, [state]);
 };

@@ -10,7 +10,7 @@ import useHashDisclosure from "hooks/useHashDisclosure";
 import useFactoryContract from "hooks/useFactoryContract";
 import { utils } from "ethers";
 import naclUtil from "tweetnacl-util";
-import { useToast } from "@chakra-ui/react";
+import useSnackbar from "hooks/useSnackbar";
 
 const SetupProfileDialogProvider: React.FC = () => {
   const { connector, account } = useEthers();
@@ -20,7 +20,7 @@ const SetupProfileDialogProvider: React.FC = () => {
     isLoaded && !profile
   );
   const factoryContract = useFactoryContract();
-  const toast = useToast();
+  const snackbar = useSnackbar();
   const { state, events, send } = useContractFunction(
     factoryContract!,
     "createProfile"
@@ -41,15 +41,10 @@ const SetupProfileDialogProvider: React.FC = () => {
           naclUtil.decodeBase64(publicKey)
         );
       } catch (err: any) {
-        toast({
-          title: err.message,
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
+        snackbar("error", err.message);
       }
     },
-    [connector, send, toast, account]
+    [connector, send, snackbar, account]
   );
 
   useEffect(() => {
