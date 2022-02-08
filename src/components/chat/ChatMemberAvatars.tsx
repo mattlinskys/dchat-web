@@ -23,10 +23,7 @@ const ChatMemberAvatars: React.FC<ChatMemberAvatarsProps> = ({
 
   return (
     <>
-      <Tooltip
-        label={<FormattedMessage id="common.members" ignoreTag />}
-        placement="top"
-      >
+      <Tooltip label={<FormattedMessage id="common.members" />} placement="top">
         <Stack
           direction="row-reverse"
           spacing="-2"

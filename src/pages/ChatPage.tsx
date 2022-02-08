@@ -95,7 +95,7 @@ const ChatPage: React.FC = () => {
       <HStack mt="auto" justify="center" spacing="2" p="4">
         <Link as={RouterLink} to="/">
           <Text as="span" px="2" py="1" color="gray.200">
-            <FormattedMessage id="chat.footer.nav.home" ignoreTag />
+            <FormattedMessage id="chat.footer.nav.home" />
           </Text>
         </Link>
 
@@ -105,7 +105,7 @@ const ChatPage: React.FC = () => {
           target="_blank"
         >
           <Text as="span" px="2" py="1" color="gray.200">
-            <FormattedMessage id="chat.footer.nav.github" ignoreTag />
+            <FormattedMessage id="chat.footer.nav.github" />
           </Text>
         </Link>
       </HStack>

@@ -47,7 +47,7 @@ const MessagesList: React.FC = () => {
             textAlign="center"
             lineHeight="5"
           >
-            <FormattedMessage id="chat.empty.description" ignoreTag />
+            <FormattedMessage id="chat.empty.description" />
           </Text>
         </VStack>
       ) : (
@@ -73,7 +73,6 @@ const MessagesList: React.FC = () => {
                           ? "chat.notification.member-joined"
                           : "chat.notification.member-removed"
                       }
-                      ignoreTag
                     />
                   }
                 />
@@ -82,12 +81,12 @@ const MessagesList: React.FC = () => {
             renderBreak={(localeDate) => (
               <ChatIndent>
                 {localeDate === new Date().toLocaleDateString() ? (
-                  <FormattedMessage id="common.today" ignoreTag />
+                  <FormattedMessage id="common.today" />
                 ) : localeDate ===
                   new Date(
                     new Date().setDate(new Date().getDate() - 1)
                   ).toLocaleDateString() ? (
-                  <FormattedMessage id="common.yesterday" ignoreTag />
+                  <FormattedMessage id="common.yesterday" />
                 ) : (
                   localeDate
                 )}

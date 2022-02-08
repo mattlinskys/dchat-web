@@ -3,7 +3,7 @@ import { extendTheme, withDefaultColorScheme } from "@chakra-ui/react";
 const Input = {
   baseStyle: {
     field: {
-      _placeholder: { color: "gray.200" },
+      _placeholder: { color: "gray.300" },
     },
   },
   variants: {

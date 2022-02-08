@@ -52,7 +52,7 @@ const MembersListItem: React.FC<MembersListItemProps> = ({
 
       {canRemove && (
         <Tooltip
-          label={<FormattedMessage id="common.remove" ignoreTag />}
+          label={<FormattedMessage id="common.remove" />}
           placement="top"
         >
           <IconButton

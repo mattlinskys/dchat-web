@@ -41,7 +41,7 @@ const ChatHeader: React.FC = () => {
         {ownerAccount === account && (
           <>
             <Tooltip
-              label={<FormattedMessage id="members.add.title" ignoreTag />}
+              label={<FormattedMessage id="members.add.title" />}
               placement="top"
             >
               <IconButton

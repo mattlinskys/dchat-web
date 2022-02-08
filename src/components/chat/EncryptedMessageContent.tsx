@@ -114,19 +114,19 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
       ) : data && !isPending ? (
         data === "0x" ? (
           <Text as="i">
-            <FormattedMessage id="message.missing-data" ignoreTag />
+            <FormattedMessage id="message.missing-data" />
           </Text>
         ) : (
           <>
             <HStack align="center" spacing="1">
               <ClosedLockIcon />
               <Text>
-                <FormattedMessage id="message.encrypted" ignoreTag />
+                <FormattedMessage id="message.encrypted" />
               </Text>
             </HStack>
 
             <Button isLoading={decrypting} onClick={() => decrypt()} size="xs">
-              <FormattedMessage id="common.decrypt" ignoreTag />
+              <FormattedMessage id="common.decrypt" />
             </Button>
           </>
         )

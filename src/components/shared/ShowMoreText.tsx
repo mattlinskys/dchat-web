@@ -32,7 +32,7 @@ const ShowMoreText: React.FC<ShowMoreTextProps> = ({ noOfLines, ...rest }) => {
           lineHeight="5"
           display="block"
         >
-          <FormattedMessage id="common.showMore" ignoreTag />
+          <FormattedMessage id="common.showMore" />
         </chakra.button>
       )}
     </>

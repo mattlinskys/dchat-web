@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useEffect, useRef } from "react";
 import {
   VStack,
   List,
@@ -7,6 +7,7 @@ import {
   IconButton,
   Icon,
   Tooltip,
+  Box,
 } from "@chakra-ui/react";
 import { useContractFunction, useEthers } from "@usedapp/core";
 import { utils } from "ethers";
@@ -24,7 +25,7 @@ import {
 } from "formik";
 import * as Yup from "yup";
 import FormControlField from "components/shared/FormControlField";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import InputField from "components/shared/InputField";
 import SubmitButton from "components/shared/SubmitButton";
 import AddressInput from "components/shared/AddressInput";
@@ -39,13 +40,15 @@ interface CreateChatFormValues {
 const CreateChatForm: React.FC = () => {
   const { account } = useEthers();
   const navigate = useNavigate();
+  const { formatMessage } = useIntl();
   const factoryContract = useFactoryContract();
-  const { state, send } = useContractFunction(factoryContract!, "createChat");
+  const { send, state } = useContractFunction(factoryContract!, "createChat");
+  const chatIdRef = useRef<string>();
   useContractFunctionErrorToast(state);
 
   const initialValues = useMemo<CreateChatFormValues>(
     () => ({
-      id: nanoid(14),
+      id: nanoid(12),
       addresses: [account!],
     }),
     []
@@ -64,13 +67,19 @@ const CreateChatForm: React.FC = () => {
 
   const handleSubmit = useCallback(
     async ({ id, addresses }: CreateChatFormValues) => {
+      chatIdRef.current = id;
       await send(utils.id(id), addresses);
-      navigate(getChatPath(id), {
-        state: { new: true },
-      });
     },
     [send, navigate]
   );
+
+  useEffect(() => {
+    if (state.status === "Success") {
+      navigate(getChatPath(chatIdRef.current!), {
+        state: { new: true },
+      });
+    }
+  }, [state.status]);
 
   return (
     <Formik
@@ -79,12 +88,15 @@ const CreateChatForm: React.FC = () => {
       onSubmit={handleSubmit}
     >
       <Form noValidate>
-        <VStack spacing="3" w="full" alignItems="start">
+        <VStack spacing="4" w="full" alignItems="start">
           <FormControlField name="id">
             <FormLabel>
-              <FormattedMessage id="common.chatId" ignoreTag />
+              <FormattedMessage id="common.chat-id" />
             </FormLabel>
-            <InputField name="id" />
+            <InputField
+              name="id"
+              placeholder={formatMessage({ id: "chat.chat-id.placeholder" })}
+            />
           </FormControlField>
 
           <FormikConsumer>
@@ -93,13 +105,19 @@ const CreateChatForm: React.FC = () => {
             }: FormikContextType<CreateChatFormValues>) => (
               <FieldArray name="addresses">
                 {({ push, remove }) => (
-                  <>
+                  <Box w="full">
                     <FormLabel>
-                      <FormattedMessage id="common.members" ignoreTag /> (
+                      <FormattedMessage id="common.members" /> (
                       {addresses.length})
                     </FormLabel>
 
-                    <List w="full" spacing="2" maxH="48" overflowY="auto">
+                    <List
+                      w="full"
+                      spacing="2"
+                      mb="2"
+                      maxH="48"
+                      overflowY="auto"
+                    >
                       {addresses.map((address, i) => (
                         <ListItem
                           key={address}
@@ -111,12 +129,7 @@ const CreateChatForm: React.FC = () => {
 
                           {address !== account && (
                             <Tooltip
-                              label={
-                                <FormattedMessage
-                                  id="common.remove"
-                                  ignoreTag
-                                />
-                              }
+                              label={<FormattedMessage id="common.remove" />}
                               placement="top"
                             >
                               <IconButton
@@ -141,9 +154,14 @@ const CreateChatForm: React.FC = () => {
                           push(address);
                         }
                       }}
-                      placeholder="Enter member address"
+                      placeholder={formatMessage({
+                        id: "chat.create.address.placeholder",
+                      })}
+                      addLabel={
+                        <FormattedMessage id="chat.create.address.add" />
+                      }
                     />
-                  </>
+                  </Box>
                 )}
               </FieldArray>
             )}

@@ -3,7 +3,7 @@ import { useDisclosure } from "@chakra-ui/hooks";
 import useHash from "hooks/useHash";
 import useNavigateHash from "hooks/useNavigateHash";
 
-const useHashDisclosure = (disclosureHash: string, show: boolean) => {
+const useHashDisclosure = (disclosureHash: string, show = true) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isVisible = isOpen && show;
   const hash = useHash();

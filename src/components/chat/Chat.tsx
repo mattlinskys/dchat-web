@@ -14,7 +14,7 @@ const Chat: React.FC = () => {
   return (
     <VStack w="full" spacing="4" flexGrow="1" justify="center">
       <Heading fontSize="xl">
-        <FormattedMessage id="chat.title" values={{ id }} ignoreTag />
+        <FormattedMessage id="chat.title" values={{ id }} />
       </Heading>
 
       <Box

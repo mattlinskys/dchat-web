@@ -1,29 +1,47 @@
-import React, { useState } from "react";
-import { Button, HStack, Input } from "@chakra-ui/react";
+import React, { useCallback, useState } from "react";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  VStack,
+  Input,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { getChatPath } from "utils/routesUtils";
+import { FormattedMessage, useIntl } from "react-intl";
 
 const JoinChatForm: React.FC = () => {
   const [value, setValue] = useState("");
   const navigate = useNavigate();
+  const { formatMessage } = useIntl();
+  const isDisabled = value.trim().length === 0;
+
+  const handleSubmit = useCallback(() => {
+    navigate(getChatPath(value), { replace: true });
+  }, [value]);
 
   return (
-    <HStack w="full" spacing="3">
-      <Input
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-        placeholder="Provide chat id"
-      />
-      <Button
-        onClick={() => {
-          if (value.trim().length > 0) {
-            navigate(getChatPath(value));
-          }
-        }}
-      >
-        Join
+    <VStack w="full" spacing="3">
+      <FormControl>
+        <FormLabel>
+          <FormattedMessage id="common.chat-id" />
+        </FormLabel>
+        <Input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !isDisabled) {
+              handleSubmit();
+            }
+          }}
+          placeholder={formatMessage({ id: "chat.chat-id.placeholder" })}
+          autoFocus
+        />
+      </FormControl>
+      <Button onClick={handleSubmit} isDisabled={isDisabled} w="full">
+        <FormattedMessage id="common.join" />
       </Button>
-    </HStack>
+    </VStack>
   );
 };
 

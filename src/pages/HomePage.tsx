@@ -67,14 +67,14 @@ const HomePage: React.FC = () => {
                 viewBox="0 0 60 64"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g fill="none" fill-rule="evenodd">
+                <g fill="none" fillRule="evenodd">
                   <path
                     d="M52.95 0A7.05 7.05 0 0 1 60 7.05v45.56a7.05 7.05 0 0 1-7.05 7.051H50.18v3.254c0 .6-.485 1.085-1.084 1.085H43.63c-.599 0-1.085-.486-1.085-1.085v-3.254H17.454v3.254c0 .6-.485 1.085-1.084 1.085h-5.467c-.6 0-1.085-.486-1.085-1.085v-3.254H7.051A7.05 7.05 0 0 1 0 52.611V7.05A7.05 7.05 0 0 1 7.05 0h45.9Z"
                     fill="#4E4E4E"
                   />
                   <rect
                     stroke="#2A2A2A"
-                    stroke-width="3.254"
+                    strokeWidth="3.254"
                     fill="#4E4E4E"
                     x="8.182"
                     y="8.136"
@@ -101,12 +101,12 @@ const HomePage: React.FC = () => {
                 viewBox="0 0 64 74"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g fill="none" fill-rule="evenodd">
+                <g fill="none" fillRule="evenodd">
                   <path
                     d="M35.761 2.175 60.246 16.33A7.515 7.515 0 0 1 64 22.836v28.328a7.515 7.515 0 0 1-3.754 6.506L35.761 71.825a7.515 7.515 0 0 1-7.522 0L3.754 57.67A7.515 7.515 0 0 1 0 51.164V22.836a7.515 7.515 0 0 1 3.754-6.506L28.239 2.175a7.515 7.515 0 0 1 7.522 0Z"
                     fill="#4E4E4E"
                   />
-                  <g transform="translate(13.212 18.186)" fill-rule="nonzero">
+                  <g transform="translate(13.212 18.186)" fillRule="nonzero">
                     <ellipse
                       fill="#7B3FE4"
                       cx="18.788"
@@ -134,7 +134,7 @@ const HomePage: React.FC = () => {
                 viewBox="0 0 110 54"
                 xmlns="http://www.w3.org/2000/svg"
               >
-                <g fill="none" fill-rule="evenodd">
+                <g fill="none" fillRule="evenodd">
                   <g transform="translate(0 8.498)">
                     <rect
                       fill="#4E4E4E"
@@ -143,19 +143,19 @@ const HomePage: React.FC = () => {
                       rx="2.998"
                     />
                     <text
-                      font-family="Lato"
-                      font-size="13.491"
-                      font-weight="bold"
+                      fontFamily="Lato"
+                      fontSize="13.491"
+                      fontWeight="bold"
                       fill="#A8A1A1"
                     >
-                      <tspan x="5.986" y="18.996" fill-opacity=".461">
+                      <tspan x="5.986" y="18.996" fillOpacity=".461">
                         ###
                       </tspan>
                       <tspan x="29.461" y="18.996">
                         {" "}
                         This is{" "}
                       </tspan>
-                      <tspan x="73.711" y="18.996" fill-opacity=".5">
+                      <tspan x="73.711" y="18.996" fillOpacity=".5">
                         ####
                       </tspan>
                     </text>
@@ -163,7 +163,7 @@ const HomePage: React.FC = () => {
                   <path
                     d="M34.552 6.503c8.735-8.67 22.898-8.67 31.633 0 7.957 7.898 8.666 20.265 2.13 28.96l12.34 10.778a3.915 3.915 0 0 1 .184 5.736l-.877.87a3.985 3.985 0 0 1-5.779-.183L63.267 40.35c-8.731 6.13-20.897 5.316-28.715-2.445-8.736-8.67-8.736-22.73 0-31.4Zm2.402 2.385c-7.408 7.354-7.408 19.277 0 26.632 7.409 7.354 19.42 7.354 26.829 0 7.408-7.355 7.408-19.278 0-26.632-7.409-7.354-19.42-7.354-26.829 0Z"
                     fill="#FFB74E"
-                    fill-rule="nonzero"
+                    fillRule="nonzero"
                   />
                 </g>
               </svg>

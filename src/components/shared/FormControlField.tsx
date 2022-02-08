@@ -24,7 +24,7 @@ const FormControlField: React.FC<FormControlFieldProps> = ({
       {children}
 
       <FormErrorMessage>
-        {error && <FormattedMessage id={`validation:${error}`} ignoreTag />}
+        {error && <FormattedMessage id={`validation:${error}`} />}
       </FormErrorMessage>
     </FormControl>
   );

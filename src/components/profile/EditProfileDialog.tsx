@@ -16,10 +16,7 @@ const EditProfileDialog: React.FC<EditProfileDialogProps> = ({
   profile,
   ...rest
 }) => (
-  <Dialog
-    title={<FormattedMessage id="profile.edit.title" ignoreTag />}
-    {...rest}
-  >
+  <Dialog title={<FormattedMessage id="profile.edit.title" />} {...rest}>
     <EditProfileForm defaultValues={profile} onSubmit={onSubmit} />
   </Dialog>
 );

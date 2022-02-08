@@ -59,7 +59,7 @@ const Header: React.FC = () => {
             variant="outline"
             leftIcon={<Icon as={ProfileIcon} />}
           >
-            <FormattedMessage id="header.setup-profile" ignoreTag />
+            <FormattedMessage id="header.setup-profile" />
           </Button>
         ))
       ) : (
@@ -68,7 +68,7 @@ const Header: React.FC = () => {
           variant="outline"
           leftIcon={<Icon as={WalletIcon} />}
         >
-          <FormattedMessage id="header.connect-wallet" ignoreTag />
+          <FormattedMessage id="header.connect-wallet" />
         </Button>
       )}
     </Box>

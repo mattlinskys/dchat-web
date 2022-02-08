@@ -2,7 +2,8 @@
   "common.name": "Name",
   "common.name.placeholder": "Type name...",
   "common.id": "ID",
-  "common.chatId": "Chat ID",
+  "common.chat-id": "Chat ID",
+  "chat.chat-id.placeholder": "Type chat ID...",
   "common.wallet": "Wallet",
   "common.address": "Address",
   "common.address.placeholder": "Type address..",
@@ -15,6 +16,7 @@
   "common.send": "Send",
   "common.create": "Create",
   "common.remove": "Remove",
+  "common.join": "Join",
   "common.disconnect": "Disconnect",
   "common.members": "Members",
   "common.you": "You",
@@ -42,6 +44,12 @@
   "home.features.safe": "Stored saved on blockchain",
   "home.features.fees": "Low fees with Polygon",
   "home.features.encrypted": "Encrypted only for chat members",
+
+  "chat.join.title": "Join chat",
+
+  "chat.create.title": "Create chat",
+  "chat.create.address.placeholder": "Enter member address",
+  "chat.create.address.add": "Add member",
 
   "chat.title": "Chat #{id}",
   "chat.empty.description": "Write a first message\nand join the package\nof messages",

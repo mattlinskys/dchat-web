@@ -22,7 +22,6 @@ const MembersListDialog: React.FC<MembersListDialogProps> = ({
         <FormattedMessage
           id="members.list.title"
           values={{ count: members.length }}
-          ignoreTag
         />
       }
       {...props}
@@ -31,7 +30,7 @@ const MembersListDialog: React.FC<MembersListDialogProps> = ({
 
       <ActionsFooter>
         <Button onClick={() => onAddMemberOpen()} size="sm">
-          <FormattedMessage id="members.add.title" ignoreTag />
+          <FormattedMessage id="members.add.title" />
         </Button>
       </ActionsFooter>
     </Dialog>

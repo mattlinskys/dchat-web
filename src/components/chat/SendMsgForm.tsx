@@ -192,7 +192,7 @@ const SendMsgForm: React.FC = () => {
             size="sm"
             variant="ghost"
           >
-            <FormattedMessage id="common.send" ignoreTag />
+            <FormattedMessage id="common.send" />
           </Button>
         ) : (
           <InputGroup>
