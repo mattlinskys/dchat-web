@@ -116,6 +116,10 @@ const theme = extendTheme(
             bg: "brand.500",
             color: "gray.700",
           },
+          outline: {
+            bg: "gray.600",
+            borderColor: "gray.400",
+          },
           unstyled: {
             color: "brand.500",
           },

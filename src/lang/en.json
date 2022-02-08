@@ -1,5 +1,6 @@
 {
   "common.name": "Name",
+  "common.name.placeholder": "Type name...",
   "common.id": "ID",
   "common.chatId": "Chat ID",
   "common.wallet": "Wallet",
@@ -19,10 +20,10 @@
   "common.you": "You",
   "common.decrypt": "Decrypt",
   "common.showMore": "Show More",
-  "common.noProfile": "No profile",
+  "common.no-profile": "No profile",
   "common.today": "Today",
   "common.yesterday": "Yesterday",
-  "common.typeMessage": "Type message...",
+  "common.type-message": "Type message...",
 
   "validation:required": "Required field",
   "validation:invalid": "Invalid field",
@@ -30,16 +31,28 @@
 
   "erros.default": "Something went wrong, please try again",
 
+  "header.connect-wallet": "Connect Wallet",
+  "header.setup-profile": "Setup Profile",
+
+  "home.heading": "All your messages on <span>server</span>",
+  "home.title": "Blockchain",
+  "home.description": "Cryptocurrency Jobs curates the best new blockchain jobs at leading companies and startups that use blockchain technology.",
+  "home.actions.create-chat": "Create new chat",
+  "home.actions.join-chat": "Join chat by ID",
+  "home.features.safe": "Stored saved on blockchain",
+  "home.features.fees": "Low fees with Polygon",
+  "home.features.encrypted": "Encrypted only for chat members",
+
   "chat.title": "Chat #{id}",
+  "chat.empty.description": "Write a first message\nand join the package\nof messages",
   "chat.notification.member-joined": "joined the chat",
   "chat.notification.member-removed": "left the chat",
 
   "chat.footer.nav.home": "Home",
   "chat.footer.nav.github": "Github",
 
-  "message.missingData": "Missing encrypted data",
+  "message.missing-data": "Missing encrypted data",
   "message.encrypted": "Message encrypted",
-
 
   "members.list.title": "Members ({count})",
   "members.list.remove.success": "Member removed successfully, you'll see changes in the next block",
@@ -49,7 +62,5 @@
 
   "profile.title": "Profile",
   "profile.setup.title": "Setup profile",
-  "profile.edit.title": "Edit profile",
-
-  "chat.empty.description": "Write a first message\nand join the package\nof messages"
+  "profile.edit.title": "Edit profile"
 }

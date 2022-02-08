@@ -114,7 +114,7 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
       ) : data && !isPending ? (
         data === "0x" ? (
           <Text as="i">
-            <FormattedMessage id="message.missingData" ignoreTag />
+            <FormattedMessage id="message.missing-data" ignoreTag />
           </Text>
         ) : (
           <>

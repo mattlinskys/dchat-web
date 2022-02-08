@@ -31,7 +31,7 @@ const VCard: React.FC<VCardProps> = ({
   details,
   isAddressShorten = true,
 }) => (
-  <HStack spacing="2" overflow="hidden">
+  <HStack spacing="2" overflow="hidden" textAlign="left">
     {user || account ? (
       <>
         <Avatar address={account} size={avatarSize} />
@@ -41,7 +41,7 @@ const VCard: React.FC<VCardProps> = ({
               ? user.name
               : isLoaded && (
                   <Text as="i" opacity={0.75}>
-                    <FormattedMessage id="common.noProfile" ignoreTag />
+                    <FormattedMessage id="common.no-profile" ignoreTag />
                   </Text>
                 )}{" "}
             {isMe && (

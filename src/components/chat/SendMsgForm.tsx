@@ -144,7 +144,7 @@ const SendMsgForm: React.FC = () => {
 
       {isExpanded && (
         <Textarea
-          placeholder={formatMessage({ id: "common.typeMessage" })}
+          placeholder={formatMessage({ id: "common.type-message" })}
           value={value}
           onChange={(e) => setValue(e.target.value)}
           rounded="xl"
@@ -197,7 +197,7 @@ const SendMsgForm: React.FC = () => {
         ) : (
           <InputGroup>
             <Input
-              placeholder={formatMessage({ id: "common.typeMessage" })}
+              placeholder={formatMessage({ id: "common.type-message" })}
               value={value}
               onChange={(e) => setValue(e.target.value)}
               onKeyUp={(e) => {

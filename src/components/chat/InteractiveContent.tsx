@@ -42,7 +42,11 @@ const InteractiveContent: React.FC<InteractiveContentProps> = ({ content }) => {
         parts.push(
           <Link
             key={`${lastIndex}_${address}`}
-            href={`${activeChain.blockExplorerUrls[0]}address/${address}`}
+            href={
+              activeChain
+                ? `${activeChain.blockExplorerUrls[0]}address/${address}`
+                : "#"
+            }
             title={address}
             fontWeight="medium"
             isExternal
@@ -69,7 +73,7 @@ const InteractiveContent: React.FC<InteractiveContentProps> = ({ content }) => {
 
     parts.push(content.slice(lastIndex));
     return parts;
-  }, [content, activeChain.blockExplorerUrls]);
+  }, [content, activeChain?.blockExplorerUrls]);
 
   return <>{children}</>;
 };

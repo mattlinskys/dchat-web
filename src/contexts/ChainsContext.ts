@@ -3,8 +3,7 @@ import { IChain } from "types/chain";
 
 export interface ChainsContextValue {
   chains: IChain[];
-  activeChain: IChain;
-  setActiveChain: (id: IChain["id"]) => void;
+  activeChain?: IChain;
 }
 
 const ChainsContext = createContext<ChainsContextValue | undefined>(undefined);
