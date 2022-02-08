@@ -34,6 +34,9 @@
   "chat.notification.member-joined": "joined the chat",
   "chat.notification.member-removed": "left the chat",
 
+  "chat.footer.nav.home": "Home",
+  "chat.footer.nav.github": "Github",
+
   "message.missingData": "Missing encrypted data",
   "message.encrypted": "Message encrypted",
 

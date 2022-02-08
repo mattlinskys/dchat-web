@@ -5,9 +5,10 @@ import {
   useParams,
   useLocation,
   Location,
+  Link as RouterLink,
 } from "react-router-dom";
 import { HOME_PATH } from "constants/routes";
-import { Box, Spinner, Text, HStack } from "@chakra-ui/react";
+import { Box, Spinner, Text, HStack, Link } from "@chakra-ui/react";
 import ChatContext from "contexts/ChatContext";
 import ms from "ms";
 import MessagesProvider from "providers/MessagesProvider";
@@ -15,6 +16,7 @@ import MembersProvider from "providers/MembersProvider";
 import Chat from "components/chat/Chat";
 import ChatMetaTitle from "components/chat/ChatMetaTitle";
 import useSnackbar from "hooks/useSnackbar";
+import { FormattedMessage } from "react-intl";
 
 const ChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -90,8 +92,22 @@ const ChatPage: React.FC = () => {
         </Box>
       )}
 
-      <HStack mt="auto" justify="center" p="4">
-        <Text color="gray.200">Footer</Text>
+      <HStack mt="auto" justify="center" spacing="2" p="4">
+        <Link as={RouterLink} to="/">
+          <Text as="span" px="2" py="1" color="gray.200">
+            <FormattedMessage id="chat.footer.nav.home" ignoreTag />
+          </Text>
+        </Link>
+
+        <Link
+          href="//github.com/mattlinskys/dchat-web"
+          rel="noopener noreferrer nofollow"
+          target="_blank"
+        >
+          <Text as="span" px="2" py="1" color="gray.200">
+            <FormattedMessage id="chat.footer.nav.github" ignoreTag />
+          </Text>
+        </Link>
       </HStack>
     </>
   );
