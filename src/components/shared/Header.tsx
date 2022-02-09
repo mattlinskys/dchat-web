@@ -1,5 +1,15 @@
 import React, { useContext } from "react";
-import { Box, Button, Icon } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  HStack,
+  Icon,
+  IconButton,
+  Popover,
+  PopoverBody,
+  PopoverContent,
+  PopoverTrigger,
+} from "@chakra-ui/react";
 import Logo from "components/assets/Logo";
 import { Link, useMatch } from "react-router-dom";
 import { HOME_PATH } from "constants/routes";
@@ -11,6 +21,7 @@ import ProfileIcon from "components/icons/ProfileIcon";
 import { PROFILE_HASH, SETUP_PROFILE_HASH } from "constants/hashes";
 import VCard from "components/shared/VCard";
 import useNavigateHash from "hooks/useNavigateHash";
+import { InfoOutlineIcon } from "@chakra-ui/icons";
 
 const Header: React.FC = () => {
   const isHome = !!useMatch(HOME_PATH);
@@ -63,13 +74,34 @@ const Header: React.FC = () => {
           </Button>
         ))
       ) : (
-        <Button
-          onClick={() => activateBrowserWallet()}
-          variant="outline"
-          leftIcon={<Icon as={WalletIcon} />}
-        >
-          <FormattedMessage id="header.connect-wallet" />
-        </Button>
+        <HStack spacing="2">
+          <Popover placement="bottom-start">
+            <PopoverTrigger>
+              <IconButton
+                aria-label="Info"
+                variant="ghost"
+                minW="6"
+                opacity="0.8"
+                h="6"
+                verticalAlign="top"
+                icon={<InfoOutlineIcon />}
+              />
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverBody>
+                <FormattedMessage id="header.connect-wallet.info" />
+              </PopoverBody>
+            </PopoverContent>
+          </Popover>
+
+          <Button
+            onClick={() => activateBrowserWallet()}
+            variant="outline"
+            leftIcon={<Icon as={WalletIcon} />}
+          >
+            <FormattedMessage id="header.connect-wallet.label" />
+          </Button>
+        </HStack>
       )}
     </Box>
   );

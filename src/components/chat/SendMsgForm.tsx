@@ -191,6 +191,7 @@ const SendMsgForm: React.FC = () => {
             leftIcon={<Icon as={EnterIcon} />}
             size="sm"
             variant="ghost"
+            color="brand.500"
           >
             <FormattedMessage id="common.send" />
           </Button>

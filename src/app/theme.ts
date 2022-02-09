@@ -38,6 +38,9 @@ const theme = extendTheme(
       initialColorMode: "dark",
       useSystemColorMode: false,
     },
+    shadows: {
+      outline: "0 0 0 3px var(--chakra-colors-brand-shadow)",
+    },
     colors: {
       gray: {
         300: "#999999",
@@ -48,6 +51,7 @@ const theme = extendTheme(
       },
       brand: {
         500: "#FFB74E",
+        shadow: "#FFB74E99",
       },
     },
     fonts: {

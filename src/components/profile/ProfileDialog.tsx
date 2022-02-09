@@ -54,6 +54,7 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({
                   variant="ghost"
                   minW="6"
                   h="6"
+                  opacity="0.8"
                   verticalAlign="top"
                   icon={<InfoOutlineIcon />}
                 />

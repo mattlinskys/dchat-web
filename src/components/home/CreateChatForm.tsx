@@ -44,7 +44,11 @@ const CreateChatForm: React.FC = () => {
   const factoryContract = useFactoryContract();
   const { send, state } = useContractFunction(factoryContract!, "createChat");
   const chatIdRef = useRef<string>();
-  useContractFunctionErrorToast(state);
+  useContractFunctionErrorToast(state, (err) =>
+    err.endsWith("'taken'")
+      ? formatMessage({ id: "erros.chat-id.taken" })
+      : undefined
+  );
 
   const initialValues = useMemo<CreateChatFormValues>(
     () => ({
@@ -93,9 +97,12 @@ const CreateChatForm: React.FC = () => {
             <FormLabel>
               <FormattedMessage id="common.chat-id" />
             </FormLabel>
+
             <InputField
               name="id"
-              placeholder={formatMessage({ id: "common.chat-id.placeholder" })}
+              placeholder={formatMessage({
+                id: "common.chat-id.placeholder",
+              })}
             />
           </FormControlField>
 

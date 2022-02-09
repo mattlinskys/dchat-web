@@ -3,7 +3,10 @@ import { useIntl } from "react-intl";
 import useSnackbar from "hooks/useSnackbar";
 import type { TransactionStatus } from "@usedapp/core";
 
-const useContractFunctionErrorToast = (state: TransactionStatus) => {
+const useContractFunctionErrorToast = (
+  state: TransactionStatus,
+  getMsg?: (err: string) => string | undefined
+) => {
   const snackbar = useSnackbar();
   const { formatMessage } = useIntl();
 
@@ -11,7 +14,9 @@ const useContractFunctionErrorToast = (state: TransactionStatus) => {
     if (state.status === "Exception" || state.status === "Fail") {
       snackbar(
         "error",
-        state.errorMessage || formatMessage({ id: "erros.default" })
+        state.errorMessage
+          ? (getMsg && getMsg(state.errorMessage)) || state.errorMessage
+          : formatMessage({ id: "erros.default" })
       );
     }
   }, [state]);
