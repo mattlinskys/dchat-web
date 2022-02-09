@@ -59,6 +59,9 @@
   "chat.create.address.placeholder": "Enter member address",
   "chat.create.address.add": "Add member",
 
+  "chat.menu.title": "Chats",
+  "chat.menu.create": "Create chat",
+
   "chat.title": "Chat #{id}",
   "chat.empty.description": "Write a first message\nand join the package\nof messages",
   "chat.notification.member-joined": "joined the chat",

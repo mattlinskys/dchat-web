@@ -77,6 +77,7 @@ const theme = extendTheme(
           boxShadow: "none",
           bg: "gray.600",
           borderColor: "gray.500",
+          fontFamily: "Lato",
         },
         ".emoji-picker-react .emoji-group:before": {
           bg: "gray.600",

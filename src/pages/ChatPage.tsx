@@ -17,6 +17,7 @@ import Chat from "components/chat/Chat";
 import ChatMetaTitle from "components/chat/ChatMetaTitle";
 import useSnackbar from "hooks/useSnackbar";
 import { FormattedMessage } from "react-intl";
+import CachedChatsProvider from "providers/CachedChatsProvider";
 
 const ChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -52,7 +53,7 @@ const ChatPage: React.FC = () => {
   useEffect(() => {
     if (chat && state?.new) {
       // * Reset state
-      navigate(pathname + search);
+      navigate(pathname + search, { replace: true });
     }
   }, [!!chat, state?.new]);
 
@@ -70,14 +71,16 @@ const ChatPage: React.FC = () => {
   return (
     <>
       {contextValue ? (
-        <ChatContext.Provider value={contextValue}>
-          <MembersProvider>
-            <MessagesProvider>
-              <ChatMetaTitle />
-              <Chat />
-            </MessagesProvider>
-          </MembersProvider>
-        </ChatContext.Provider>
+        <CachedChatsProvider>
+          <ChatContext.Provider value={contextValue}>
+            <MembersProvider>
+              <MessagesProvider>
+                <ChatMetaTitle />
+                <Chat />
+              </MessagesProvider>
+            </MembersProvider>
+          </ChatContext.Provider>
+        </CachedChatsProvider>
       ) : (
         <Box
           position="fixed"

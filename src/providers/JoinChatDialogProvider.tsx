@@ -13,6 +13,7 @@ const JoinChatDialogProvider: React.FC = () => {
       title={<FormattedMessage id="chat.join.title" />}
       isOpen={isVisible}
       onClose={onClose}
+      size="sm"
     >
       <JoinChatForm />
     </Dialog>

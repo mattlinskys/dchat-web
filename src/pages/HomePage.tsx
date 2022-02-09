@@ -58,9 +58,10 @@ const HomePage: React.FC = () => {
       </HStack>
 
       <HStack mt="20" mx="auto" spacing="20">
-        <SlideFade in>
-          <Feature
-            icon={
+        {[
+          {
+            title: <FormattedMessage id="home.features.safe" />,
+            icon: (
               <svg
                 width="60"
                 height="64"
@@ -88,13 +89,11 @@ const HomePage: React.FC = () => {
                   />
                 </g>
               </svg>
-            }
-            title={<FormattedMessage id="home.features.safe" />}
-          />
-        </SlideFade>
-        <SlideFade in>
-          <Feature
-            icon={
+            ),
+          },
+          {
+            title: <FormattedMessage id="home.features.fees" />,
+            icon: (
               <svg
                 width="64"
                 height="74"
@@ -121,13 +120,11 @@ const HomePage: React.FC = () => {
                   </g>
                 </g>
               </svg>
-            }
-            title={<FormattedMessage id="home.features.fees" />}
-          />
-        </SlideFade>
-        <SlideFade in>
-          <Feature
-            icon={
+            ),
+          },
+          {
+            title: <FormattedMessage id="home.features.encrypted" />,
+            icon: (
               <svg
                 width="110"
                 height="54"
@@ -167,10 +164,13 @@ const HomePage: React.FC = () => {
                   />
                 </g>
               </svg>
-            }
-            title={<FormattedMessage id="home.features.encrypted" />}
-          />
-        </SlideFade>
+            ),
+          },
+        ].map(({ title, icon }, i) => (
+          <SlideFade key={i} in delay={0.15}>
+            <Feature title={title} icon={icon} />
+          </SlideFade>
+        ))}
       </HStack>
     </>
   );

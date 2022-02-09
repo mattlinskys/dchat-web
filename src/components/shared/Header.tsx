@@ -14,10 +14,10 @@ import Logo from "components/assets/Logo";
 import { Link, useMatch } from "react-router-dom";
 import { HOME_PATH } from "constants/routes";
 import { FormattedMessage } from "react-intl";
-import WalletIcon from "components/icons/WalletIcon";
 import { useEthers } from "@usedapp/core";
 import ProfileContext from "contexts/ProfileContext";
 import ProfileIcon from "components/icons/ProfileIcon";
+import MetaMaskIcon from "components/icons/MetaMaskIcon";
 import { PROFILE_HASH, SETUP_PROFILE_HASH } from "constants/hashes";
 import VCard from "components/shared/VCard";
 import useNavigateHash from "hooks/useNavigateHash";
@@ -97,7 +97,7 @@ const Header: React.FC = () => {
           <Button
             onClick={() => activateBrowserWallet()}
             variant="outline"
-            leftIcon={<Icon as={WalletIcon} />}
+            leftIcon={<Icon as={MetaMaskIcon} w="5" h="auto" />}
           >
             <FormattedMessage id="header.connect-wallet.label" />
           </Button>

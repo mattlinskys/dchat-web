@@ -1,37 +1,28 @@
-import React, { useContext } from "react";
-import { Box, VStack, Heading } from "@chakra-ui/react";
-import { FormattedMessage } from "react-intl";
+import React from "react";
+import { Box, VStack } from "@chakra-ui/react";
 import MessagesList from "components/chat/MessagesList";
 import SendMsgForm from "components/chat/SendMsgForm";
 import ChatHeader from "components/chat/ChatHeader";
-import ChatContext from "contexts/ChatContext";
+import ChatsMenu from "components/chat/ChatsMenu";
 
-const Chat: React.FC = () => {
-  const {
-    chat: { id },
-  } = useContext(ChatContext);
+const Chat: React.FC = () => (
+  <VStack w="full" spacing="3" flexGrow="1" justify="center">
+    <ChatsMenu />
 
-  return (
-    <VStack w="full" spacing="4" flexGrow="1" justify="center">
-      <Heading fontSize="xl">
-        <FormattedMessage id="chat.title" values={{ id }} />
-      </Heading>
+    <Box
+      maxW="md"
+      w="full"
+      rounded="md"
+      border="1px"
+      borderColor="gray.400"
+      bg="gray.700"
+    >
+      <ChatHeader />
+      <MessagesList />
 
-      <Box
-        maxW="md"
-        w="full"
-        rounded="md"
-        border="1px"
-        borderColor="gray.400"
-        bg="gray.700"
-      >
-        <ChatHeader />
-        <MessagesList />
-
-        <SendMsgForm />
-      </Box>
-    </VStack>
-  );
-};
+      <SendMsgForm />
+    </Box>
+  </VStack>
+);
 
 export default Chat;
