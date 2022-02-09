@@ -19,7 +19,6 @@ const Dialog: React.FC<DialogProps> = ({ title, children, ...rest }) => (
     <ModalContent>
       <ModalHeader>{title}</ModalHeader>
       <ModalCloseButton />
-
       <ModalBody pb="4">{children}</ModalBody>
     </ModalContent>
   </Modal>

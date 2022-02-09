@@ -34,7 +34,7 @@ const JoinChatForm: React.FC = () => {
               handleSubmit();
             }
           }}
-          placeholder={formatMessage({ id: "chat.chat-id.placeholder" })}
+          placeholder={formatMessage({ id: "common.chat-id.placeholder" })}
           autoFocus
         />
       </FormControl>

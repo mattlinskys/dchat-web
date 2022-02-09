@@ -3,6 +3,7 @@ import { IChain } from "types/chain";
 
 export interface ChainsContextValue {
   chains: IChain[];
+  targetChain: IChain;
   activeChain?: IChain;
 }
 

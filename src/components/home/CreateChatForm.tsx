@@ -95,7 +95,7 @@ const CreateChatForm: React.FC = () => {
             </FormLabel>
             <InputField
               name="id"
-              placeholder={formatMessage({ id: "chat.chat-id.placeholder" })}
+              placeholder={formatMessage({ id: "common.chat-id.placeholder" })}
             />
           </FormControlField>
 

@@ -14,6 +14,7 @@ import SetupProfileDialogProvider from "providers/SetupProfileDialogProvider";
 import ProfileDialogProvider from "providers/ProfileDialogProvider";
 import JoinChatDialogProvider from "providers/JoinChatDialogProvider";
 import CreateChatDialogProvider from "providers/CreateChatDialogProvider";
+import UnsupportedChainDialogProvider from "providers/UnsupportedChainDialogProvider";
 
 import HomePage from "pages/HomePage";
 import ChatPage from "pages/ChatPage";
@@ -37,6 +38,7 @@ const App: React.FC = () => {
                 <ProfileDialogProvider />
                 <JoinChatDialogProvider />
                 <CreateChatDialogProvider />
+                <UnsupportedChainDialogProvider />
               </ProfileProvider>
             </ChakraProvider>
           </ChainsProvider>

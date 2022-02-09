@@ -5,7 +5,6 @@ import {
   HARDHAT_LOCALHOST,
 } from "constants/chains";
 import ChainsContext, { ChainsContextValue } from "contexts/ChainsContext";
-// import { CHAIN_ID } from "constants/tokens";
 import { useEthers } from "@usedapp/core";
 
 const ChainsProvider: React.FC = ({ children }) => {
@@ -13,27 +12,26 @@ const ChainsProvider: React.FC = ({ children }) => {
     () => [POLYGON_MAINNET, POLYGON_TESTNET, HARDHAT_LOCALHOST],
     []
   );
-  // const [activeChainId, setActiveChainId] = useState<number>(
-  //   () => parseInt(localStorage.getItem(CHAIN_ID)!) || POLYGON_MAINNET.id
-  // );
+  const targetChain = useMemo(
+    () =>
+      chains.find(
+        (chain) => chain.id.toString() === process.env.REACT_APP_TARGET_CHAIN_ID
+      )!,
+    [chains]
+  );
   const { chainId } = useEthers();
   const activeChain = useMemo(
     () => chainId && chains.find((chain) => chain.id === chainId),
     [chainId, chains]
   );
 
-  // useEffect(() => {
-  //   localStorage.setItem(CHAIN_ID, activeChainId.toString());
-  // }, [activeChainId]);
-
   const value = useMemo<ChainsContextValue>(
     () => ({
       chains,
+      targetChain,
       activeChain,
-      // activeChain: chains.find(({ id }) => id === activeChainId) || chains[0],
-      // setActiveChain: setActiveChainId,
     }),
-    [chains]
+    [chains, targetChain, activeChain]
   );
 
   return (

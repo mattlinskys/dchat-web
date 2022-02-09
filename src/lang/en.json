@@ -3,7 +3,7 @@
   "common.name.placeholder": "Type name...",
   "common.id": "ID",
   "common.chat-id": "Chat ID",
-  "chat.chat-id.placeholder": "Type chat ID...",
+  "common.chat-id.placeholder": "Type chat ID...",
   "common.wallet": "Wallet",
   "common.address": "Address",
   "common.address.placeholder": "Type address..",
@@ -33,8 +33,14 @@
 
   "erros.default": "Something went wrong, please try again",
 
+  "unsupported-chain.title": "Unsupported network",
+  "unsupported-chain.description": "Change your network to {network}",
+  "unsupported-chain.switch": "Switch network",
+
   "header.connect-wallet": "Connect Wallet",
   "header.setup-profile": "Setup Profile",
+
+  "profile.avatar.tooltip": "Because storing avatar file on a blockchain would be too expensive it is generated based on the user's address, this way it is unique and consistent for everyone.",
 
   "home.heading": "All your messages on <span>server</span>",
   "home.title": "Blockchain",
