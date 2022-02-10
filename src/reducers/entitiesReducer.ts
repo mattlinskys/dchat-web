@@ -5,6 +5,9 @@ interface State<T> {
 
 type Action<ID, T> =
   | {
+      type: "reset";
+    }
+  | {
       type: "fetch-pending";
     }
   | {
@@ -31,6 +34,11 @@ export const createEntitiesReducer =
   ) =>
   (state: State<T>, action: Action<T[K], T>): State<T> => {
     switch (action.type) {
+      case "reset":
+        return {
+          entities: [],
+          isFetching: false,
+        };
       case "fetch-pending":
         return {
           ...state,

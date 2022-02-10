@@ -1,6 +1,6 @@
-# DChat (decentralized chat) - SPA
+# DeChat (decentralized chat) - SPA
 
-Frontend to dchat generated using CRA
+Frontend to DeChat generated using CRA
 
 ### How to use
 
@@ -12,6 +12,6 @@ Frontend to dchat generated using CRA
 
 `npm run build`
 
-#### Generate contracts ABI from using [dchat-contracts](https://github.com/mattlinskys/dchat-contracts) to `src/abi`
+#### Generate contracts ABI from using [dechat-contracts](https://github.com/mattlinskys/dechat-contracts) to `src/abi`
 
 `npm run gen-abi`

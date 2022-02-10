@@ -26,7 +26,7 @@ const MessagesProvider: React.FC<MessagesProviderProps> = ({
   children,
 }) => {
   const {
-    chat: { address, messagesCount },
+    chat: { id: chatId, address, messagesCount },
   } = useContext(ChatContext);
   const [{ entities: chatEntries, isFetching }, dispatch] = useReducer(
     reducer,
@@ -75,6 +75,10 @@ const MessagesProvider: React.FC<MessagesProviderProps> = ({
       // TODO: fetch-rejected action
     }
   }, [fetchTake, messageEntriesCount, messagesCount, chatContract]);
+
+  useEffect(() => {
+    dispatch({ type: "reset" });
+  }, [chatId]);
 
   useEffect(() => {
     if (!messagesCount.isZero() && chatContract) {

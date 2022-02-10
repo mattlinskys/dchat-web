@@ -54,6 +54,7 @@
   "home.features.encrypted": "Encrypted only for chat members",
 
   "chat.join.title": "Join chat",
+  "chat.join.not-found": "Chat #{id} not found",
 
   "chat.create.title": "Create chat",
   "chat.create.address.placeholder": "Enter member address",
@@ -63,6 +64,7 @@
   "chat.menu.create": "Create chat",
 
   "chat.title": "Chat #{id}",
+  "chat.title.new-msgs": "New messages ({count})..",
   "chat.empty.description": "Write a first message\nand join the package\nof messages",
   "chat.notification.member-joined": "joined the chat",
   "chat.notification.member-removed": "left the chat",

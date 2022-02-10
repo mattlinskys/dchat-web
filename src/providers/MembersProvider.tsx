@@ -27,7 +27,7 @@ const reducer = createEntitiesReducer<IMember, "account">("account");
 const MembersProvider: React.FC = ({ children }) => {
   const factoryAddress = useFactoryAddress();
   const {
-    chat: { address },
+    chat: { id: chatId, address },
   } = useContext(ChatContext);
   const [{ entities: members, isFetching }, dispatch] = useReducer(reducer, {
     entities: [],
@@ -114,6 +114,10 @@ const MembersProvider: React.FC = ({ children }) => {
     factoryContract,
     chatContract,
   ]);
+
+  useEffect(() => {
+    dispatch({ type: "reset" });
+  }, [chatId]);
 
   // TODO: Synchronize every now and then
   useEffect(() => {

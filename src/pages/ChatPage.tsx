@@ -16,7 +16,7 @@ import MembersProvider from "providers/MembersProvider";
 import Chat from "components/chat/Chat";
 import ChatMetaTitle from "components/chat/ChatMetaTitle";
 import useSnackbar from "hooks/useSnackbar";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import CachedChatsProvider from "providers/CachedChatsProvider";
 
 const ChatPage: React.FC = () => {
@@ -25,6 +25,7 @@ const ChatPage: React.FC = () => {
   const { state, pathname, search } = useLocation() as Location & {
     state: null | { new?: boolean };
   };
+  const { formatMessage } = useIntl();
   const snackbar = useSnackbar();
   const { chat, isLoaded } = useChat(id!);
 
@@ -32,8 +33,15 @@ const ChatPage: React.FC = () => {
     if (!chat && isLoaded) {
       const notFound = () => {
         navigate(HOME_PATH);
-        // TODO:
-        snackbar("error", "Chat not found");
+        snackbar(
+          "error",
+          formatMessage(
+            { id: "chat.join.not-found" },
+            {
+              id,
+            }
+          )
+        );
       };
 
       let timeout: ReturnType<Window["setTimeout"]>;
@@ -103,7 +111,7 @@ const ChatPage: React.FC = () => {
         </Link>
 
         <Link
-          href="//github.com/mattlinskys/dchat-web"
+          href="//github.com/mattlinskys/dechat-web"
           rel="noopener noreferrer nofollow"
           target="_blank"
         >
