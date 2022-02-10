@@ -141,6 +141,11 @@ const theme = extendTheme(
           bg: "gray.400",
         },
       },
+      FormLabel: {
+        baseStyle: {
+          color: "gray.200",
+        },
+      },
     },
   },
   withDefaultColorScheme({ colorScheme: "brand" })

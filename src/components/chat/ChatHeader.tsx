@@ -12,10 +12,12 @@ import { useEthers } from "@usedapp/core";
 import AddMemberDialog from "components/chat/AddMember/AddMemberDialog";
 import ChatMemberAvatars from "components/chat/ChatMemberAvatars";
 import { FormattedMessage } from "react-intl";
+import { ShareIcon } from "components/icons/ShareIcon";
+import copy from "copy-to-clipboard";
 
 const ChatHeader: React.FC = () => {
   const {
-    chat: { ownerAccount },
+    chat: { id, ownerAccount },
   } = useContext(ChatContext);
   const { account } = useEthers();
   const {
@@ -23,6 +25,10 @@ const ChatHeader: React.FC = () => {
     onOpen: onAddMemberOpen,
     onClose: onAddMemberClose,
   } = useDisclosure();
+
+  const handleCopy = () => {
+    copy(`${process.env.REACT_APP_ORIGIN}/chat/${encodeURIComponent(id)}`);
+  };
 
   return (
     <HStack
@@ -62,6 +68,22 @@ const ChatHeader: React.FC = () => {
           </>
         )}
       </HStack>
+
+      <Tooltip
+        label={<FormattedMessage id="common.copy-link" />}
+        placement="top"
+      >
+        <IconButton
+          aria-label="Copy link"
+          variant="ghost"
+          size="lg"
+          opacity="0.8"
+          minW="6"
+          h="6"
+          icon={<Icon as={ShareIcon} />}
+          onClick={handleCopy}
+        />
+      </Tooltip>
     </HStack>
   );
 };

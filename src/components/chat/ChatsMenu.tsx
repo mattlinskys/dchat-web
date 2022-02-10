@@ -97,6 +97,8 @@ const ChatsMenu: React.FC = () => {
 
                           {id !== chatId && (
                             <IconButton
+                              as="div"
+                              role="button"
                               aria-label="Remove chat"
                               variant="ghost"
                               minW="6"

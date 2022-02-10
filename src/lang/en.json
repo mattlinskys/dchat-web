@@ -26,6 +26,7 @@
   "common.today": "Today",
   "common.yesterday": "Yesterday",
   "common.type-message": "Type message...",
+  "common.copy-link": "Copy link to share",
 
   "validation:required": "Required field",
   "validation:invalid": "Invalid field",

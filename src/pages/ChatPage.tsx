@@ -111,7 +111,7 @@ const ChatPage: React.FC = () => {
         </Link>
 
         <Link
-          href="//github.com/mattlinskys/dechat-web"
+          href="//github.com/mattlinskys/dchat-web"
           rel="noopener noreferrer nofollow"
           target="_blank"
         >

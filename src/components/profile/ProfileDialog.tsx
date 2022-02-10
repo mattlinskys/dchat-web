@@ -34,7 +34,7 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({
     <VStack spacing={4} align="stretch">
       <SimpleGrid columns={2} spacing="2">
         <Box>
-          <Text fontSize="sm" fontWeight="medium" mb="1">
+          <Text fontSize="sm" fontWeight="medium" mb="1" color="gray.200">
             <FormattedMessage id="common.name" />
           </Text>
           <Text title={profile?.name} isTruncated>
@@ -43,7 +43,7 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({
         </Box>
 
         <Box>
-          <Text fontSize="sm" fontWeight="medium" mb="1">
+          <Text fontSize="sm" fontWeight="medium" mb="1" color="gray.200">
             <FormattedMessage id="common.avatar" />
 
             <Popover>
@@ -72,7 +72,7 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({
       </SimpleGrid>
 
       <Box>
-        <Text fontSize="sm" fontWeight="medium" mb="1">
+        <Text fontSize="sm" fontWeight="medium" mb="1" color="gray.200">
           <FormattedMessage id="common.wallet" />
         </Text>
         <Text isTruncated>{profile?.account}</Text>

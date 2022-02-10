@@ -13,12 +13,17 @@ import Feature from "components/shared/Feature";
 import { FormattedMessage } from "react-intl";
 import useNavigateHash from "hooks/useNavigateHash";
 import { CREATE_CHAT_HASH, JOIN_CHAT_HASH } from "constants/hashes";
+import { Helmet } from "react-helmet";
 
 const HomePage: React.FC = () => {
   const navigateHash = useNavigateHash();
 
   return (
     <>
+      <Helmet>
+        <title>DeChat</title>
+      </Helmet>
+
       <VStack align="center" mt="2.5vh" spacing="2" textAlign="center">
         <Icon as={Logo} w="auto" h="70" />
 
