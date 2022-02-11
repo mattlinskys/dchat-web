@@ -5,6 +5,7 @@ import {
   HStack,
   Icon,
   SlideFade,
+  Stack,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -12,8 +13,11 @@ import Logo from "components/assets/Logo";
 import Feature from "components/shared/Feature";
 import { FormattedMessage } from "react-intl";
 import useNavigateHash from "hooks/useNavigateHash";
+import { MobileView, isMobile } from "react-device-detect";
 import { CREATE_CHAT_HASH, JOIN_CHAT_HASH } from "constants/hashes";
 import { Helmet } from "react-helmet";
+import InfoAlert from "components/shared/InfoAlert";
+import DesktopOnlyIcon from "components/icons/DesktopOnlyIcon";
 
 const HomePage: React.FC = () => {
   const navigateHash = useNavigateHash();
@@ -25,9 +29,12 @@ const HomePage: React.FC = () => {
       </Helmet>
 
       <VStack align="center" mt="2.5vh" spacing="2" textAlign="center">
-        <Icon as={Logo} w="auto" h="70" />
+        <Icon as={Logo} w="25vmin" minW="134px" maxW="240px" h="auto" />
 
-        <Heading as="h3" fontSize="5xl">
+        <Heading
+          as="h3"
+          fontSize="max(var(--chakra-fontSizes-xl), min(5vmin, var(--chakra-fontSizes-5xl)))"
+        >
           <FormattedMessage
             id="home.heading"
             values={{
@@ -44,25 +51,62 @@ const HomePage: React.FC = () => {
           />
         </Heading>
 
-        <Heading as="h2" fontSize="8xl">
+        <Heading
+          as="h2"
+          fontSize="max(var(--chakra-fontSizes-5xl), min(10vmin, var(--chakra-fontSizes-8xl)))"
+        >
           <FormattedMessage id="home.title" />
         </Heading>
 
-        <Text color="gray.300" fontSize="xl" maxW="2xl">
+        <Text
+          color="gray.300"
+          fontSize="max(var(--chakra-fontSizes-md), min(3vmin, var(--chakra-fontSizes-xl)))"
+          maxW="2xl"
+        >
           <FormattedMessage id="home.description" />
         </Text>
       </VStack>
 
-      <HStack mt="10" mx="auto">
-        <Button onClick={() => navigateHash(CREATE_CHAT_HASH)}>
+      <HStack mt={{ base: "6", md: "10" }} mx="auto">
+        <Button
+          onClick={() => navigateHash(CREATE_CHAT_HASH)}
+          isDisabled={isMobile}
+        >
           <FormattedMessage id="home.actions.create-chat" />
         </Button>
-        <Button onClick={() => navigateHash(JOIN_CHAT_HASH)} variant="outline">
+        <Button
+          onClick={() => navigateHash(JOIN_CHAT_HASH)}
+          isDisabled={isMobile}
+          variant="outline"
+        >
           <FormattedMessage id="home.actions.join-chat" />
         </Button>
       </HStack>
 
-      <HStack mt="20" mx="auto" spacing="20">
+      <MobileView>
+        <InfoAlert icon={DesktopOnlyIcon} mx="auto" mt="6" maxW="md">
+          <FormattedMessage id="home.mobile.hint" />
+        </InfoAlert>
+
+        <Heading
+          as="h3"
+          mt="8"
+          fontSize="xl"
+          fontWeight="bold"
+          textAlign="center"
+        >
+          <FormattedMessage id="home.features.title" />
+        </Heading>
+      </MobileView>
+
+      <Stack
+        direction={{ base: "column", md: "row" }}
+        spacing={{ base: "10", md: "20" }}
+        py={{ base: "6", md: "20" }}
+        mx="auto"
+        flexWrap="wrap"
+        justify="center"
+      >
         {[
           {
             title: <FormattedMessage id="home.features.safe" />,
@@ -176,7 +220,7 @@ const HomePage: React.FC = () => {
             <Feature title={title} icon={icon} />
           </SlideFade>
         ))}
-      </HStack>
+      </Stack>
     </>
   );
 };

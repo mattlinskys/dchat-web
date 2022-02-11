@@ -50,6 +50,8 @@
   "home.description": "Cryptocurrency Jobs curates the best new blockchain jobs at leading companies and startups that use blockchain technology.",
   "home.actions.create-chat": "Create new chat",
   "home.actions.join-chat": "Join chat by ID",
+  "home.mobile.hint": "DeChat is currently available only on desktop browser with the MetaMask extension",
+  "home.features.title": "Main features",
   "home.features.safe": "Stored saved on blockchain",
   "home.features.fees": "Low fees with Polygon",
   "home.features.encrypted": "Encrypted only for chat members",
