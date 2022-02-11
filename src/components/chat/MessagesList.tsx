@@ -10,7 +10,7 @@ import { TChatEntry } from "types/chat";
 import ChatMemberNotification from "components/chat/ChatMemberNotification";
 
 const MessagesList: React.FC = () => {
-  const { chatEntries, isFetching, fetchNextMessages } =
+  const { chatEntries, isFetching, isInitialized, fetchNextMessages } =
     useContext(MessagesContext);
 
   const handleScroll = useCallback(
@@ -38,7 +38,7 @@ const MessagesList: React.FC = () => {
       py="4"
       onScroll={handleScroll}
     >
-      {chatEntries.length === 0 && !isFetching ? (
+      {chatEntries.length === 0 && isInitialized ? (
         <VStack mb="8" w="full" spacing="3">
           <EmptyChat />
           <Text

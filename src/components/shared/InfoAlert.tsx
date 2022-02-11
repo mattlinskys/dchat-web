@@ -13,11 +13,13 @@ const InfoAlert: React.FC<InfoAlertProps> = ({ icon, children, ...rest }) => (
     borderColor="brand.500"
     px="3"
     py="2.5"
-    spacing="3"
+    spacing="2.5"
     {...rest}
   >
     <Icon as={icon} flexShrink="0" color="brand.500" w="1.25rem" h="auto" />
-    <Text color="white">{children}</Text>
+    <Text color="white" fontSize="sm">
+      {children}
+    </Text>
   </HStack>
 );
 

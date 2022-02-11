@@ -1,7 +1,7 @@
+import React, { useMemo } from "react";
 import { Link, Text } from "@chakra-ui/react";
 import { shortenAddress } from "@usedapp/core";
 import useActiveChain from "hooks/useActiveChain";
-import React, { useMemo } from "react";
 
 export interface InteractiveContentProps {
   content: string;

@@ -9,7 +9,10 @@ import useFactoryAddress from "hooks/useFactoryAddress";
 import useConnectedContract from "hooks/useConnectedContract";
 import useContractEvents from "hooks/useContractEvents";
 import { chatAbi, factoryAbi, profileAbi } from "app/abis";
-import { createEntitiesReducer } from "reducers/entitiesReducer";
+import {
+  createEntitiesReducer,
+  entitiesReducerDefaultState,
+} from "reducers/entitiesReducer";
 import { IMember } from "types/chat";
 import ChatContext from "contexts/ChatContext";
 import MembersContext from "contexts/MembersContext";
@@ -29,10 +32,10 @@ const MembersProvider: React.FC = ({ children }) => {
   const {
     chat: { id: chatId, address },
   } = useContext(ChatContext);
-  const [{ entities: members, isFetching }, dispatch] = useReducer(reducer, {
-    entities: [],
-    isFetching: true,
-  });
+  const [{ entities: members, isFetching }, dispatch] = useReducer(
+    reducer,
+    entitiesReducerDefaultState
+  );
   const { library } = useEthers();
   const multicallAddress = useMulticallAddress();
   const factoryContract = useConnectedContract(factoryAbi, factoryAddress);

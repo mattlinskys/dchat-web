@@ -5,6 +5,7 @@ import { TChatEntry } from "types/chat";
 export interface MessagesContextValue {
   chatEntries: TChatEntry[];
   isFetching: boolean;
+  isInitialized: boolean;
   fetchNextMessages: () => void;
   addPendingMessage: (id: BigNumber, sender: string) => void;
 }

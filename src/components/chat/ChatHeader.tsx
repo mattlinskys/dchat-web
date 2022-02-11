@@ -13,13 +13,14 @@ import AddMemberDialog from "components/chat/AddMember/AddMemberDialog";
 import ChatMemberAvatars from "components/chat/ChatMemberAvatars";
 import { FormattedMessage } from "react-intl";
 import { ShareIcon } from "components/icons/ShareIcon";
-import copy from "copy-to-clipboard";
+import useCopy from "hooks/useCopy";
 
 const ChatHeader: React.FC = () => {
   const {
     chat: { id, ownerAccount },
   } = useContext(ChatContext);
   const { account } = useEthers();
+  const copy = useCopy();
   const {
     isOpen: isAddMemberOpen,
     onOpen: onAddMemberOpen,

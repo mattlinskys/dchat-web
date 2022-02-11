@@ -9,8 +9,8 @@ import {
 } from "@chakra-ui/react";
 import { FormattedMessage } from "react-intl";
 import { IProfile } from "types/profile";
-import { shortenAddress } from "utils/addressUtils";
 import Avatar from "components/shared/Avatar";
+import Address from "components/shared/Address";
 
 export interface VCardProps {
   user?: Pick<IProfile, "name">;
@@ -19,7 +19,6 @@ export interface VCardProps {
   avatarSize: BoxProps["w"];
   isMe?: boolean;
   details?: React.ReactNode;
-  isAddressShorten?: boolean;
 }
 
 const VCard: React.FC<VCardProps> = ({
@@ -29,7 +28,6 @@ const VCard: React.FC<VCardProps> = ({
   avatarSize,
   isMe,
   details,
-  isAddressShorten = true,
 }) => (
   <HStack spacing="2" overflow="hidden" textAlign="left">
     {user || account ? (
@@ -53,10 +51,12 @@ const VCard: React.FC<VCardProps> = ({
           </Text>
 
           {account && (
-            <Text fontSize="xs" opacity={0.5} title={account} isTruncated>
-              {/* //TODO: Click to copy + icon */}
-              {isAddressShorten ? shortenAddress(account, 3) : account}
-            </Text>
+            <Address
+              address={account}
+              fontSize="xs"
+              color="gray.300"
+              isTruncated
+            />
           )}
         </Box>
       </>

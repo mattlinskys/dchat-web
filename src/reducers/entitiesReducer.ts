@@ -1,6 +1,7 @@
 interface State<T> {
   entities: T[];
   isFetching: boolean;
+  isInitialized: boolean;
 }
 
 type Action<ID, T> =
@@ -27,6 +28,12 @@ type Action<ID, T> =
       entity: T;
     };
 
+export const entitiesReducerDefaultState: State<any> = {
+  entities: [],
+  isFetching: false,
+  isInitialized: false,
+};
+
 export const createEntitiesReducer =
   <T, K extends keyof T>(
     id: K,
@@ -36,8 +43,7 @@ export const createEntitiesReducer =
     switch (action.type) {
       case "reset":
         return {
-          entities: [],
-          isFetching: false,
+          ...entitiesReducerDefaultState,
         };
       case "fetch-pending":
         return {
@@ -48,6 +54,7 @@ export const createEntitiesReducer =
         return {
           ...state,
           isFetching: false,
+          isInitialized: true,
           entities: [
             ...action.entities.filter(
               (a) => !state.entities.some((b) => compareIds(a[id], b[id]))

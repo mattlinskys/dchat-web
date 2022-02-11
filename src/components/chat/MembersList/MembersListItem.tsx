@@ -47,7 +47,6 @@ const MembersListItem: React.FC<MembersListItemProps> = ({
         isLoaded
         isMe={member.account === account}
         avatarSize="8"
-        isAddressShorten={false}
       />
 
       {canRemove && (

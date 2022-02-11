@@ -17,6 +17,7 @@
   "common.create": "Create",
   "common.remove": "Remove",
   "common.join": "Join",
+  "common.copy": "Copy",
   "common.disconnect": "Disconnect",
   "common.members": "Members",
   "common.you": "You",
@@ -27,6 +28,7 @@
   "common.yesterday": "Yesterday",
   "common.type-message": "Type message...",
   "common.copy-link": "Copy link to share",
+  "common.copied": "Copied to clipboard!",
 
   "validation:required": "Required field",
   "validation:invalid": "Invalid field",
@@ -47,12 +49,12 @@
 
   "home.heading": "All your messages on <span>server</span>",
   "home.title": "Blockchain",
-  "home.description": "Cryptocurrency Jobs curates the best new blockchain jobs at leading companies and startups that use blockchain technology.",
+  "home.description": "Decentralized chat that stores encrypted messages on blockchain without using centralized data store",
   "home.actions.create-chat": "Create new chat",
   "home.actions.join-chat": "Join chat by ID",
   "home.mobile.hint": "DeChat is currently available only on desktop browser with the MetaMask extension",
   "home.features.title": "Main features",
-  "home.features.safe": "Stored saved on blockchain",
+  "home.features.safe": "Stored on the blockchain",
   "home.features.fees": "Low fees with Polygon",
   "home.features.encrypted": "Encrypted only for chat members",
 
@@ -82,6 +84,7 @@
   "members.list.remove.success": "Member removed successfully, you'll see changes in the next block",
 
   "members.add.title": "Add member",
+  "members.add.info": "New added members won't have an access to old messages",
   "members.add.success": "Member added successfully, you'll see changes in the next block",
 
   "profile.title": "Profile",

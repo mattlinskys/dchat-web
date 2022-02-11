@@ -12,7 +12,10 @@ import { chatAbi } from "app/abis";
 import useContractEvents from "hooks/useContractEvents";
 import { BigNumber } from "ethers";
 import { rawResultToMessage } from "utils/abiUtils";
-import { createEntitiesReducer } from "reducers/entitiesReducer";
+import {
+  createEntitiesReducer,
+  entitiesReducerDefaultState,
+} from "reducers/entitiesReducer";
 import { TChatEntry } from "types/chat";
 
 interface MessagesProviderProps {
@@ -26,15 +29,13 @@ const MessagesProvider: React.FC<MessagesProviderProps> = ({
   children,
 }) => {
   const {
-    chat: { id: chatId, address, messagesCount },
+    chat: { address, messagesCount },
   } = useContext(ChatContext);
-  const [{ entities: chatEntries, isFetching }, dispatch] = useReducer(
-    reducer,
-    {
-      entities: [],
-      isFetching: !messagesCount.isZero(),
-    }
-  );
+  const [{ entities: chatEntries, isFetching, isInitialized }, dispatch] =
+    useReducer(reducer, {
+      ...entitiesReducerDefaultState,
+      isInitialized: !!messagesCount.isZero(),
+    });
   const messageEntriesCount = useMemo(
     () => chatEntries.filter((entry) => entry.type === "message").length,
     [chatEntries]
@@ -78,13 +79,13 @@ const MessagesProvider: React.FC<MessagesProviderProps> = ({
 
   useEffect(() => {
     dispatch({ type: "reset" });
-  }, [chatId]);
+  }, [chatContract]);
 
   useEffect(() => {
-    if (!messagesCount.isZero() && chatContract) {
+    if (!isInitialized) {
       fetchMessages();
     }
-  }, [chatContract]);
+  }, [isInitialized]);
 
   useContractEvents(chatContract, "MsgSent", async (id: BigNumber) => {
     const result = await chatContract!.functions.messages(id);
@@ -157,10 +158,11 @@ const MessagesProvider: React.FC<MessagesProviderProps> = ({
     () => ({
       chatEntries,
       isFetching,
+      isInitialized,
       fetchNextMessages: fetchMessages,
       addPendingMessage,
     }),
-    [chatEntries, isFetching, fetchMessages, addPendingMessage]
+    [chatEntries, isFetching, isInitialized, fetchMessages, addPendingMessage]
   );
 
   return (
