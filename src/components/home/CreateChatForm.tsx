@@ -4,8 +4,6 @@ import {
   List,
   FormLabel,
   ListItem,
-  IconButton,
-  Icon,
   Tooltip,
   Box,
 } from "@chakra-ui/react";
@@ -31,6 +29,7 @@ import SubmitButton from "components/shared/SubmitButton";
 import AddressInput from "components/shared/AddressInput";
 import ProfileVCard from "components/shared/ProfileVCard";
 import TrashIcon from "components/icons/TrashIcon";
+import IconButton from "components/shared/IconButton";
 
 interface CreateChatFormValues {
   id: string;
@@ -45,7 +44,7 @@ const CreateChatForm: React.FC = () => {
   const { send, state } = useContractFunction(factoryContract!, "createChat");
   const chatIdRef = useRef<string>();
   useContractFunctionErrorToast(state, (err) =>
-    err.endsWith("'taken'")
+    err.endsWith("'id-taken'")
       ? formatMessage({ id: "erros.chat-id.taken" })
       : undefined
   );
@@ -141,12 +140,7 @@ const CreateChatForm: React.FC = () => {
                             >
                               <IconButton
                                 aria-label="Remove"
-                                variant="ghost"
-                                color="gray.200"
-                                size="lg"
-                                minW="6"
-                                h="6"
-                                icon={<Icon as={TrashIcon} />}
+                                icon={TrashIcon}
                                 onClick={() => remove(i)}
                               />
                             </Tooltip>
@@ -180,7 +174,7 @@ const CreateChatForm: React.FC = () => {
               state.status === "PendingSignature" ||
               state.status === "Success"
             }
-            w="full"
+            isFullWidth
           >
             <FormattedMessage id="common.create" />
           </SubmitButton>

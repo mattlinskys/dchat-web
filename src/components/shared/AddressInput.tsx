@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import { chakra, Icon, Input, VStack } from "@chakra-ui/react";
+import { Button, Icon, Input, VStack } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { utils } from "ethers";
 import { isAddressZero } from "utils/addressUtils";
@@ -27,7 +27,7 @@ const AddressInput: React.FC<AddressInputProps> = ({
   );
 
   return (
-    <VStack w="full" spacing="1.5" align="flex-start">
+    <VStack w="full" spacing="1" align="flex-start">
       <Input
         value={value}
         onChange={(e) => setValue(e.target.value)}
@@ -52,21 +52,22 @@ const AddressInput: React.FC<AddressInputProps> = ({
         }}
       />
 
-      <chakra.button
-        type="button"
-        color="brand.500"
-        fontWeight="bold"
-        display="flex"
-        alignItems="center"
+      <Button
         onClick={() => {
           if (!isInvalid) {
             handleNewAddress(value);
           }
         }}
+        leftIcon={<Icon as={AddIcon} />}
+        variant="unstyled"
+        display="flex"
+        alignItems="center"
+        h="auto"
+        p="1"
+        py="0.5"
       >
-        <Icon as={AddIcon} mr="1.5" />
         {addLabel}
-      </chakra.button>
+      </Button>
     </VStack>
   );
 };

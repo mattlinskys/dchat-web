@@ -3,11 +3,12 @@ import { useContractFunction, useEthers } from "@usedapp/core";
 import useChatContract from "hooks/useChatContract";
 import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 import useContractFunctionSuccessToast from "hooks/useContractFunctionSuccessToast";
-import { ListItem, Tooltip, IconButton, Icon } from "@chakra-ui/react";
+import { ListItem, Tooltip } from "@chakra-ui/react";
 import VCard from "components/shared/VCard";
 import { FormattedMessage, useIntl } from "react-intl";
 import type { IMember } from "types/chat";
 import TrashIcon from "components/icons/TrashIcon";
+import IconButton from "components/shared/IconButton";
 
 export interface MembersListItemProps {
   member: IMember;
@@ -56,11 +57,7 @@ const MembersListItem: React.FC<MembersListItemProps> = ({
         >
           <IconButton
             aria-label="Remove"
-            variant="ghost"
-            minW="6"
-            ml="4"
-            h="6"
-            icon={<Icon as={TrashIcon} />}
+            icon={TrashIcon}
             isLoading={isLoading}
             isDisabled={state.status === "Success"}
             onClick={handleClick}

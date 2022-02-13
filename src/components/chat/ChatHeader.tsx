@@ -1,25 +1,23 @@
 import React, { useContext } from "react";
-import {
-  HStack,
-  IconButton,
-  Icon,
-  useDisclosure,
-  Tooltip,
-} from "@chakra-ui/react";
+import { HStack, useDisclosure, Tooltip } from "@chakra-ui/react";
 import ChatContext from "contexts/ChatContext";
 import AddMemberIcon from "components/icons/AddMemberIcon";
 import { useEthers } from "@usedapp/core";
 import AddMemberDialog from "components/chat/AddMember/AddMemberDialog";
 import ChatMemberAvatars from "components/chat/ChatMemberAvatars";
 import { FormattedMessage } from "react-intl";
-import { ShareIcon } from "components/icons/ShareIcon";
+import ShareIcon from "components/icons/ShareIcon";
 import useCopy from "hooks/useCopy";
+import useUserChatOwner from "hooks/useUserChatOwner";
+import ChatHeaderRemove from "components/chat/ChatHeaderRemove";
+import IconButton from "components/shared/IconButton";
 
 const ChatHeader: React.FC = () => {
   const {
     chat: { id, ownerAccount },
   } = useContext(ChatContext);
   const { account } = useEthers();
+  const isUserChatOwner = useUserChatOwner();
   const copy = useCopy();
   const {
     isOpen: isAddMemberOpen,
@@ -42,7 +40,7 @@ const ChatHeader: React.FC = () => {
       justifyContent="space-between"
       minH="50px"
     >
-      <HStack spacing="1">
+      <HStack spacing="1.5">
         <ChatMemberAvatars onAddMemberOpen={() => onAddMemberOpen()} />
 
         {ownerAccount === account && (
@@ -53,11 +51,7 @@ const ChatHeader: React.FC = () => {
             >
               <IconButton
                 aria-label="Add member"
-                variant="ghost"
-                size="lg"
-                minW="6"
-                h="6"
-                icon={<Icon as={AddMemberIcon} />}
+                icon={AddMemberIcon}
                 onClick={() => onAddMemberOpen()}
               />
             </Tooltip>
@@ -70,21 +64,20 @@ const ChatHeader: React.FC = () => {
         )}
       </HStack>
 
-      <Tooltip
-        label={<FormattedMessage id="common.copy-link" />}
-        placement="top"
-      >
-        <IconButton
-          aria-label="Copy link"
-          variant="ghost"
-          size="lg"
-          opacity="0.8"
-          minW="6"
-          h="6"
-          icon={<Icon as={ShareIcon} />}
-          onClick={handleCopy}
-        />
-      </Tooltip>
+      <HStack spacing="2">
+        <Tooltip
+          label={<FormattedMessage id="common.copy-link" />}
+          placement="top"
+        >
+          <IconButton
+            aria-label="Copy link"
+            icon={ShareIcon}
+            onClick={handleCopy}
+          />
+        </Tooltip>
+
+        {isUserChatOwner && <ChatHeaderRemove />}
+      </HStack>
     </HStack>
   );
 };

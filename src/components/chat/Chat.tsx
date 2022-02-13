@@ -8,7 +8,6 @@ import ChatsMenu from "components/chat/ChatsMenu";
 const Chat: React.FC = () => (
   <VStack w="full" spacing="3" flexGrow="1" justify="center">
     <ChatsMenu />
-
     <Box
       maxW="md"
       w="full"

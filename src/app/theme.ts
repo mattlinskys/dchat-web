@@ -22,7 +22,7 @@ const Input = {
   sizes: {
     md: {
       field: {
-        px: 3,
+        px: 2.5,
       },
     },
   },
@@ -113,6 +113,9 @@ const theme = extendTheme(
         variants: {
           filled: Input.variants.filled.field,
         },
+        sizes: {
+          md: Input.sizes.md.field,
+        },
         defaultProps: Input.defaultProps,
       },
       Button: {
@@ -144,6 +147,58 @@ const theme = extendTheme(
       FormLabel: {
         baseStyle: {
           color: "gray.200",
+        },
+      },
+      IconButton: {
+        parts: ["button", "icon"],
+        baseStyle: {
+          button: {
+            flexShrink: "0",
+            color: "white",
+            opacity: 0.7,
+            _hover: {
+              opacity: 1,
+            },
+            _focus: {
+              opacity: 1,
+            },
+            _disabled: {
+              opacity: 0.6,
+            },
+            transitionProperty: "common",
+            transitionDuration: "normal",
+          },
+          icon: {
+            w: "full",
+            h: "full",
+            display: "block",
+          },
+        },
+        sizes: {
+          xs: {
+            button: {
+              w: "4",
+              h: "4",
+            },
+          },
+          sm: {
+            button: {
+              w: "18px",
+              h: "18px",
+            },
+          },
+          md: {
+            button: {
+              w: "5",
+              h: "5",
+            },
+          },
+          lg: {
+            button: {
+              w: "6",
+              h: "6",
+            },
+          },
         },
       },
     },

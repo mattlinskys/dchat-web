@@ -4,11 +4,11 @@ import {
   Button,
   HStack,
   Icon,
-  IconButton,
   Popover,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
+  Text,
 } from "@chakra-ui/react";
 import Logo from "components/assets/Logo";
 import { Link, useMatch } from "react-router-dom";
@@ -18,10 +18,12 @@ import { useEthers } from "@usedapp/core";
 import ProfileContext from "contexts/ProfileContext";
 import ProfileIcon from "components/icons/ProfileIcon";
 import MetaMaskIcon from "components/icons/MetaMaskIcon";
+import Avatar from "components/shared/Avatar";
+import IconButton from "components/shared/IconButton";
 import { PROFILE_HASH, SETUP_PROFILE_HASH } from "constants/hashes";
-import VCard from "components/shared/VCard";
 import useNavigateHash from "hooks/useNavigateHash";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
+import { shortenAddress } from "utils/addressUtils";
 
 const Header: React.FC = () => {
   const isHome = !!useMatch(HOME_PATH);
@@ -53,16 +55,21 @@ const Header: React.FC = () => {
           <Button
             onClick={() => navigateHash(PROFILE_HASH)}
             variant="outline"
-            // px="3"
-            // minW="36"
-            // justifyContent="flex-start"
+            minH="12"
+            px="2"
+            minW="24"
+            maxW="60"
+            justifyContent="flex-start"
           >
-            <VCard
-              user={profile}
-              account={profile.account}
-              isLoaded
-              avatarSize="6"
-            />
+            <Avatar address={profile.account} size="7" />
+            <Box ml="2" textAlign="left" overflow="hidden">
+              <Text fontWeight="bold" isTruncated>
+                {profile.name}
+              </Text>
+              <Text fontSize="sm" color="gray.300" isTruncated>
+                {shortenAddress(profile.account, 8)}
+              </Text>
+            </Box>
           </Button>
         ) : (
           <Button
@@ -77,15 +84,7 @@ const Header: React.FC = () => {
         <HStack spacing="2">
           <Popover placement="bottom-start">
             <PopoverTrigger>
-              <IconButton
-                aria-label="Info"
-                variant="ghost"
-                minW="6"
-                opacity="0.8"
-                h="6"
-                verticalAlign="top"
-                icon={<InfoOutlineIcon />}
-              />
+              <IconButton aria-label="Info" size="xs" icon={InfoOutlineIcon} />
             </PopoverTrigger>
             <PopoverContent>
               <PopoverBody>

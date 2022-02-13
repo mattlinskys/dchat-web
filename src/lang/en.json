@@ -29,6 +29,7 @@
   "common.type-message": "Type message...",
   "common.copy-link": "Copy link to share",
   "common.copied": "Copied to clipboard!",
+  "common.remove-chat": "Remove chat",
 
   "validation:required": "Required field",
   "validation:invalid": "Invalid field",

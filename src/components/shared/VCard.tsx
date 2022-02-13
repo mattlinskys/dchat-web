@@ -19,6 +19,7 @@ export interface VCardProps {
   avatarSize: BoxProps["w"];
   isMe?: boolean;
   details?: React.ReactNode;
+  showCopyAddress?: boolean;
 }
 
 const VCard: React.FC<VCardProps> = ({
@@ -28,6 +29,7 @@ const VCard: React.FC<VCardProps> = ({
   avatarSize,
   isMe,
   details,
+  showCopyAddress = true,
 }) => (
   <HStack spacing="2" overflow="hidden" textAlign="left">
     {user || account ? (
@@ -53,6 +55,7 @@ const VCard: React.FC<VCardProps> = ({
           {account && (
             <Address
               address={account}
+              showCopy={showCopyAddress}
               fontSize="xs"
               color="gray.300"
               isTruncated

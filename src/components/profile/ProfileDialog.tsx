@@ -6,7 +6,6 @@ import {
   Text,
   VStack,
   Popover,
-  IconButton,
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
@@ -16,6 +15,7 @@ import { IProfile } from "types/profile";
 import Dialog, { DialogProps } from "components/shared/Dialog";
 import ActionsFooter from "components/shared/ActionsFooter";
 import Avatar from "components/shared/Avatar";
+import IconButton from "components/shared/IconButton";
 import { InfoOutlineIcon } from "@chakra-ui/icons";
 
 export interface ProfileDialogProps extends Omit<DialogProps, "title"> {
@@ -51,12 +51,9 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({
                 <IconButton
                   aria-label="Info"
                   ml="1"
-                  variant="ghost"
-                  minW="6"
-                  h="6"
-                  opacity="0.8"
-                  verticalAlign="top"
-                  icon={<InfoOutlineIcon />}
+                  size="xs"
+                  verticalAlign="middle"
+                  icon={InfoOutlineIcon}
                 />
               </PopoverTrigger>
               <PopoverContent>

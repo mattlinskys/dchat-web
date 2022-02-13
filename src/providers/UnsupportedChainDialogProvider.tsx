@@ -107,7 +107,7 @@ const UnsupportedChainDialogProvider: React.FC = () => {
             </Text>
 
             {library?.provider.request && (
-              <Button onClick={handleSwitch} mt="4" w="full">
+              <Button onClick={handleSwitch} mt="4" isFullWidth>
                 <FormattedMessage id="unsupported-chain.switch" />
               </Button>
             )}

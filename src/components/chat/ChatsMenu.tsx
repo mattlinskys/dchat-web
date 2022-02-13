@@ -13,7 +13,6 @@ import {
   Box,
   HStack,
   Text,
-  IconButton,
 } from "@chakra-ui/react";
 import ChatContext from "contexts/ChatContext";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -23,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { getChatPath } from "utils/routesUtils";
 import CachedChatsContext from "contexts/CachedChatsContext";
 import CloseIcon from "components/icons/CloseIcon";
+import IconButton from "components/shared/IconButton";
 
 const ChatsMenu: React.FC = () => {
   const { formatMessage } = useIntl();
@@ -100,10 +100,7 @@ const ChatsMenu: React.FC = () => {
                               as="div"
                               role="button"
                               aria-label="Remove chat"
-                              variant="ghost"
-                              minW="6"
-                              h="6"
-                              icon={<Icon as={CloseIcon} />}
+                              icon={CloseIcon}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 removeChatId(chatId);

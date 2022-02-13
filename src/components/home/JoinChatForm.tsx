@@ -38,7 +38,7 @@ const JoinChatForm: React.FC = () => {
           autoFocus
         />
       </FormControl>
-      <Button onClick={handleSubmit} isDisabled={isDisabled} w="full">
+      <Button onClick={handleSubmit} isDisabled={isDisabled} isFullWidth>
         <FormattedMessage id="common.join" />
       </Button>
     </VStack>

@@ -1,7 +1,7 @@
 import React from "react";
 import IconBase, { IconBaseProps } from "components/icons/IconBase";
 
-export const ShareIcon: React.FC<IconBaseProps> = (props) => (
+const ShareIcon: React.FC<IconBaseProps> = (props) => (
   <IconBase {...props}>
     <path
       d="M5.18 7.934A.974.974 0 116.557 9.31l-2.754 2.755-.144.155a2.901 2.901 0 00-.712 1.911 2.924 2.924 0 004.987 2.066l2.754-2.755a.974.974 0 111.378 1.378L9.31 17.576l-.193.183A4.854 4.854 0 015.868 19a4.853 4.853 0 01-3.442-1.424A4.839 4.839 0 011 14.132c0-1.3.506-2.523 1.425-3.443h.001zm6.886-1.378a.974.974 0 111.377 1.378l-5.509 5.51a.97.97 0 01-1.377 0 .974.974 0 010-1.378zm-1.202-4.3a4.874 4.874 0 016.71.168A4.839 4.839 0 0119 5.868c0 1.3-.506 2.523-1.425 3.443h-.001l-2.754 2.755a.97.97 0 01-1.377 0 .974.974 0 010-1.377l2.754-2.755a2.904 2.904 0 00.856-2.066 2.924 2.924 0 00-4.987-2.066L9.31 6.555a.97.97 0 01-1.377 0 .974.974 0 010-1.377l2.754-2.755z"
@@ -10,3 +10,5 @@ export const ShareIcon: React.FC<IconBaseProps> = (props) => (
     />
   </IconBase>
 );
+
+export default ShareIcon;

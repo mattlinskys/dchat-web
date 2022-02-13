@@ -11,7 +11,6 @@ import {
   Center,
   HStack,
   Icon,
-  IconButton,
   Input,
   InputGroup,
   InputRightElement,
@@ -34,6 +33,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import ExpandUpIcon from "components/icons/ExpandUpIcon";
 import PlainIconButton from "components/shared/PlainIconButton";
 import MessagesContext from "contexts/MessagesContext";
+import IconButton from "components/shared/IconButton";
 import useSnackbar from "hooks/useSnackbar";
 
 const SendMsgForm: React.FC = () => {
@@ -168,11 +168,8 @@ const SendMsgForm: React.FC = () => {
           <PopoverTrigger>
             <IconButton
               aria-label="Emoji"
-              variant="ghost"
-              minW="6"
-              color="gray.300"
-              h="6"
-              icon={<Icon w="6" h="auto" as={EmojiIcon} />}
+              size="lg"
+              icon={EmojiIcon}
               isDisabled={isDisabled}
             />
           </PopoverTrigger>
@@ -211,11 +208,7 @@ const SendMsgForm: React.FC = () => {
             <InputRightElement h="9">
               <IconButton
                 aria-label="Send"
-                variant="ghost"
-                minW="6"
-                color="gray.300"
-                h="6"
-                icon={<Icon w="4.5" h="auto" as={EnterIcon} />}
+                icon={EnterIcon}
                 isLoading={isLoading}
                 isDisabled={isDisabled}
                 onClick={() => handleSend()}
