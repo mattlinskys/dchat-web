@@ -37,9 +37,9 @@ interface CreateChatFormValues {
 }
 
 const CreateChatForm: React.FC = () => {
-  const { account } = useEthers();
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
+  const { account } = useEthers();
   const factoryContract = useFactoryContract();
   const { send, state } = useContractFunction(factoryContract!, "createChat");
   const chatIdRef = useRef<string>();
@@ -139,7 +139,9 @@ const CreateChatForm: React.FC = () => {
                               placement="top"
                             >
                               <IconButton
-                                aria-label="Remove"
+                                aria-label={formatMessage({
+                                  id: "common.remove",
+                                })}
                                 icon={TrashIcon}
                                 onClick={() => remove(i)}
                               />

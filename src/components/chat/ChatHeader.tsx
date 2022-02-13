@@ -5,7 +5,7 @@ import AddMemberIcon from "components/icons/AddMemberIcon";
 import { useEthers } from "@usedapp/core";
 import AddMemberDialog from "components/chat/AddMember/AddMemberDialog";
 import ChatMemberAvatars from "components/chat/ChatMemberAvatars";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import ShareIcon from "components/icons/ShareIcon";
 import useCopy from "hooks/useCopy";
 import useUserChatOwner from "hooks/useUserChatOwner";
@@ -17,6 +17,7 @@ const ChatHeader: React.FC = () => {
     chat: { id, ownerAccount },
   } = useContext(ChatContext);
   const { account } = useEthers();
+  const { formatMessage } = useIntl();
   const isUserChatOwner = useUserChatOwner();
   const copy = useCopy();
   const {
@@ -50,7 +51,7 @@ const ChatHeader: React.FC = () => {
               placement="top"
             >
               <IconButton
-                aria-label="Add member"
+                aria-label={formatMessage({ id: "members.add.title" })}
                 icon={AddMemberIcon}
                 onClick={() => onAddMemberOpen()}
               />
@@ -70,7 +71,7 @@ const ChatHeader: React.FC = () => {
           placement="top"
         >
           <IconButton
-            aria-label="Copy link"
+            aria-label={formatMessage({ id: "common.copy-link" })}
             icon={ShareIcon}
             onClick={handleCopy}
           />

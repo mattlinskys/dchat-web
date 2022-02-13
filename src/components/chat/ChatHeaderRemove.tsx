@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Tooltip } from "@chakra-ui/react";
 import TrashIcon from "components/icons/TrashIcon";
 import IconButton from "components/shared/IconButton";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import useFactoryContract from "hooks/useFactoryContract";
 import { useContractFunction } from "@usedapp/core";
 import ChatContext from "contexts/ChatContext";
@@ -10,6 +10,7 @@ import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 import { utils } from "ethers";
 
 const ChatHeaderRemove: React.FC = () => {
+  const { formatMessage } = useIntl();
   const {
     chat: { id },
   } = useContext(ChatContext);
@@ -27,7 +28,7 @@ const ChatHeaderRemove: React.FC = () => {
       placement="top"
     >
       <IconButton
-        aria-label="Remove chat"
+        aria-label={formatMessage({ id: "common.remove-chat" })}
         isLoading={
           state.status === "PendingSignature" ||
           state.status === "Mining" ||

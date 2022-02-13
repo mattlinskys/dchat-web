@@ -167,6 +167,7 @@ const theme = extendTheme(
             },
             transitionProperty: "common",
             transitionDuration: "normal",
+            outline: "none",
           },
           icon: {
             w: "full",

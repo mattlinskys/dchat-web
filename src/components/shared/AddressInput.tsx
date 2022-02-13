@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from "react";
 import { Button, Icon, Input, VStack } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
 import { utils } from "ethers";
 import { isAddressZero } from "utils/addressUtils";
+import PlusIcon from "components/icons/PlusIcon";
 
 export interface AddressInputProps {
   onAddress: (address: string) => void;
@@ -58,7 +58,7 @@ const AddressInput: React.FC<AddressInputProps> = ({
             handleNewAddress(value);
           }
         }}
-        leftIcon={<Icon as={AddIcon} />}
+        leftIcon={<Icon as={PlusIcon} />}
         variant="unstyled"
         display="flex"
         alignItems="center"

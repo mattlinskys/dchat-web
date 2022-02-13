@@ -56,7 +56,9 @@ const MembersListItem: React.FC<MembersListItemProps> = ({
           placement="top"
         >
           <IconButton
-            aria-label="Remove"
+            aria-label={formatMessage({
+              id: "common.remove",
+            })}
             icon={TrashIcon}
             isLoading={isLoading}
             isDisabled={state.status === "Success"}

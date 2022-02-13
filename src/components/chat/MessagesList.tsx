@@ -27,6 +27,8 @@ const MessagesList: React.FC = () => {
     [isFetching, fetchNextMessages]
   );
 
+  console.log(chatEntries, isFetching, isInitialized);
+
   return (
     <Stack
       w="full"

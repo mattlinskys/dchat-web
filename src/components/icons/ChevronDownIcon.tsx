@@ -4,11 +4,9 @@ import IconBase, { IconBaseProps } from "components/icons/IconBase";
 const ChevronDownIcon: React.FC<IconBaseProps> = (props) => (
   <IconBase {...props}>
     <path
-      stroke="currentColor"
-      strokeWidth="2"
-      d="m3 6 7 8 7-8"
-      fill="none"
-      fillRule="evenodd"
+      d="M13.825 7 10 10.709 6.175 7 5 8.142 10 13l5-4.858z"
+      fill="currentColor"
+      fillRule="nonzero"
     />
   </IconBase>
 );

@@ -167,7 +167,9 @@ const SendMsgForm: React.FC = () => {
         >
           <PopoverTrigger>
             <IconButton
-              aria-label="Emoji"
+              aria-label={formatMessage({
+                id: "common.emoji",
+              })}
               size="lg"
               icon={EmojiIcon}
               isDisabled={isDisabled}
@@ -207,7 +209,9 @@ const SendMsgForm: React.FC = () => {
             />
             <InputRightElement h="9">
               <IconButton
-                aria-label="Send"
+                aria-label={formatMessage({
+                  id: "common.send",
+                })}
                 icon={EnterIcon}
                 isLoading={isLoading}
                 isDisabled={isDisabled}

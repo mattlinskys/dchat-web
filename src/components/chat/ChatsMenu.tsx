@@ -1,5 +1,4 @@
 import React, { useContext, useEffect } from "react";
-import { ChevronDownIcon, AddIcon } from "@chakra-ui/icons";
 import {
   Menu,
   MenuButton,
@@ -23,6 +22,8 @@ import { getChatPath } from "utils/routesUtils";
 import CachedChatsContext from "contexts/CachedChatsContext";
 import CloseIcon from "components/icons/CloseIcon";
 import IconButton from "components/shared/IconButton";
+import ChevronDownIcon from "components/icons/ChevronDownIcon";
+import PlusIcon from "components/icons/PlusIcon";
 
 const ChatsMenu: React.FC = () => {
   const { formatMessage } = useIntl();
@@ -99,7 +100,9 @@ const ChatsMenu: React.FC = () => {
                             <IconButton
                               as="div"
                               role="button"
-                              aria-label="Remove chat"
+                              aria-label={formatMessage({
+                                id: "common.remove-chat",
+                              })}
                               icon={CloseIcon}
                               onClick={(e) => {
                                 e.stopPropagation();
@@ -118,7 +121,7 @@ const ChatsMenu: React.FC = () => {
 
             <MenuItem
               onClick={() => navigateHash(CREATE_CHAT_HASH)}
-              icon={<AddIcon />}
+              icon={<Icon as={PlusIcon} verticalAlign="middle" />}
               color="brand.500"
               fontWeight="bold"
             >

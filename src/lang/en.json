@@ -30,6 +30,8 @@
   "common.copy-link": "Copy link to share",
   "common.copied": "Copied to clipboard!",
   "common.remove-chat": "Remove chat",
+  "common.emoji": "Emoji",
+  "common.info": "Info",
 
   "validation:required": "Required field",
   "validation:invalid": "Invalid field",

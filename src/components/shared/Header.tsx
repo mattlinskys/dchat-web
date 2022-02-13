@@ -13,19 +13,20 @@ import {
 import Logo from "components/assets/Logo";
 import { Link, useMatch } from "react-router-dom";
 import { HOME_PATH } from "constants/routes";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useEthers } from "@usedapp/core";
 import ProfileContext from "contexts/ProfileContext";
 import ProfileIcon from "components/icons/ProfileIcon";
 import MetaMaskIcon from "components/icons/MetaMaskIcon";
 import Avatar from "components/shared/Avatar";
 import IconButton from "components/shared/IconButton";
+import InfoIcon from "components/icons/InfoIcon";
 import { PROFILE_HASH, SETUP_PROFILE_HASH } from "constants/hashes";
 import useNavigateHash from "hooks/useNavigateHash";
-import { InfoOutlineIcon } from "@chakra-ui/icons";
 import { shortenAddress } from "utils/addressUtils";
 
 const Header: React.FC = () => {
+  const { formatMessage } = useIntl();
   const isHome = !!useMatch(HOME_PATH);
   const { activateBrowserWallet, active } = useEthers();
   const navigateHash = useNavigateHash();
@@ -81,10 +82,15 @@ const Header: React.FC = () => {
           </Button>
         ))
       ) : (
-        <HStack spacing="2">
+        <HStack spacing="3">
           <Popover placement="bottom-start">
             <PopoverTrigger>
-              <IconButton aria-label="Info" size="xs" icon={InfoOutlineIcon} />
+              <IconButton
+                aria-label={formatMessage({
+                  id: "common.info",
+                })}
+                icon={InfoIcon}
+              />
             </PopoverTrigger>
             <PopoverContent>
               <PopoverBody>

@@ -1,10 +1,10 @@
 import React from "react";
 import { Text, TextProps, Tooltip } from "@chakra-ui/react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { shortenAddress } from "utils/addressUtils";
-import { CopyIcon } from "@chakra-ui/icons";
 import useCopy from "hooks/useCopy";
 import IconButton from "components/shared/IconButton";
+import CopyIcon from "components/icons/CopyIcon";
 
 export interface AddressProps extends TextProps {
   address: string;
@@ -18,6 +18,7 @@ const Address: React.FC<AddressProps> = ({
   showCopy = true,
   ...rest
 }) => {
+  const { formatMessage } = useIntl();
   const copy = useCopy();
 
   return (
@@ -26,7 +27,9 @@ const Address: React.FC<AddressProps> = ({
       {showCopy && (
         <Tooltip label={<FormattedMessage id="common.copy" />} placement="top">
           <IconButton
-            aria-label="Copy address"
+            aria-label={formatMessage({
+              id: "common.copy",
+            })}
             size="xs"
             ml="1"
             color="currentColor"
