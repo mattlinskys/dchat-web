@@ -163,7 +163,7 @@ const theme = extendTheme(
               opacity: 1,
             },
             _disabled: {
-              opacity: 0.6,
+              opacity: 0.4,
             },
             transitionProperty: "common",
             transitionDuration: "normal",

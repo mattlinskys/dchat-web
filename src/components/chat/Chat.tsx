@@ -23,7 +23,7 @@ const Chat: React.FC = () => (
       <SendMsgForm />
     </Box>
 
-    <HStack spacing="2">
+    <HStack spacing="2" opacity="0.9">
       <Text fontSize="sm" lineHeight="1">
         <FormattedMessage id="common.powered-by" />
       </Text>

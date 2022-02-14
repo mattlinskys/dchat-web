@@ -35,6 +35,7 @@ import PlainIconButton from "components/shared/PlainIconButton";
 import MessagesContext from "contexts/MessagesContext";
 import IconButton from "components/shared/IconButton";
 import useSnackbar from "hooks/useSnackbar";
+import ProfileContext from "contexts/ProfileContext";
 
 const SendMsgForm: React.FC = () => {
   const snackbar = useSnackbar();
@@ -48,6 +49,7 @@ const SendMsgForm: React.FC = () => {
   } = useDisclosure();
   const { addPendingMessage } = useContext(MessagesContext);
   const { members } = useContext(MembersContext);
+  const { isAuthenticated } = useContext(ProfileContext)!;
   const { account } = useEthers();
   const isUserMember = useMemo(
     () => members.some((member) => member.account === account),
@@ -61,7 +63,7 @@ const SendMsgForm: React.FC = () => {
   useContractFunctionErrorToast(state);
   const isLoading =
     state.status === "PendingSignature" || state.status === "Mining";
-  const isDisabled = !isUserMember || isLoading;
+  const isDisabled = !isUserMember || !isAuthenticated || isLoading;
 
   const handleSend = useCallback(async () => {
     const formattedValue = value.trim();

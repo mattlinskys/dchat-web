@@ -16,13 +16,14 @@ const Message: React.FC<MessageProps> = ({
   isPending,
 }) => {
   const { account } = useEthers();
-  const { profile: sender } = useProfile(senderAccount);
+  const { profile: sender, isLoaded } = useProfile(senderAccount);
 
   return (
     <Box w="full" px="3" py="1">
       <VCard
         user={sender}
         account={senderAccount}
+        isLoaded={isLoaded}
         isMe={senderAccount === account}
         avatarSize="9"
         details={

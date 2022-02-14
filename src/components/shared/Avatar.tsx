@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { chakra, Box, BoxProps } from "@chakra-ui/react";
 import { sumChars } from "utils/stringUtils";
 
@@ -83,13 +83,13 @@ const Avatar: React.FC<AvatarProps> = ({ address, size, ...rest }) => {
       w={size}
       h={size}
       rounded="full"
-      bg="white"
+      bg="gray.500"
       position="relative"
       overflow="hidden"
       flexShrink="0"
       {...rest}
     >
-      <Box w="full" h="full" backgroundColor={color} opacity="0.4" />
+      <Box w="full" h="full" backgroundColor={color} opacity="0.5" />
       <Box position="absolute" inset="0">
         <chakra.svg
           w="full"
@@ -98,6 +98,9 @@ const Avatar: React.FC<AvatarProps> = ({ address, size, ...rest }) => {
           color={color}
           viewBox="0 0 70 70"
           xmlns="http://www.w3.org/2000/svg"
+          transform="auto"
+          translateX={`${Math.sin(num) * 5}px`}
+          translateY={`${Math.cos(num) * 5}px`}
         >
           {path}
           <path
@@ -111,4 +114,4 @@ const Avatar: React.FC<AvatarProps> = ({ address, size, ...rest }) => {
   );
 };
 
-export default Avatar;
+export default memo(Avatar);
