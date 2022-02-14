@@ -40,7 +40,7 @@ const Header: React.FC = () => {
       alignItems="center"
       px="8"
       py="6"
-      minH="92"
+      minH="24"
     >
       {isHome ? (
         <Box />

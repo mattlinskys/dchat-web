@@ -9,6 +9,7 @@ import {
   PopoverBody,
   PopoverContent,
   PopoverTrigger,
+  HStack,
 } from "@chakra-ui/react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { IProfile } from "types/profile";
@@ -46,8 +47,10 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({
           </Box>
 
           <Box>
-            <Text fontSize="sm" fontWeight="medium" mb="1" color="gray.200">
-              <FormattedMessage id="common.avatar" />
+            <HStack mb="1" spacing="1">
+              <Text fontSize="sm" fontWeight="medium" color="gray.200">
+                <FormattedMessage id="common.avatar" />
+              </Text>
 
               <Popover>
                 <PopoverTrigger>
@@ -55,9 +58,7 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({
                     aria-label={formatMessage({
                       id: "common.info",
                     })}
-                    ml="1"
                     size="xs"
-                    verticalAlign="middle"
                     icon={InfoIcon}
                   />
                 </PopoverTrigger>
@@ -67,7 +68,7 @@ const ProfileDialog: React.FC<ProfileDialogProps> = ({
                   </PopoverBody>
                 </PopoverContent>
               </Popover>
-            </Text>
+            </HStack>
 
             {profile && <Avatar address={profile.account} size="8" />}
           </Box>

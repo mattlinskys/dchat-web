@@ -17,6 +17,7 @@ import {
   entitiesReducerDefaultState,
 } from "reducers/entitiesReducer";
 import { TChatEntry } from "types/chat";
+import useContractCall from "hooks/useContractCall";
 
 interface MessagesProviderProps {
   fetchTake?: number;
@@ -41,6 +42,7 @@ const MessagesProvider: React.FC<MessagesProviderProps> = ({
     [chatEntries]
   );
   const chatContract = useConnectedContract(chatAbi, address);
+  const paginateMessages = useContractCall("paginateMessages", chatContract);
 
   const fetchMessages = useCallback(async () => {
     const take = Math.min(
@@ -52,16 +54,17 @@ const MessagesProvider: React.FC<MessagesProviderProps> = ({
       0
     );
     if (take <= 0) {
+      dispatch({
+        type: "fetch-fulfilled",
+        entities: [],
+      });
       return;
     }
 
     dispatch({ type: "fetch-pending" });
 
     try {
-      const [results] = (await chatContract!.functions.paginateMessages(
-        skip,
-        take
-      )) as [any[]];
+      const [results] = await paginateMessages([skip, take]);
 
       dispatch({
         type: "fetch-fulfilled",

@@ -4,13 +4,9 @@ import useFactoryAddress from "hooks/useFactoryAddress";
 import { chatAbi, factoryAbi } from "app/abis";
 import { utils } from "ethers";
 import { constants } from "ethers";
-// import useConnectedContract from "hooks/useConnectedContract";
 
 const useChat = (id: string) => {
   const factoryAddress = useFactoryAddress();
-  // const factoryContract = useConnectedContract(factoryAbi, factoryAddress);
-
-  // useEffect(() => {}, [factoryContract]);
 
   const [address] =
     useContractCall({

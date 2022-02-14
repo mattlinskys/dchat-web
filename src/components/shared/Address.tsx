@@ -33,7 +33,7 @@ const Address: React.FC<AddressProps> = ({
             size="xs"
             ml="1"
             color="currentColor"
-            verticalAlign="top"
+            verticalAlign="text-bottom"
             icon={CopyIcon}
             onClick={() => copy(address)}
           />

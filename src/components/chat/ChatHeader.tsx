@@ -65,7 +65,7 @@ const ChatHeader: React.FC = () => {
         )}
       </HStack>
 
-      <HStack spacing="2">
+      <HStack spacing="3">
         <Tooltip
           label={<FormattedMessage id="common.copy-link" />}
           placement="top"

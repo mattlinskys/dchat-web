@@ -18,6 +18,8 @@ import ChatMetaTitle from "components/chat/ChatMetaTitle";
 import useSnackbar from "hooks/useSnackbar";
 import { FormattedMessage, useIntl } from "react-intl";
 import CachedChatsProvider from "providers/CachedChatsProvider";
+import ChatProvider from "providers/ChatProvider";
+import useChatRemovedEvents from "hooks/useChatRemovedEvents";
 
 const ChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -32,7 +34,7 @@ const ChatPage: React.FC = () => {
   useEffect(() => {
     if (!chat && isLoaded) {
       const notFound = () => {
-        navigate(HOME_PATH);
+        navigate(HOME_PATH, { replace: true });
         snackbar(
           "error",
           formatMessage(
@@ -65,6 +67,19 @@ const ChatPage: React.FC = () => {
     }
   }, [!!chat, state?.new]);
 
+  useChatRemovedEvents(id!, () => {
+    navigate(HOME_PATH, { replace: true });
+    snackbar(
+      "error",
+      formatMessage(
+        { id: "chat.join.removed" },
+        {
+          id,
+        }
+      )
+    );
+  });
+
   const contextValue = useMemo(
     () =>
       chat
@@ -80,14 +95,16 @@ const ChatPage: React.FC = () => {
     <>
       {contextValue ? (
         <CachedChatsProvider>
-          <ChatContext.Provider value={contextValue}>
-            <MembersProvider>
-              <MessagesProvider>
-                <ChatMetaTitle />
-                <Chat />
-              </MessagesProvider>
-            </MembersProvider>
-          </ChatContext.Provider>
+          <ChatProvider id={id as string}>
+            <ChatContext.Provider value={contextValue}>
+              <MembersProvider>
+                <MessagesProvider>
+                  <ChatMetaTitle />
+                  <Chat />
+                </MessagesProvider>
+              </MembersProvider>
+            </ChatContext.Provider>
+          </ChatProvider>
         </CachedChatsProvider>
       ) : (
         <Box

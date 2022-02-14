@@ -178,8 +178,8 @@ const theme = extendTheme(
         sizes: {
           xs: {
             button: {
-              w: "4",
-              h: "4",
+              w: "14px",
+              h: "14px",
             },
           },
           sm: {

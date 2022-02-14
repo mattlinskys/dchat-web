@@ -32,6 +32,7 @@
   "common.remove-chat": "Remove chat",
   "common.emoji": "Emoji",
   "common.info": "Info",
+  "common.powered-by": "Powered by",
 
   "validation:required": "Required field",
   "validation:invalid": "Invalid field",
@@ -63,6 +64,7 @@
 
   "chat.join.title": "Join chat",
   "chat.join.not-found": "Chat #{id} not found",
+  "chat.join.removed": "Chat #{id} has been removed",
 
   "chat.create.title": "Create chat",
   "chat.create.address.placeholder": "Enter member address",

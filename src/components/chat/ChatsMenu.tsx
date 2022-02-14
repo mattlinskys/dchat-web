@@ -54,6 +54,7 @@ const ChatsMenu: React.FC = () => {
             color="white"
             pl="2"
             pr="2"
+            h="8"
             display="flex"
             rightIcon={
               <Icon

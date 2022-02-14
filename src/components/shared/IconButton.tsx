@@ -4,6 +4,7 @@ import {
   Icon,
   HTMLChakraProps,
   useMultiStyleConfig,
+  Spinner,
 } from "@chakra-ui/react";
 
 export interface IconButtonProps extends HTMLChakraProps<"button"> {
@@ -29,7 +30,11 @@ const IconButton = forwardRef<HTMLButtonElement, IconButtonProps>(
         disabled={isDisabled || isLoading}
         {...rest}
       >
-        <Icon as={icon} __css={{ ...styles.icon }} />
+        {isLoading ? (
+          <Spinner w="full" h="full" opacity={0.8} />
+        ) : (
+          <Icon as={icon} __css={{ ...styles.icon }} />
+        )}
       </chakra.button>
     );
   }
