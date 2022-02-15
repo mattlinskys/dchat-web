@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import useSnackbar from "hooks/useSnackbar";
-import type { TransactionStatus } from "@usedapp/core";
+import type useContractFunction from "hooks/useContractFunction";
 
 const useContractFunctionSuccessToast = (
-  state: TransactionStatus,
+  state: ReturnType<typeof useContractFunction>["state"],
   message: string
 ) => {
   const snackbar = useSnackbar();
 
   useEffect(() => {
-    if (state.status === "Success") {
+    if (state.status === "success") {
       snackbar("success", message);
     }
   }, [state]);

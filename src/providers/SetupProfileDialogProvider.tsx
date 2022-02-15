@@ -1,16 +1,19 @@
 import React, { useCallback, useContext, useEffect } from "react";
-import { useContractFunction, useEthers } from "@usedapp/core";
+import { useEthers } from "@usedapp/core";
 import SetupProfileDialog, {
   SetupProfileDialogProps,
 } from "components/profile/SetupProfileDialog";
 import { SETUP_PROFILE_HASH } from "constants/hashes";
 import ProfileContext from "contexts/ProfileContext";
+import useContractFunction from "hooks/useContractFunction";
 import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 import useHashDisclosure from "hooks/useHashDisclosure";
-import useFactoryContract from "hooks/useFactoryContract";
+import useConnectedContract from "hooks/useConnectedContract";
+import useFactoryAddress from "hooks/useFactoryAddress";
 import { utils } from "ethers";
 import naclUtil from "tweetnacl-util";
 import useSnackbar from "hooks/useSnackbar";
+import { factoryAbi } from "app/abis";
 
 const SetupProfileDialogProvider: React.FC = () => {
   const { connector, account } = useEthers();
@@ -19,12 +22,10 @@ const SetupProfileDialogProvider: React.FC = () => {
     SETUP_PROFILE_HASH,
     isLoaded && !profile
   );
-  const factoryContract = useFactoryContract();
+  const factoryAddress = useFactoryAddress();
+  const factoryContract = useConnectedContract(factoryAbi, factoryAddress);
   const snackbar = useSnackbar();
-  const { state, events, send } = useContractFunction(
-    factoryContract!,
-    "createProfile"
-  );
+  const { state, send } = useContractFunction("createProfile", factoryContract);
   useContractFunctionErrorToast(state);
 
   const handleSubmit = useCallback<SetupProfileDialogProps["onSubmit"]>(
@@ -48,12 +49,12 @@ const SetupProfileDialogProvider: React.FC = () => {
   );
 
   useEffect(() => {
-    const [event] = events ?? [];
-    if (state.status === "Success" && event) {
+    if (state.status === "success" && state.events?.[0]) {
+      // const [event] = state.events;
       // TODO:
       // setAddress(event.args.account);
     }
-  }, [state.status, events?.length]);
+  }, [state]);
 
   return (
     <SetupProfileDialog
@@ -61,9 +62,9 @@ const SetupProfileDialogProvider: React.FC = () => {
       onClose={onClose}
       onSubmit={handleSubmit}
       isLoading={
-        state.status === "Mining" ||
-        state.status === "PendingSignature" ||
-        state.status === "Success"
+        state.status === "pending" ||
+        state.status === "minting" ||
+        state.status === "success"
       }
     />
   );

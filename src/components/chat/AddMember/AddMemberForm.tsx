@@ -8,11 +8,13 @@ import { Formik, Form } from "formik";
 import { FormattedMessage, useIntl } from "react-intl";
 import * as Yup from "yup";
 import { utils } from "ethers";
-import { useContractFunction } from "@usedapp/core";
-import useChatContract from "hooks/useChatContract";
+import useConnectedContract from "hooks/useConnectedContract";
+import useContractFunction from "hooks/useContractFunction";
 import useContractFunctionSuccessToast from "hooks/useContractFunctionSuccessToast";
 import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 import MembersContext from "contexts/MembersContext";
+import ChatContext from "contexts/ChatContext";
+import { chatAbi } from "app/abis";
 
 interface AddMemberFormValues {
   address: string;
@@ -25,8 +27,11 @@ export interface AddMemberFormProps {
 const AddMemberForm: React.FC<AddMemberFormProps> = ({ onClose }) => {
   const { formatMessage } = useIntl();
   const { members } = useContext(MembersContext);
-  const contract = useChatContract();
-  const { send, state } = useContractFunction(contract, "addMember");
+  const {
+    chat: { address },
+  } = useContext(ChatContext);
+  const chatContract = useConnectedContract(chatAbi, address);
+  const { send, state } = useContractFunction("addMember", chatContract);
   useContractFunctionSuccessToast(
     state,
     formatMessage({ id: "members.add.success" })
@@ -58,7 +63,7 @@ const AddMemberForm: React.FC<AddMemberFormProps> = ({ onClose }) => {
   }, []);
 
   useEffect(() => {
-    if (state.status === "Success") {
+    if (state.status === "success") {
       onClose();
     }
   }, [state.status]);
@@ -86,9 +91,9 @@ const AddMemberForm: React.FC<AddMemberFormProps> = ({ onClose }) => {
         <ActionsFooter>
           <SubmitButton
             isLoading={
-              state.status === "PendingSignature" ||
-              state.status === "Mining" ||
-              state.status === "Success"
+              state.status === "pending" ||
+              state.status === "minting" ||
+              state.status === "success"
             }
           >
             <FormattedMessage id="common.add" />

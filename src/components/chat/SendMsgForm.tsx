@@ -20,11 +20,10 @@ import {
   Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useContractFunction, useEthers } from "@usedapp/core";
+import { useEthers } from "@usedapp/core";
 import { encrypt } from "utils/cryptoUtils";
 import { utils } from "ethers";
 import MembersContext from "contexts/MembersContext";
-import useChatContract from "hooks/useChatContract";
 import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 import EmojiIcon from "components/icons/EmojiIcon";
 import EnterIcon from "components/icons/EnterIcon";
@@ -36,6 +35,10 @@ import MessagesContext from "contexts/MessagesContext";
 import IconButton from "components/shared/IconButton";
 import useSnackbar from "hooks/useSnackbar";
 import ProfileContext from "contexts/ProfileContext";
+import useConnectedContract from "hooks/useConnectedContract";
+import { chatAbi } from "app/abis";
+import ChatContext from "contexts/ChatContext";
+import useContractFunction from "hooks/useContractFunction";
 
 const SendMsgForm: React.FC = () => {
   const snackbar = useSnackbar();
@@ -55,14 +58,13 @@ const SendMsgForm: React.FC = () => {
     () => members.some((member) => member.account === account),
     [members, account]
   );
-  const chatContract = useChatContract();
-  const { send, state, events } = useContractFunction(
-    chatContract,
-    "sendCipherMsg"
-  );
+  const {
+    chat: { address },
+  } = useContext(ChatContext);
+  const chatContract = useConnectedContract(chatAbi, address);
+  const { send, state } = useContractFunction("sendCipherMsg", chatContract);
   useContractFunctionErrorToast(state);
-  const isLoading =
-    state.status === "PendingSignature" || state.status === "Mining";
+  const isLoading = state.status === "pending" || state.status === "minting";
   const isDisabled = !isUserMember || !isAuthenticated || isLoading;
 
   const handleSend = useCallback(async () => {
@@ -94,12 +96,15 @@ const SendMsgForm: React.FC = () => {
   }, [value, members, send]);
 
   useEffect(() => {
-    const [event] = events ?? [];
-    if (state.status === "Success" && event) {
-      const { id, sender } = event.args;
+    if (state.status === "success" && state.events?.[0]) {
+      const [
+        {
+          args: { id, sender },
+        },
+      ] = state.events;
       addPendingMessage(id, sender);
     }
-  }, [events]);
+  }, [state]);
 
   return (
     <Box

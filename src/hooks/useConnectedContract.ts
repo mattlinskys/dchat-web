@@ -6,7 +6,10 @@ const useConnectedContract = (abi: ContractInterface, address?: string) => {
   const { library } = useEthers();
   return useMemo(
     () =>
-      (library && address && new Contract(address, abi, library)) as
+      (library &&
+        address &&
+        // TODO: useSignedContract
+        new Contract(address, abi, library.getSigner())) as
         | Contract
         | undefined,
     [library, abi, address]

@@ -164,6 +164,7 @@ const theme = extendTheme(
             },
             _disabled: {
               opacity: 0.4,
+              cursor: "default",
             },
             transitionProperty: "common",
             transitionDuration: "normal",

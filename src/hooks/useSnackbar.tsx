@@ -1,6 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import { useCallback } from "react";
 import Snackbar, { SnackbarProps } from "components/shared/Snackbar";
+import { capitalize } from "utils/stringUtils";
 
 const useSnackbar = () => {
   const toast = useToast();
@@ -11,7 +12,11 @@ const useSnackbar = () => {
         duration,
         isClosable: true,
         render: ({ onClose }) => (
-          <Snackbar status={status} message={message} onClose={onClose} />
+          <Snackbar
+            status={status}
+            message={capitalize(message)}
+            onClose={onClose}
+          />
         ),
       });
     },

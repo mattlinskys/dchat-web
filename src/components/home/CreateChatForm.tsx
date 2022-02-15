@@ -7,9 +7,9 @@ import {
   Tooltip,
   Box,
 } from "@chakra-ui/react";
-import { useContractFunction, useEthers } from "@usedapp/core";
+import { useEthers } from "@usedapp/core";
 import { utils } from "ethers";
-import useFactoryContract from "hooks/useFactoryContract";
+import useContractFunction from "hooks/useContractFunction";
 import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 import { useNavigate } from "react-router-dom";
 import { getChatPath } from "utils/routesUtils";
@@ -30,6 +30,9 @@ import AddressInput from "components/shared/AddressInput";
 import ProfileVCard from "components/shared/ProfileVCard";
 import TrashIcon from "components/icons/TrashIcon";
 import IconButton from "components/shared/IconButton";
+import useConnectedContract from "hooks/useConnectedContract";
+import { factoryAbi } from "app/abis";
+import useFactoryAddress from "hooks/useFactoryAddress";
 
 interface CreateChatFormValues {
   id: string;
@@ -40,8 +43,9 @@ const CreateChatForm: React.FC = () => {
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
   const { account } = useEthers();
-  const factoryContract = useFactoryContract();
-  const { send, state } = useContractFunction(factoryContract!, "createChat");
+  const factoryAddress = useFactoryAddress();
+  const factoryContract = useConnectedContract(factoryAbi, factoryAddress);
+  const { send, state } = useContractFunction("createChat", factoryContract);
   const chatIdRef = useRef<string>();
   useContractFunctionErrorToast(state, (err) =>
     err.endsWith("'id-taken'")
@@ -77,7 +81,7 @@ const CreateChatForm: React.FC = () => {
   );
 
   useEffect(() => {
-    if (state.status === "Success") {
+    if (state.status === "success") {
       navigate(getChatPath(chatIdRef.current!), {
         state: { new: true },
       });
@@ -172,9 +176,9 @@ const CreateChatForm: React.FC = () => {
 
           <SubmitButton
             isLoading={
-              state.status === "Mining" ||
-              state.status === "PendingSignature" ||
-              state.status === "Success"
+              state.status === "pending" ||
+              state.status === "minting" ||
+              state.status === "success"
             }
             isFullWidth
           >

@@ -3,19 +3,22 @@ import { Tooltip } from "@chakra-ui/react";
 import TrashIcon from "components/icons/TrashIcon";
 import IconButton from "components/shared/IconButton";
 import { FormattedMessage, useIntl } from "react-intl";
-import useFactoryContract from "hooks/useFactoryContract";
-import { useContractFunction } from "@usedapp/core";
 import ChatContext from "contexts/ChatContext";
+import useFactoryAddress from "hooks/useFactoryAddress";
+import useConnectedContract from "hooks/useConnectedContract";
+import useContractFunction from "hooks/useContractFunction";
 import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 import { utils } from "ethers";
+import { factoryAbi } from "app/abis";
 
 const ChatHeaderRemove: React.FC = () => {
   const { formatMessage } = useIntl();
   const {
     chat: { id },
   } = useContext(ChatContext);
-  const factoryContract = useFactoryContract();
-  const { send, state } = useContractFunction(factoryContract, "removeChat");
+  const factoryAddress = useFactoryAddress();
+  const factoryContract = useConnectedContract(factoryAbi, factoryAddress);
+  const { send, state } = useContractFunction("removeChat", factoryContract);
   useContractFunctionErrorToast(state);
 
   const handleRemove = async () => {
@@ -30,9 +33,9 @@ const ChatHeaderRemove: React.FC = () => {
       <IconButton
         aria-label={formatMessage({ id: "common.remove-chat" })}
         isLoading={
-          state.status === "PendingSignature" ||
-          state.status === "Mining" ||
-          state.status === "Success"
+          state.status === "pending" ||
+          state.status === "minting" ||
+          state.status === "success"
         }
         icon={TrashIcon}
         onClick={handleRemove}

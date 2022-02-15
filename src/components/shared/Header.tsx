@@ -62,7 +62,7 @@ const Header: React.FC = () => {
             maxW="60"
             justifyContent="flex-start"
           >
-            <Avatar address={profile.account} size="7" />
+            <Avatar address={profile.account} size="8" />
             <Box ml="2" textAlign="left" overflow="hidden">
               <Text fontWeight="bold" isTruncated>
                 {profile.name}

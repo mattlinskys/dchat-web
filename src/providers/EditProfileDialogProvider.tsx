@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect } from "react";
-import { useContractFunction } from "@usedapp/core";
 import EditProfileDialog, {
   EditProfileDialogProps,
 } from "components/profile/EditProfileDialog";
 import { utils } from "ethers";
-import useContract from "hooks/useContract";
+import useConnectedContract from "hooks/useConnectedContract";
+import useContractFunction from "hooks/useContractFunction";
 import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
 import useContractFunctionSuccessToast from "hooks/useContractFunctionSuccessToast";
 import { IProfile } from "types/profile";
@@ -21,8 +21,8 @@ const EditProfileDialogProvider: React.FC<EditProfileDialogProviderProps> = ({
   onClose,
   ...rest
 }) => {
-  const contract = useContract(profileAbi, profile.address);
-  const { send, state } = useContractFunction(contract, "updateName");
+  const contract = useConnectedContract(profileAbi, profile.address);
+  const { send, state } = useContractFunction("updateName", contract);
   useContractFunctionErrorToast(state);
   useContractFunctionSuccessToast(state, "Chages saved successfully");
 
@@ -34,7 +34,7 @@ const EditProfileDialogProvider: React.FC<EditProfileDialogProviderProps> = ({
   );
 
   useEffect(() => {
-    if (state.status === "Success") {
+    if (state.status === "success") {
       onClose();
     }
   }, [state.status]);
