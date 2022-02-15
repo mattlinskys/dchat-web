@@ -24,7 +24,7 @@ import { useEthers } from "@usedapp/core";
 import { encrypt } from "utils/cryptoUtils";
 import { utils } from "ethers";
 import MembersContext from "contexts/MembersContext";
-import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
+import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
 import EmojiIcon from "components/icons/EmojiIcon";
 import EnterIcon from "components/icons/EnterIcon";
 import EmojiPicker from "components/shared/EmojiPicker";
@@ -63,7 +63,7 @@ const SendMsgForm: React.FC = () => {
   } = useContext(ChatContext);
   const chatContract = useConnectedContract(chatAbi, address);
   const { send, state } = useContractFunction("sendCipherMsg", chatContract);
-  useContractFunctionErrorToast(state);
+  useContractFunctionErrorSnackbar(state);
   const isLoading = state.status === "pending" || state.status === "minting";
   const isDisabled = !isUserMember || !isAuthenticated || isLoading;
 

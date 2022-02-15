@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Box,
   Button,
@@ -24,13 +24,22 @@ import InfoIcon from "components/icons/InfoIcon";
 import { PROFILE_HASH, SETUP_PROFILE_HASH } from "constants/hashes";
 import useNavigateHash from "hooks/useNavigateHash";
 import { shortenAddress } from "utils/addressUtils";
+import { NoEthereumProviderError } from "@web3-react/injected-connector";
+import useSnackbar from "hooks/useSnackbar";
 
 const Header: React.FC = () => {
   const { formatMessage } = useIntl();
   const isHome = !!useMatch(HOME_PATH);
-  const { activateBrowserWallet, active } = useEthers();
+  const { activateBrowserWallet, active, error } = useEthers();
   const navigateHash = useNavigateHash();
+  const snackbar = useSnackbar();
   const { profile, isLoaded: isLoadedProfile } = useContext(ProfileContext)!;
+
+  useEffect(() => {
+    if (error instanceof NoEthereumProviderError) {
+      snackbar("error", formatMessage({ id: "errors.no-metamask-provider" }));
+    }
+  }, [error]);
 
   return (
     <Box

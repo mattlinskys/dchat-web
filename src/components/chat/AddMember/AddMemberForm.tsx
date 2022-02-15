@@ -10,8 +10,8 @@ import * as Yup from "yup";
 import { utils } from "ethers";
 import useConnectedContract from "hooks/useConnectedContract";
 import useContractFunction from "hooks/useContractFunction";
-import useContractFunctionSuccessToast from "hooks/useContractFunctionSuccessToast";
-import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
+import useContractFunctionSuccessSnackbar from "hooks/useContractFunctionSuccessSnackbar";
+import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
 import MembersContext from "contexts/MembersContext";
 import ChatContext from "contexts/ChatContext";
 import { chatAbi } from "app/abis";
@@ -32,11 +32,11 @@ const AddMemberForm: React.FC<AddMemberFormProps> = ({ onClose }) => {
   } = useContext(ChatContext);
   const chatContract = useConnectedContract(chatAbi, address);
   const { send, state } = useContractFunction("addMember", chatContract);
-  useContractFunctionSuccessToast(
+  useContractFunctionSuccessSnackbar(
     state,
     formatMessage({ id: "members.add.success" })
   );
-  useContractFunctionErrorToast(state);
+  useContractFunctionErrorSnackbar(state);
 
   const validationSchema = useMemo(
     () =>

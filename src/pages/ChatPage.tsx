@@ -8,7 +8,17 @@ import {
   Link as RouterLink,
 } from "react-router-dom";
 import { HOME_PATH } from "constants/routes";
-import { Box, Spinner, Text, HStack, Link } from "@chakra-ui/react";
+import {
+  Box,
+  Spinner,
+  Text,
+  HStack,
+  Link,
+  Button,
+  Icon,
+  VStack,
+  Divider,
+} from "@chakra-ui/react";
 import ChatContext from "contexts/ChatContext";
 import ms from "ms";
 import MessagesProvider from "providers/MessagesProvider";
@@ -20,6 +30,9 @@ import { FormattedMessage, useIntl } from "react-intl";
 import CachedChatsProvider from "providers/CachedChatsProvider";
 import ChatProvider from "providers/ChatProvider";
 import useChatRemovedEvents from "hooks/useChatRemovedEvents";
+import { useEthers } from "@usedapp/core";
+import InfoDialog from "components/shared/InfoDialog";
+import MetaMaskIcon from "components/icons/MetaMaskIcon";
 
 const ChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,6 +41,7 @@ const ChatPage: React.FC = () => {
     state: null | { new?: boolean };
   };
   const { formatMessage } = useIntl();
+  const { active, activateBrowserWallet } = useEthers();
   const snackbar = useSnackbar();
   const { chat, isLoaded } = useChat(id!);
 
@@ -112,7 +126,7 @@ const ChatPage: React.FC = () => {
           top="50%"
           left="50%"
           lineHeight="none"
-          transform="auto-gpu"
+          transform="auto"
           translateX="-50%"
           translateY="-50%"
         >
@@ -137,6 +151,33 @@ const ChatPage: React.FC = () => {
           </Text>
         </Link>
       </HStack>
+
+      <InfoDialog
+        isOpen={!active}
+        title={<FormattedMessage id="no-wallet-info.title" />}
+        details={<FormattedMessage id="no-wallet-info.details" />}
+      >
+        <Box
+          mt="4"
+          w="full"
+          display="flex"
+          flexDirection="column"
+          align="stretch"
+        >
+          <Button
+            onClick={() => activateBrowserWallet()}
+            variant="outline"
+            size="lg"
+            leftIcon={<Icon as={MetaMaskIcon} w="5" h="auto" />}
+          >
+            <FormattedMessage id="no-wallet-info.connect" />
+          </Button>
+          <Divider mt="6" mb="4" />
+          <Button onClick={() => navigate(HOME_PATH)} mb="-2">
+            <FormattedMessage id="no-wallet-info.go-back" />
+          </Button>
+        </Box>
+      </InfoDialog>
     </>
   );
 };

@@ -7,7 +7,7 @@ import ChatContext from "contexts/ChatContext";
 import useFactoryAddress from "hooks/useFactoryAddress";
 import useConnectedContract from "hooks/useConnectedContract";
 import useContractFunction from "hooks/useContractFunction";
-import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
+import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
 import { utils } from "ethers";
 import { factoryAbi } from "app/abis";
 
@@ -19,7 +19,7 @@ const ChatHeaderRemove: React.FC = () => {
   const factoryAddress = useFactoryAddress();
   const factoryContract = useConnectedContract(factoryAbi, factoryAddress);
   const { send, state } = useContractFunction("removeChat", factoryContract);
-  useContractFunctionErrorToast(state);
+  useContractFunctionErrorSnackbar(state);
 
   const handleRemove = async () => {
     await send(utils.id(id));

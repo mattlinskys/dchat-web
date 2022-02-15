@@ -216,7 +216,7 @@ const HomePage: React.FC = () => {
             ),
           },
         ].map(({ title, icon }, i) => (
-          <SlideFade key={i} in delay={0.15}>
+          <SlideFade key={i} in delay={0.25}>
             <Feature title={title} icon={icon} />
           </SlideFade>
         ))}

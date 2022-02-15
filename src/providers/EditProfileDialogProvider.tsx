@@ -5,8 +5,8 @@ import EditProfileDialog, {
 import { utils } from "ethers";
 import useConnectedContract from "hooks/useConnectedContract";
 import useContractFunction from "hooks/useContractFunction";
-import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
-import useContractFunctionSuccessToast from "hooks/useContractFunctionSuccessToast";
+import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
+import useContractFunctionSuccessSnackbar from "hooks/useContractFunctionSuccessSnackbar";
 import { IProfile } from "types/profile";
 import { profileAbi } from "app/abis";
 
@@ -23,8 +23,8 @@ const EditProfileDialogProvider: React.FC<EditProfileDialogProviderProps> = ({
 }) => {
   const contract = useConnectedContract(profileAbi, profile.address);
   const { send, state } = useContractFunction("updateName", contract);
-  useContractFunctionErrorToast(state);
-  useContractFunctionSuccessToast(state, "Chages saved successfully");
+  useContractFunctionErrorSnackbar(state);
+  useContractFunctionSuccessSnackbar(state, "Chages saved successfully");
 
   const handleEditSubmit = useCallback<EditProfileDialogProps["onSubmit"]>(
     async ({ name }) => {

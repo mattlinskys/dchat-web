@@ -6,7 +6,7 @@ import SetupProfileDialog, {
 import { SETUP_PROFILE_HASH } from "constants/hashes";
 import ProfileContext from "contexts/ProfileContext";
 import useContractFunction from "hooks/useContractFunction";
-import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
+import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
 import useHashDisclosure from "hooks/useHashDisclosure";
 import useConnectedContract from "hooks/useConnectedContract";
 import useFactoryAddress from "hooks/useFactoryAddress";
@@ -26,7 +26,7 @@ const SetupProfileDialogProvider: React.FC = () => {
   const factoryContract = useConnectedContract(factoryAbi, factoryAddress);
   const snackbar = useSnackbar();
   const { state, send } = useContractFunction("createProfile", factoryContract);
-  useContractFunctionErrorToast(state);
+  useContractFunctionErrorSnackbar(state);
 
   const handleSubmit = useCallback<SetupProfileDialogProps["onSubmit"]>(
     async (values) => {

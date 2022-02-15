@@ -3,7 +3,7 @@ import { useIntl } from "react-intl";
 import useSnackbar from "hooks/useSnackbar";
 import type useContractFunction from "hooks/useContractFunction";
 
-const useContractFunctionErrorToast = (
+const useContractFunctionErrorSnackbar = (
   state: ReturnType<typeof useContractFunction>["state"],
   getMsg?: (err: string) => string | undefined
 ) => {
@@ -16,10 +16,10 @@ const useContractFunctionErrorToast = (
         "error",
         state.message
           ? (getMsg && getMsg(state.message)) || state.message
-          : formatMessage({ id: "erros.default" })
+          : formatMessage({ id: "errors.default" })
       );
     }
   }, [state]);
 };
 
-export default useContractFunctionErrorToast;
+export default useContractFunctionErrorSnackbar;

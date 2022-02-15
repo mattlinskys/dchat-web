@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import useSnackbar from "hooks/useSnackbar";
 import type useContractFunction from "hooks/useContractFunction";
 
-const useContractFunctionSuccessToast = (
+const useContractFunctionSuccessSnackbar = (
   state: ReturnType<typeof useContractFunction>["state"],
   message: string
 ) => {
@@ -15,4 +15,4 @@ const useContractFunctionSuccessToast = (
   }, [state]);
 };
 
-export default useContractFunctionSuccessToast;
+export default useContractFunctionSuccessSnackbar;

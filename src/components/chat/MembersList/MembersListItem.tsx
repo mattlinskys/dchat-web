@@ -2,8 +2,8 @@ import React, { useContext } from "react";
 import { useEthers } from "@usedapp/core";
 import useConnectedContract from "hooks/useConnectedContract";
 import useContractFunction from "hooks/useContractFunction";
-import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
-import useContractFunctionSuccessToast from "hooks/useContractFunctionSuccessToast";
+import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
+import useContractFunctionSuccessSnackbar from "hooks/useContractFunctionSuccessSnackbar";
 import { ListItem, Tooltip } from "@chakra-ui/react";
 import VCard from "components/shared/VCard";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -29,8 +29,8 @@ const MembersListItem: React.FC<MembersListItemProps> = ({
   } = useContext(ChatContext);
   const chatContract = useConnectedContract(chatAbi, address);
   const { send, state } = useContractFunction("removeMember", chatContract);
-  useContractFunctionErrorToast(state);
-  useContractFunctionSuccessToast(
+  useContractFunctionErrorSnackbar(state);
+  useContractFunctionSuccessSnackbar(
     state,
     formatMessage({ id: "members.list.remove.success" })
   );

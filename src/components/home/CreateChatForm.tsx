@@ -10,7 +10,7 @@ import {
 import { useEthers } from "@usedapp/core";
 import { utils } from "ethers";
 import useContractFunction from "hooks/useContractFunction";
-import useContractFunctionErrorToast from "hooks/useContractFunctionErrorToast";
+import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
 import { useNavigate } from "react-router-dom";
 import { getChatPath } from "utils/routesUtils";
 import { nanoid } from "nanoid";
@@ -47,9 +47,9 @@ const CreateChatForm: React.FC = () => {
   const factoryContract = useConnectedContract(factoryAbi, factoryAddress);
   const { send, state } = useContractFunction("createChat", factoryContract);
   const chatIdRef = useRef<string>();
-  useContractFunctionErrorToast(state, (err) =>
+  useContractFunctionErrorSnackbar(state, (err) =>
     err.endsWith("'id-taken'")
-      ? formatMessage({ id: "erros.chat-id.taken" })
+      ? formatMessage({ id: "errors.chat-id.taken" })
       : undefined
   );
 

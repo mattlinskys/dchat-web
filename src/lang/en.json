@@ -38,18 +38,24 @@
   "validation:invalid": "Invalid field",
   "validation:already-member": "This user is already a member",
 
-  "erros.default": "Something went wrong, please try again",
-  "erros.chat-id.taken": "This chat ID is already taken, please try again",
+  "errors.default": "Something went wrong, please try again",
+  "errors.no-metamask-provider": "You have to install MetaMask wallet to use DeChat",
+  "errors.chat-id.taken": "This chat ID is already taken, please try again",
 
   "unsupported-chain.title": "Unsupported network",
-  "unsupported-chain.description": "Change your network to {network}",
+  "unsupported-chain.description": "Change network in MetaMask wallet to {network}",
   "unsupported-chain.switch": "Switch network",
 
   "header.connect-wallet.label": "Connect Wallet",
-  "header.connect-wallet.info": "Currently only MataMask wallet supports encrypting and decrypting content",
+  "header.connect-wallet.info": "At the moment only MataMask wallet supports encrypting and decrypting content",
   "header.setup-profile": "Setup Profile",
 
   "profile.avatar.tooltip": "Storing avatar file on the blockchain would be too expensive so it is generated based on the wallet's address, this way it is unique and consistent for everyone.",
+
+  "no-wallet-info.title": "No MetaMask wallet",
+  "no-wallet-info.details": "Install or connect MetaMask wallet extension in order to use DeChat",
+  "no-wallet-info.connect": "Connect with MetaMask",
+  "no-wallet-info.go-back": "Go back home",
 
   "home.heading": "All your messages on <span>server</span>",
   "home.title": "Blockchain",
