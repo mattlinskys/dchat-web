@@ -19,6 +19,10 @@ const useContractRead = ({
   const blockNumber = useBlockNumber();
 
   useEffect(() => {
+    setResults([]);
+  }, [JSON.stringify(args), contract]);
+
+  useEffect(() => {
     if (!contract) {
       return;
     }

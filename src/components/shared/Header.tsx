@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import {
   Box,
   Button,
@@ -18,19 +18,18 @@ import MetaMaskIcon from "components/icons/MetaMaskIcon";
 import IconButton from "components/shared/IconButton";
 import InfoIcon from "components/icons/InfoIcon";
 import useNavigateHash from "hooks/useNavigateHash";
-import useSnackbar from "hooks/useSnackbar";
 import { useConnect } from "wagmi";
 import ProfileContext from "contexts/ProfileContext";
 import Avatar from "components/shared/Avatar";
 import { shortenAddress } from "utils/addressUtils";
 import { PROFILE_HASH, SETUP_PROFILE_HASH } from "constants/hashes";
 import ProfileIcon from "components/icons/ProfileIcon";
+import useConnectErrorSnackbar from "hooks/useConnectErrorSnackbar";
 
 const Header: React.FC = () => {
   const { formatMessage } = useIntl();
   const isHome = !!useMatch(HOME_PATH);
   const navigateHash = useNavigateHash();
-  const snackbar = useSnackbar();
   const [
     {
       data: {
@@ -42,13 +41,8 @@ const Header: React.FC = () => {
     },
     connect,
   ] = useConnect();
+  useConnectErrorSnackbar(error);
   const { profile, isLoaded: isProfileLoaded } = useContext(ProfileContext)!;
-
-  useEffect(() => {
-    if (error?.name === "ConnectorNotFoundError") {
-      snackbar("error", formatMessage({ id: "errors.no-metamask-provider" }));
-    }
-  }, [error]);
 
   return (
     <Box

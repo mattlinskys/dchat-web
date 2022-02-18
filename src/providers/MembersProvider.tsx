@@ -68,8 +68,6 @@ const MembersProvider: React.FC = ({ children }) => {
         .flat()
     );
 
-    console.log(profileAddresses, profilesResult);
-
     const entities: IMember[] = [];
     for (const [i, profileAddress] of profileAddresses.entries()) {
       if (isAddressZero(profileAddress)) {
@@ -94,8 +92,6 @@ const MembersProvider: React.FC = ({ children }) => {
         });
       }
     }
-
-    console.log(entities);
 
     dispatch({ type: "fetch-fulfilled", entities });
   }, [factoryAddress, multicall, factoryContract, chatContract]);

@@ -27,11 +27,12 @@ import ChatMetaTitle from "components/chat/ChatMetaTitle";
 import useSnackbar from "hooks/useSnackbar";
 import { FormattedMessage, useIntl } from "react-intl";
 import CachedChatsProvider from "providers/CachedChatsProvider";
-import ChatProvider from "providers/ChatProvider";
+// import ChatProvider from "providers/ChatProvider";
 import useChatRemovedEvents from "hooks/useChatRemovedEvents";
 import InfoDialog from "components/shared/InfoDialog";
 import MetaMaskIcon from "components/icons/MetaMaskIcon";
 import { useConnect } from "wagmi";
+import useConnectErrorSnackbar from "hooks/useConnectErrorSnackbar";
 
 const ChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -46,10 +47,12 @@ const ChatPage: React.FC = () => {
         connected: isConnected,
         connectors: [connector],
       },
+      error,
       loading: isConnecting,
     },
     connect,
   ] = useConnect();
+  useConnectErrorSnackbar(error);
   const snackbar = useSnackbar();
   const { chat, isLoaded } = useChat(id!);
 
@@ -117,16 +120,16 @@ const ChatPage: React.FC = () => {
     <>
       {contextValue ? (
         <CachedChatsProvider>
-          <ChatProvider id={id as string}>
-            <ChatContext.Provider value={contextValue}>
-              <MembersProvider>
-                <MessagesProvider>
-                  <ChatMetaTitle />
-                  <Chat />
-                </MessagesProvider>
-              </MembersProvider>
-            </ChatContext.Provider>
-          </ChatProvider>
+          {/* <ChatProvider id={id as string}> */}
+          <ChatContext.Provider value={contextValue}>
+            <MembersProvider>
+              <MessagesProvider>
+                <ChatMetaTitle />
+                <Chat />
+              </MessagesProvider>
+            </MembersProvider>
+          </ChatContext.Provider>
+          {/* </ChatProvider> */}
         </CachedChatsProvider>
       ) : (
         <Box

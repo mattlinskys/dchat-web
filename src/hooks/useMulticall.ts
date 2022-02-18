@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 import { useProvider } from "wagmi";
-import useBlockNumber from "hooks/useBlockNumber";
 import useMulticallAddress from "hooks/useMulticallAddress";
 import { Contract } from "ethers";
 import { multicall2Abi } from "app/abis";
@@ -8,7 +7,6 @@ import { multicall2Abi } from "app/abis";
 const useMulticall = () => {
   const provider = useProvider();
   const multicallAddress = useMulticallAddress();
-  const blockNumber = useBlockNumber();
 
   return useCallback(
     async (
@@ -30,7 +28,7 @@ const useMulticall = () => {
 
       return results;
     },
-    [provider, multicallAddress, blockNumber]
+    [provider, multicallAddress]
   );
 };
 
