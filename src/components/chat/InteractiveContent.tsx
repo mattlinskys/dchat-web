@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Link, Text } from "@chakra-ui/react";
-import { shortenAddress } from "@usedapp/core";
 import useActiveChain from "hooks/useActiveChain";
+import { shortenAddress } from "utils/addressUtils";
 
 export interface InteractiveContentProps {
   content: string;
@@ -43,8 +43,8 @@ const InteractiveContent: React.FC<InteractiveContentProps> = ({ content }) => {
           <Link
             key={`${lastIndex}_${address}`}
             href={
-              activeChain
-                ? `${activeChain.blockExplorerUrls[0]}address/${address}`
+              activeChain && activeChain.blockExplorers?.[0]
+                ? `${activeChain.blockExplorers[0].url}address/${address}`
                 : "#"
             }
             title={address}
@@ -73,7 +73,7 @@ const InteractiveContent: React.FC<InteractiveContentProps> = ({ content }) => {
 
     parts.push(content.slice(lastIndex));
     return parts;
-  }, [content, activeChain?.blockExplorerUrls]);
+  }, [content, activeChain?.blockExplorers]);
 
   return <>{children}</>;
 };

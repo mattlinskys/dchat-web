@@ -2,40 +2,30 @@ import { useMemo } from "react";
 import useFactoryAddress from "hooks/useFactoryAddress";
 import { factoryAbi, profileAbi } from "app/abis";
 import { constants, utils } from "ethers";
-import { useContractCall, useContractCalls } from "@usedapp/core";
 import { IProfile } from "types/profile";
+import useContractRead from "hooks/useContractRead";
+import useConnectedContract from "hooks/useConnectedContract";
+import useContractReads from "hooks/useContractReads";
 
-const useProfile = (account?: string) => {
+const useProfile = (account?: string, watch?: boolean) => {
   const factoryAddress = useFactoryAddress();
-  const [address] =
-    useContractCall(
-      account && {
-        abi: factoryAbi,
-        address: factoryAddress,
-        method: "profiles",
-        args: [account],
-      }
-    ) ?? [];
+  const factoryContract = useConnectedContract(factoryAbi, factoryAddress);
+  const [address] = useContractRead({
+    contract: factoryContract,
+    method: "profiles",
+    args: [account],
+    watch,
+  });
 
-  const [name, encryptionPublicKey] = (
-    (useContractCalls(
-      address && address !== constants.AddressZero
-        ? [
-            {
-              abi: profileAbi,
-              address: address,
-              method: "name",
-              args: [],
-            },
-            {
-              abi: profileAbi,
-              address: address,
-              method: "encryptionPublicKey",
-              args: [],
-            },
-          ]
-        : []
-    ) ?? []) as (undefined[] | string[])[]
+  const [name, encryptionPublicKey] = useContractReads(
+    address && address !== constants.AddressZero
+      ? ["name", "encryptionPublicKey"].map((method) => ({
+          abi: profileAbi,
+          address,
+          method,
+        }))
+      : undefined,
+    { watch }
   ).flat();
 
   const profile = useMemo<IProfile | undefined>(

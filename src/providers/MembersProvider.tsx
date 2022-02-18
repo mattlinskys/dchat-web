@@ -6,6 +6,7 @@ import React, {
   useReducer,
 } from "react";
 import useFactoryAddress from "hooks/useFactoryAddress";
+import useMulticall from "hooks/useMulticall";
 import useConnectedContract from "hooks/useConnectedContract";
 import useContractEvents from "hooks/useContractEvents";
 import { chatAbi, factoryAbi, profileAbi } from "app/abis";
@@ -16,14 +17,8 @@ import {
 import { IMember } from "types/chat";
 import ChatContext from "contexts/ChatContext";
 import MembersContext from "contexts/MembersContext";
-import {
-  multicall,
-  useBlockNumber,
-  useEthers,
-  useMulticallAddress,
-} from "@usedapp/core";
-import { utils } from "ethers";
 import { isAddressZero } from "utils/addressUtils";
+import { utils } from "ethers";
 
 const reducer = createEntitiesReducer<IMember, "account">("account");
 
@@ -36,11 +31,9 @@ const MembersProvider: React.FC = ({ children }) => {
     reducer,
     entitiesReducerDefaultState
   );
-  const { library } = useEthers();
-  const multicallAddress = useMulticallAddress();
   const factoryContract = useConnectedContract(factoryAbi, factoryAddress);
   const chatContract = useConnectedContract(chatAbi, address);
-  const blockNumber = useBlockNumber();
+  const multicall = useMulticall();
 
   // TODO: try/catch
   const fetchMembers = useCallback(async () => {
@@ -54,26 +47,17 @@ const MembersProvider: React.FC = ({ children }) => {
       })
     );
 
-    const profileAddressesResult = await multicall(
-      library!,
-      multicallAddress!,
-      blockNumber!,
-      profileAddressCalls
-    );
-
-    const profileAddresses = [];
-    for (const { address, data } of profileAddressCalls) {
+    const profileAddressesResult = await multicall(profileAddressCalls);
+    const profileAddresses: string[] = [];
+    for (const [, data] of profileAddressesResult) {
       const [profileAddress] = factoryAbi.decodeFunctionResult(
         "profiles",
-        profileAddressesResult[address]![data]!
+        data
       );
       profileAddresses.push(profileAddress);
     }
 
     const profilesResult = await multicall(
-      library!,
-      multicallAddress!,
-      blockNumber!,
       profileAddresses
         .map((profileAddress) =>
           ["name", "encryptionPublicKey"].map((method) => ({
@@ -84,39 +68,37 @@ const MembersProvider: React.FC = ({ children }) => {
         .flat()
     );
 
+    console.log(profileAddresses, profilesResult);
+
     const entities: IMember[] = [];
     for (const [i, profileAddress] of profileAddresses.entries()) {
       if (isAddressZero(profileAddress)) {
         entities.push({ account: membersAccounts[i] });
       } else {
+        const [, nameData] = profilesResult[i * 2];
+        const [, publicKeyData] = profilesResult[i * 2 + 1];
+        const [nameBytes] = profileAbi.decodeFunctionResult("name", nameData);
+        const [encryptionPublicKey] = profileAbi.decodeFunctionResult(
+          "encryptionPublicKey",
+          publicKeyData
+        );
+
         entities.push({
           account: membersAccounts[i],
           profile: {
-            name: utils.parseBytes32String(
-              profilesResult[profileAddress]![
-                profileAbi.encodeFunctionData("name")
-              ]!
-            ),
+            name: utils.parseBytes32String(nameBytes),
             account: membersAccounts[i],
             address: profileAddress,
-            encryptionPublicKey:
-              profilesResult[profileAddress]![
-                profileAbi.encodeFunctionData("encryptionPublicKey")
-              ]!,
+            encryptionPublicKey,
           },
         });
       }
     }
 
+    console.log(entities);
+
     dispatch({ type: "fetch-fulfilled", entities });
-  }, [
-    factoryAddress,
-    blockNumber,
-    library,
-    multicallAddress,
-    factoryContract,
-    chatContract,
-  ]);
+  }, [factoryAddress, multicall, factoryContract, chatContract]);
 
   useEffect(() => {
     dispatch({ type: "reset" });
@@ -124,22 +106,10 @@ const MembersProvider: React.FC = ({ children }) => {
 
   // TODO: Synchronize every now and then
   useEffect(() => {
-    if (
-      blockNumber &&
-      library &&
-      multicallAddress &&
-      factoryContract &&
-      chatContract
-    ) {
+    if (factoryContract && chatContract) {
       fetchMembers();
     }
-  }, [
-    !!blockNumber,
-    !!library,
-    !!multicallAddress,
-    factoryContract,
-    chatContract,
-  ]);
+  }, [factoryContract, chatContract]);
 
   useContractEvents(chatContract, "MemberAdded", async (account: string) => {
     // TODO: try/catch
@@ -150,14 +120,17 @@ const MembersProvider: React.FC = ({ children }) => {
         entity: { account },
       });
     } else {
-      const profileResult = await multicall(
-        library!,
-        multicallAddress!,
-        blockNumber!,
+      const [[, nameData], [, publicKeyData]] = await multicall(
         ["name", "encryptionPublicKey"].map((method) => ({
           address: profileAddress,
           data: profileAbi.encodeFunctionData(method),
         }))
+      );
+
+      const [nameBytes] = profileAbi.decodeFunctionResult("name", nameData);
+      const [encryptionPublicKey] = profileAbi.decodeFunctionResult(
+        "encryptionPublicKey",
+        publicKeyData
       );
 
       dispatch({
@@ -165,17 +138,10 @@ const MembersProvider: React.FC = ({ children }) => {
         entity: {
           account,
           profile: {
-            name: utils.parseBytes32String(
-              profileResult[profileAddress]![
-                profileAbi.encodeFunctionData("name")
-              ]!
-            ),
+            name: utils.parseBytes32String(nameBytes),
             account,
             address: profileAddress,
-            encryptionPublicKey:
-              profileResult[profileAddress]![
-                profileAbi.encodeFunctionData("encryptionPublicKey")
-              ]!,
+            encryptionPublicKey,
           },
         },
       });

@@ -8,7 +8,7 @@ import { Formik, Form } from "formik";
 import { FormattedMessage, useIntl } from "react-intl";
 import * as Yup from "yup";
 import { utils } from "ethers";
-import useConnectedContract from "hooks/useConnectedContract";
+import useSignedContract from "hooks/useSignedContract";
 import useContractFunction from "hooks/useContractFunction";
 import useContractFunctionSuccessSnackbar from "hooks/useContractFunctionSuccessSnackbar";
 import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
@@ -30,7 +30,7 @@ const AddMemberForm: React.FC<AddMemberFormProps> = ({ onClose }) => {
   const {
     chat: { address },
   } = useContext(ChatContext);
-  const chatContract = useConnectedContract(chatAbi, address);
+  const chatContract = useSignedContract(chatAbi, address);
   const { send, state } = useContractFunction("addMember", chatContract);
   useContractFunctionSuccessSnackbar(
     state,
@@ -58,9 +58,12 @@ const AddMemberForm: React.FC<AddMemberFormProps> = ({ onClose }) => {
     [members]
   );
 
-  const handleSubmit = useCallback(async ({ address }: AddMemberFormValues) => {
-    await send(address);
-  }, []);
+  const handleSubmit = useCallback(
+    async ({ address }: AddMemberFormValues) => {
+      await send(address);
+    },
+    [send]
+  );
 
   useEffect(() => {
     if (state.status === "success") {

@@ -1,22 +1,29 @@
-import { Contract } from "ethers";
-import useContractCall from "hooks/useContractCall";
 import { useEffect, useState } from "react";
+import useContractCall from "hooks/useContractCall";
+import useBlockNumber from "hooks/useBlockNumber";
+import { Contract } from "ethers";
 
-const useContractAutoCall = ({
+const useContractRead = ({
   method,
   contract,
   args,
+  watch,
 }: {
   method: string;
   args: any[];
-  contract?: Contract;
+  contract: Contract | undefined;
+  watch?: boolean;
 }) => {
   const call = useContractCall(method, contract);
   const [results, setResults] = useState<any[]>([]);
+  const blockNumber = useBlockNumber();
 
   useEffect(() => {
-    const controller = new AbortController();
+    if (!contract) {
+      return;
+    }
 
+    const controller = new AbortController();
     (async () => {
       try {
         setResults(await call(args, { signal: controller.signal }));
@@ -30,9 +37,9 @@ const useContractAutoCall = ({
     return () => {
       controller.abort();
     };
-  }, [call]);
+  }, [call, JSON.stringify(args), watch && blockNumber]);
 
   return results;
 };
 
-export default useContractAutoCall;
+export default useContractRead;

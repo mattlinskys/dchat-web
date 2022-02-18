@@ -5,7 +5,7 @@ import IconButton from "components/shared/IconButton";
 import { FormattedMessage, useIntl } from "react-intl";
 import ChatContext from "contexts/ChatContext";
 import useFactoryAddress from "hooks/useFactoryAddress";
-import useConnectedContract from "hooks/useConnectedContract";
+import useSignedContract from "hooks/useSignedContract";
 import useContractFunction from "hooks/useContractFunction";
 import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
 import { utils } from "ethers";
@@ -17,7 +17,7 @@ const ChatHeaderRemove: React.FC = () => {
     chat: { id },
   } = useContext(ChatContext);
   const factoryAddress = useFactoryAddress();
-  const factoryContract = useConnectedContract(factoryAbi, factoryAddress);
+  const factoryContract = useSignedContract(factoryAbi, factoryAddress);
   const { send, state } = useContractFunction("removeChat", factoryContract);
   useContractFunctionErrorSnackbar(state);
 

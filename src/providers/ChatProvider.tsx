@@ -1,12 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import useFactoryAddress from "hooks/useFactoryAddress";
 import useConnectedContract from "hooks/useConnectedContract";
-import useContractAutoCall from "hooks/useContractAutoCall";
+import useContractRead from "hooks/useContractRead";
 import { constants, utils } from "ethers";
 import { chatAbi, factoryAbi } from "app/abis";
-import useMulticall from "hooks/useMulticall";
 import { IChat } from "types/chat";
 import ChatContext from "contexts/ChatContext";
+import useContractReads from "hooks/useContractReads";
 
 export interface ChatProviderProps {
   id: string;
@@ -15,48 +15,40 @@ export interface ChatProviderProps {
 const ChatProvider: React.FC<ChatProviderProps> = ({ id, children }) => {
   const factoryAddress = useFactoryAddress();
   const factoryContract = useConnectedContract(factoryAbi, factoryAddress);
-  const multicall = useMulticall();
-  const [chat, setChat] = useState<IChat>();
 
-  const [address] = useContractAutoCall({
+  const [address] = useContractRead({
     method: "chats",
     contract: factoryContract,
     args: [utils.id(id)],
   });
 
-  const isLoaded = !!chat || address === constants.AddressZero;
-
-  useEffect(() => {
-    if (!address) {
-      return;
-    }
-
-    (async () => {
-      const result = await multicall(
-        ["owner", "membersCount", "messagesCount"].map((method) => ({
+  const multicallResults = useContractReads(
+    address
+      ? ["owner", "membersCount", "messagesCount"].map((method) => ({
           address,
           method,
-          data: chatAbi.encodeFunctionData(method),
+          abi: chatAbi,
         }))
-      );
+      : undefined,
+    { watch: true }
+  );
 
-      // @ts-ignore
-      const resultChat: IChat = {
+  const chat = useMemo(() => {
+    const [ownerResult, membersCountResult, messagesCountResult] =
+      multicallResults;
+    if (ownerResult) {
+      return {
         id,
         address,
-      };
-
-      for (const prop of ["owner", "membersCount", "messagesCount"]) {
-        // @ts-ignore
-        [resultChat[prop]] = chatAbi.decodeFunctionResult(
-          prop,
-          result[address]![chatAbi.encodeFunctionData(prop)]!
-        );
-      }
-
-      setChat(resultChat);
-    })();
-  }, [address]);
+        ownerAccount: ownerResult[0],
+        membersCount: membersCountResult[0],
+        messagesCount: messagesCountResult[0],
+      } as IChat;
+    } else {
+      return undefined;
+    }
+  }, [id, address, JSON.stringify(multicallResults)]);
+  const isLoaded = !!chat || address === constants.AddressZero;
 
   const value = useMemo(
     () => ({

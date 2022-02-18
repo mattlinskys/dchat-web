@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useEthers } from "@usedapp/core";
 import { Contract, EventFilter } from "ethers";
 
 const useContractEvents = (
@@ -7,19 +6,16 @@ const useContractEvents = (
   event: string | EventFilter,
   listener: (...args: any[]) => void
 ) => {
-  const { library } = useEthers();
-
   useEffect(() => {
-    if (!library || !contract) {
+    if (!contract) {
       return;
     }
 
-    const connectedContract = contract.connect(library);
-    connectedContract.on(event, listener);
+    contract.on(event, listener);
     return () => {
-      connectedContract.off(event, listener);
+      contract.off(event, listener);
     };
-  }, [contract, library, event, listener]);
+  }, [contract, event, listener]);
 };
 
 export default useContractEvents;

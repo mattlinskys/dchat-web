@@ -20,11 +20,9 @@ import {
   Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useEthers } from "@usedapp/core";
 import { encrypt } from "utils/cryptoUtils";
 import { utils } from "ethers";
 import MembersContext from "contexts/MembersContext";
-import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
 import EmojiIcon from "components/icons/EmojiIcon";
 import EnterIcon from "components/icons/EnterIcon";
 import EmojiPicker from "components/shared/EmojiPicker";
@@ -35,10 +33,12 @@ import MessagesContext from "contexts/MessagesContext";
 import IconButton from "components/shared/IconButton";
 import useSnackbar from "hooks/useSnackbar";
 import ProfileContext from "contexts/ProfileContext";
-import useConnectedContract from "hooks/useConnectedContract";
+import useSignedContract from "hooks/useSignedContract";
+import useContractFunction from "hooks/useContractFunction";
+import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
 import { chatAbi } from "app/abis";
 import ChatContext from "contexts/ChatContext";
-import useContractFunction from "hooks/useContractFunction";
+import useAccountAddress from "hooks/useAccountAddress";
 
 const SendMsgForm: React.FC = () => {
   const snackbar = useSnackbar();
@@ -53,7 +53,7 @@ const SendMsgForm: React.FC = () => {
   const { addPendingMessage } = useContext(MessagesContext);
   const { members } = useContext(MembersContext);
   const { isAuthenticated } = useContext(ProfileContext)!;
-  const { account } = useEthers();
+  const account = useAccountAddress();
   const isUserMember = useMemo(
     () => members.some((member) => member.account === account),
     [members, account]
@@ -61,7 +61,7 @@ const SendMsgForm: React.FC = () => {
   const {
     chat: { address },
   } = useContext(ChatContext);
-  const chatContract = useConnectedContract(chatAbi, address);
+  const chatContract = useSignedContract(chatAbi, address);
   const { send, state } = useContractFunction("sendCipherMsg", chatContract);
   useContractFunctionErrorSnackbar(state);
   const isLoading = state.status === "pending" || state.status === "minting";

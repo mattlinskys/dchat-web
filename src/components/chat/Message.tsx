@@ -4,7 +4,7 @@ import useProfile from "hooks/useProfile";
 import { IMessage } from "types/message";
 import EncryptedMessageContent from "components/chat/EncryptedMessageContent";
 import { Box, Text } from "@chakra-ui/react";
-import { useEthers } from "@usedapp/core";
+import useAccountAddress from "hooks/useAccountAddress";
 
 export interface MessageProps {
   message: IMessage;
@@ -15,7 +15,7 @@ const Message: React.FC<MessageProps> = ({
   message: { id, sender: senderAccount, sentAt },
   isPending,
 }) => {
-  const { account } = useEthers();
+  const account = useAccountAddress();
   const { profile: sender, isLoaded } = useProfile(senderAccount);
 
   return (

@@ -1,29 +1,38 @@
-import React, { useCallback, useContext } from "react";
+import React, { useCallback } from "react";
 import { Button, Tag } from "@chakra-ui/react";
-import ChainsContext from "contexts/ChainsContext";
-import { utils } from "ethers";
-import { useEthers } from "@usedapp/core";
 import useSnackbar from "hooks/useSnackbar";
 import { FormattedMessage, useIntl } from "react-intl";
 import InfoDialog from "components/shared/InfoDialog";
+import { useConnect, useNetwork, InjectedConnector } from "wagmi";
+import { utils } from "ethers";
 
 const UnsupportedChainDialogProvider: React.FC = () => {
-  const { active, library, ...rest } = useEthers();
-  const { activeChain, targetChain } = useContext(ChainsContext)!;
-  const isOpen = active && !activeChain;
+  const [
+    {
+      data: { connector },
+    },
+  ] = useConnect();
+  const [
+    {
+      data: { chain, chains },
+    },
+  ] = useNetwork();
+  const isOpen = chain ? chain.unsupported! : false;
+  const targetChain = chains[0];
   const snackbar = useSnackbar();
   const { formatMessage } = useIntl();
 
   const handleSwitch = useCallback(async () => {
     try {
-      await library!.provider.request!({
-        method: "wallet_switchEthereumChain",
-        params: [{ chainId: utils.hexlify(targetChain.id) }],
-      });
+      await connector?.switchChain?.(targetChain.id);
     } catch (err: any) {
-      if (err.code === 4902) {
+      if (
+        err.originalError?.code === 4902 &&
+        connector instanceof InjectedConnector
+      ) {
+        const provider = await connector.getProvider()!;
         try {
-          await library!.provider.request!({
+          await provider.request!({
             method: "wallet_addEthereumChain",
             params: [
               {
@@ -31,7 +40,9 @@ const UnsupportedChainDialogProvider: React.FC = () => {
                 chainName: targetChain.name,
                 nativeCurrency: targetChain.nativeCurrency,
                 rpcUrls: targetChain.rpcUrls,
-                blockExplorerUrls: targetChain.blockExplorerUrls,
+                blockExplorerUrls: targetChain.blockExplorers!.map(
+                  (explorer) => explorer.url
+                ),
               },
             ],
           });
@@ -48,7 +59,7 @@ const UnsupportedChainDialogProvider: React.FC = () => {
         );
       }
     }
-  }, [library?.provider.request, snackbar, formatMessage]);
+  }, [connector, targetChain?.id, snackbar, formatMessage]);
 
   return (
     <InfoDialog
@@ -57,11 +68,11 @@ const UnsupportedChainDialogProvider: React.FC = () => {
       details={
         <FormattedMessage
           id="unsupported-chain.description"
-          values={{ network: <Tag>{targetChain.name}</Tag> }}
+          values={{ network: <Tag>{targetChain?.name}</Tag> }}
         />
       }
     >
-      {library?.provider.request && (
+      {connector && (
         <Button onClick={handleSwitch} mt="4" isFullWidth>
           <FormattedMessage id="unsupported-chain.switch" />
         </Button>

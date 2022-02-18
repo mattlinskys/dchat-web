@@ -1,11 +1,11 @@
 import React, { useMemo } from "react";
 import ProfileContext, { ProfileContextValue } from "contexts/ProfileContext";
-import { useEthers } from "@usedapp/core";
+import useAccountAddress from "hooks/useAccountAddress";
 import useProfile from "hooks/useProfile";
 
 const ProfileProvider: React.FC = ({ children }) => {
-  const { account } = useEthers();
-  const { profile, isLoaded } = useProfile(account || undefined);
+  const account = useAccountAddress();
+  const { profile, isLoaded } = useProfile(account, true);
 
   const value = useMemo<ProfileContextValue>(
     () => ({

@@ -1,9 +1,12 @@
-import ChainsContext from "contexts/ChainsContext";
-import { useContext } from "react";
+import { useNetwork } from "wagmi";
 
 const useActiveChain = () => {
-  const { activeChain } = useContext(ChainsContext)!;
-  return activeChain;
+  const [
+    {
+      data: { chain },
+    },
+  ] = useNetwork();
+  return chain;
 };
 
 export default useActiveChain;

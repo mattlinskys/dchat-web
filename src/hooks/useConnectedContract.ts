@@ -1,18 +1,15 @@
 import { useMemo } from "react";
 import { Contract, ContractInterface } from "ethers";
-import { useEthers } from "@usedapp/core";
+import { useProvider } from "wagmi";
 
 const useConnectedContract = (abi: ContractInterface, address?: string) => {
-  const { library } = useEthers();
+  const provider = useProvider();
   return useMemo(
     () =>
-      (library &&
-        address &&
-        // TODO: useSignedContract
-        new Contract(address, abi, library.getSigner())) as
+      (provider && address && new Contract(address, abi, provider)) as
         | Contract
         | undefined,
-    [library, abi, address]
+    [provider, abi, address]
   );
 };
 

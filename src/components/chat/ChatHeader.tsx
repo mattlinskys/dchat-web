@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { HStack, useDisclosure, Tooltip } from "@chakra-ui/react";
 import ChatContext from "contexts/ChatContext";
 import AddMemberIcon from "components/icons/AddMemberIcon";
-import { useEthers } from "@usedapp/core";
 import AddMemberDialog from "components/chat/AddMember/AddMemberDialog";
 import ChatMemberAvatars from "components/chat/ChatMemberAvatars";
 import { FormattedMessage, useIntl } from "react-intl";
@@ -11,12 +10,13 @@ import useCopy from "hooks/useCopy";
 import useUserChatOwner from "hooks/useUserChatOwner";
 import ChatHeaderRemove from "components/chat/ChatHeaderRemove";
 import IconButton from "components/shared/IconButton";
+import useAccountAddress from "hooks/useAccountAddress";
 
 const ChatHeader: React.FC = () => {
   const {
     chat: { id, ownerAccount },
   } = useContext(ChatContext);
-  const { account } = useEthers();
+  const account = useAccountAddress();
   const { formatMessage } = useIntl();
   const isUserChatOwner = useUserChatOwner();
   const copy = useCopy();

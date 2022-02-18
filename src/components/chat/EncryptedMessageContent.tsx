@@ -5,13 +5,15 @@ import { utils, BigNumber } from "ethers";
 import { Box, Button, HStack, Spinner, Text } from "@chakra-ui/react";
 import naclUtil from "tweetnacl-util";
 import { EPHEM_PUBLIC_KEY_LENGTH, NONCE_LENGTH } from "constants/crypto";
-import { useEthers } from "@usedapp/core";
 import InteractiveContent from "components/chat/InteractiveContent";
 import ClosedLockIcon from "components/icons/ClosedLockIcon";
 import { FormattedMessage } from "react-intl";
 import ShowMoreText from "components/shared/ShowMoreText";
 import useConnectedContract from "hooks/useConnectedContract";
 import useSnackbar from "hooks/useSnackbar";
+import useAccountAddress from "hooks/useAccountAddress";
+import { useProvider } from "wagmi";
+import { Web3Provider } from "@ethersproject/providers";
 
 export interface EncryptedMessageContentProps {
   messageId: BigNumber;
@@ -23,7 +25,8 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
   isPending,
 }) => {
   const snackbar = useSnackbar();
-  const { account, connector } = useEthers();
+  const account = useAccountAddress();
+  const provider = useProvider() as Web3Provider;
   const { chat } = useContext(ChatContext);
   const chatContract = useConnectedContract(chatAbi, chat.address);
   const [data, setData] = useState<string>();
@@ -67,8 +70,7 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
         NONCE_LENGTH + EPHEM_PUBLIC_KEY_LENGTH
       );
 
-      const provider = await connector!.getProvider();
-      const decrypted = await provider.request({
+      const decrypted = await provider.provider?.request?.({
         method: "eth_decrypt",
         params: [
           JSON.stringify({
@@ -87,7 +89,7 @@ const EncryptedMessageContent: React.FC<EncryptedMessageContentProps> = ({
     } finally {
       setDecrypting(false);
     }
-  }, [connector, data]);
+  }, [provider, data]);
 
   return (
     <Box

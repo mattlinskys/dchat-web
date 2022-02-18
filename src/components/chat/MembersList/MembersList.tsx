@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import MembersContext from "contexts/MembersContext";
 import { List } from "@chakra-ui/react";
-import { useEthers } from "@usedapp/core";
 import MembersListItem from "components/chat/MembersList/MembersListItem";
 import useUserChatOwner from "hooks/useUserChatOwner";
+import useAccountAddress from "hooks/useAccountAddress";
 
 const MembersList: React.FC = () => {
   const { members } = useContext(MembersContext);
-  const { account } = useEthers();
+  const account = useAccountAddress();
   const isUserChatOwner = useUserChatOwner();
 
   return (

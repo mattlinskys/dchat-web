@@ -1,32 +1,36 @@
 import { useCallback } from "react";
-import {
-  ChainCall,
-  multicall,
-  useBlockNumber,
-  useEthers,
-  useMulticallAddress,
-} from "@usedapp/core";
+import { useProvider } from "wagmi";
+import useBlockNumber from "hooks/useBlockNumber";
+import useMulticallAddress from "hooks/useMulticallAddress";
+import { Contract } from "ethers";
+import { multicall2Abi } from "app/abis";
 
 const useMulticall = () => {
-  const { library } = useEthers();
+  const provider = useProvider();
   const multicallAddress = useMulticallAddress();
   const blockNumber = useBlockNumber();
 
   return useCallback(
-    async (calls: ChainCall[], { signal }: { signal?: AbortSignal } = {}) => {
-      const results = await multicall(
-        library!,
-        multicallAddress!,
-        blockNumber!,
-        calls
+    async (
+      calls: {
+        address: string;
+        data: string;
+      }[],
+      { signal }: { signal?: AbortSignal } = {}
+    ) => {
+      const contract = new Contract(multicallAddress!, multicall2Abi, provider);
+      const results: [boolean, string][] = await contract.tryAggregate(
+        false,
+        calls.map(({ address, data }) => [address, data])
       );
+
       if (signal?.aborted) {
         throw new DOMException("Aborted", "AbortError");
       }
 
       return results;
     },
-    [library, multicallAddress, blockNumber]
+    [provider, multicallAddress, blockNumber]
   );
 };
 

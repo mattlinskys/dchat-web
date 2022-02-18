@@ -4,8 +4,8 @@ import {
   TransactionReceipt,
   TransactionResponse,
 } from "@ethersproject/providers";
-import { addressEqual } from "@usedapp/core";
 import { LogDescription } from "ethers/lib/utils";
+import { compareAddresses } from "utils/addressUtils";
 
 interface IBaseState {
   status: "idle" | "pending" | "minting";
@@ -45,7 +45,7 @@ const useContractFunction = (name: string, contract?: Contract) => {
         if (receipt?.logs) {
           events = receipt.logs.reduce((accumulatedLogs, log) => {
             try {
-              return addressEqual(log.address, contract!.address)
+              return compareAddresses(log.address, contract!.address)
                 ? [...accumulatedLogs, contract!.interface.parseLog(log)]
                 : accumulatedLogs;
             } catch {

@@ -1,7 +1,7 @@
 import React from "react";
 import VCard, { VCardProps } from "components/shared/VCard";
 import useProfile from "hooks/useProfile";
-import { useEthers } from "@usedapp/core";
+import useAccountAddress from "hooks/useAccountAddress";
 
 export interface ProfileVCardProps
   extends Omit<VCardProps, "user" | "account"> {
@@ -10,7 +10,7 @@ export interface ProfileVCardProps
 
 const ProfileVCard: React.FC<ProfileVCardProps> = ({ account, ...rest }) => {
   const { profile, isLoaded } = useProfile(account);
-  const { account: userAccount } = useEthers();
+  const userAccount = useAccountAddress();
 
   return (
     <VCard

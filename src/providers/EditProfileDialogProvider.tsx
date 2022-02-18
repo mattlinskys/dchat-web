@@ -3,7 +3,7 @@ import EditProfileDialog, {
   EditProfileDialogProps,
 } from "components/profile/EditProfileDialog";
 import { utils } from "ethers";
-import useConnectedContract from "hooks/useConnectedContract";
+import useSignedContract from "hooks/useSignedContract";
 import useContractFunction from "hooks/useContractFunction";
 import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
 import useContractFunctionSuccessSnackbar from "hooks/useContractFunctionSuccessSnackbar";
@@ -21,7 +21,7 @@ const EditProfileDialogProvider: React.FC<EditProfileDialogProviderProps> = ({
   onClose,
   ...rest
 }) => {
-  const contract = useConnectedContract(profileAbi, profile.address);
+  const contract = useSignedContract(profileAbi, profile.address);
   const { send, state } = useContractFunction("updateName", contract);
   useContractFunctionErrorSnackbar(state);
   useContractFunctionSuccessSnackbar(state, "Chages saved successfully");

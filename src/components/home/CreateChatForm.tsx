@@ -7,8 +7,8 @@ import {
   Tooltip,
   Box,
 } from "@chakra-ui/react";
-import { useEthers } from "@usedapp/core";
 import { utils } from "ethers";
+import useSignedContract from "hooks/useSignedContract";
 import useContractFunction from "hooks/useContractFunction";
 import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
 import { useNavigate } from "react-router-dom";
@@ -30,9 +30,9 @@ import AddressInput from "components/shared/AddressInput";
 import ProfileVCard from "components/shared/ProfileVCard";
 import TrashIcon from "components/icons/TrashIcon";
 import IconButton from "components/shared/IconButton";
-import useConnectedContract from "hooks/useConnectedContract";
 import { factoryAbi } from "app/abis";
 import useFactoryAddress from "hooks/useFactoryAddress";
+import useAccountAddress from "hooks/useAccountAddress";
 
 interface CreateChatFormValues {
   id: string;
@@ -42,9 +42,9 @@ interface CreateChatFormValues {
 const CreateChatForm: React.FC = () => {
   const navigate = useNavigate();
   const { formatMessage } = useIntl();
-  const { account } = useEthers();
+  const account = useAccountAddress();
   const factoryAddress = useFactoryAddress();
-  const factoryContract = useConnectedContract(factoryAbi, factoryAddress);
+  const factoryContract = useSignedContract(factoryAbi, factoryAddress);
   const { send, state } = useContractFunction("createChat", factoryContract);
   const chatIdRef = useRef<string>();
   useContractFunctionErrorSnackbar(state, (err) =>
@@ -77,7 +77,7 @@ const CreateChatForm: React.FC = () => {
       chatIdRef.current = id;
       await send(utils.id(id), addresses);
     },
-    [send, navigate]
+    [send]
   );
 
   useEffect(() => {

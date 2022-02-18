@@ -16,7 +16,6 @@ import {
   Link,
   Button,
   Icon,
-  VStack,
   Divider,
 } from "@chakra-ui/react";
 import ChatContext from "contexts/ChatContext";
@@ -30,9 +29,9 @@ import { FormattedMessage, useIntl } from "react-intl";
 import CachedChatsProvider from "providers/CachedChatsProvider";
 import ChatProvider from "providers/ChatProvider";
 import useChatRemovedEvents from "hooks/useChatRemovedEvents";
-import { useEthers } from "@usedapp/core";
 import InfoDialog from "components/shared/InfoDialog";
 import MetaMaskIcon from "components/icons/MetaMaskIcon";
+import { useConnect } from "wagmi";
 
 const ChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -41,7 +40,16 @@ const ChatPage: React.FC = () => {
     state: null | { new?: boolean };
   };
   const { formatMessage } = useIntl();
-  const { active, activateBrowserWallet } = useEthers();
+  const [
+    {
+      data: {
+        connected: isConnected,
+        connectors: [connector],
+      },
+      loading: isConnecting,
+    },
+    connect,
+  ] = useConnect();
   const snackbar = useSnackbar();
   const { chat, isLoaded } = useChat(id!);
 
@@ -153,7 +161,7 @@ const ChatPage: React.FC = () => {
       </HStack>
 
       <InfoDialog
-        isOpen={!active}
+        isOpen={!isConnected && !isConnecting}
         title={<FormattedMessage id="no-wallet-info.title" />}
         details={<FormattedMessage id="no-wallet-info.details" />}
       >
@@ -165,7 +173,7 @@ const ChatPage: React.FC = () => {
           align="stretch"
         >
           <Button
-            onClick={() => activateBrowserWallet()}
+            onClick={() => connect(connector)}
             variant="outline"
             size="lg"
             leftIcon={<Icon as={MetaMaskIcon} w="5" h="auto" />}

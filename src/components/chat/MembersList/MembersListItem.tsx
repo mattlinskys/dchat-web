@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
-import { useEthers } from "@usedapp/core";
-import useConnectedContract from "hooks/useConnectedContract";
+import useSignedContract from "hooks/useSignedContract";
 import useContractFunction from "hooks/useContractFunction";
 import useContractFunctionErrorSnackbar from "hooks/useContractFunctionErrorSnackbar";
 import useContractFunctionSuccessSnackbar from "hooks/useContractFunctionSuccessSnackbar";
@@ -12,6 +11,7 @@ import TrashIcon from "components/icons/TrashIcon";
 import IconButton from "components/shared/IconButton";
 import { chatAbi } from "app/abis";
 import ChatContext from "contexts/ChatContext";
+import useAccountAddress from "hooks/useAccountAddress";
 
 export interface MembersListItemProps {
   member: IMember;
@@ -23,11 +23,11 @@ const MembersListItem: React.FC<MembersListItemProps> = ({
   canRemove,
 }) => {
   const { formatMessage } = useIntl();
-  const { account } = useEthers();
+  const account = useAccountAddress();
   const {
     chat: { address },
   } = useContext(ChatContext);
-  const chatContract = useConnectedContract(chatAbi, address);
+  const chatContract = useSignedContract(chatAbi, address);
   const { send, state } = useContractFunction("removeMember", chatContract);
   useContractFunctionErrorSnackbar(state);
   useContractFunctionSuccessSnackbar(
