@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useContractCall from "hooks/useContractCall";
 import useBlockNumber from "hooks/useBlockNumber";
 import { Contract } from "ethers";
@@ -17,10 +17,11 @@ const useContractRead = ({
   const call = useContractCall(method, contract);
   const [results, setResults] = useState<any[]>([]);
   const blockNumber = useBlockNumber();
+  const argsStr = useMemo(() => JSON.stringify(args), [args]);
 
   useEffect(() => {
     setResults([]);
-  }, [JSON.stringify(args), contract]);
+  }, [argsStr, contract]);
 
   useEffect(() => {
     if (!contract) {
@@ -41,7 +42,7 @@ const useContractRead = ({
     return () => {
       controller.abort();
     };
-  }, [call, JSON.stringify(args), watch && blockNumber]);
+  }, [call, argsStr, watch && blockNumber]);
 
   return results;
 };

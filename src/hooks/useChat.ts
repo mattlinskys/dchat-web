@@ -25,7 +25,8 @@ const useChat = (id: string) => {
           method,
           args: [],
         }))
-      : []
+      : [],
+    { watch: true }
   ).flat();
 
   const chat = useMemo(

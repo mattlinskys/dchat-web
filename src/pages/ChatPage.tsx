@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import useChat from "hooks/useChat";
 import {
   useNavigate,
@@ -26,13 +26,12 @@ import Chat from "components/chat/Chat";
 import ChatMetaTitle from "components/chat/ChatMetaTitle";
 import useSnackbar from "hooks/useSnackbar";
 import { FormattedMessage, useIntl } from "react-intl";
-import CachedChatsProvider from "providers/CachedChatsProvider";
-// import ChatProvider from "providers/ChatProvider";
 import useChatRemovedEvents from "hooks/useChatRemovedEvents";
 import InfoDialog from "components/shared/InfoDialog";
 import MetaMaskIcon from "components/icons/MetaMaskIcon";
 import { useConnect } from "wagmi";
 import useConnectErrorSnackbar from "hooks/useConnectErrorSnackbar";
+import CachedChatsContext from "contexts/CachedChatsContext";
 
 const ChatPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -41,6 +40,7 @@ const ChatPage: React.FC = () => {
     state: null | { new?: boolean };
   };
   const { formatMessage } = useIntl();
+  const { removeChatId } = useContext(CachedChatsContext);
   const [
     {
       data: {
@@ -93,6 +93,7 @@ const ChatPage: React.FC = () => {
   }, [!!chat, state?.new]);
 
   useChatRemovedEvents(id!, () => {
+    removeChatId(id!);
     navigate(HOME_PATH, { replace: true });
     snackbar(
       "error",
@@ -105,7 +106,7 @@ const ChatPage: React.FC = () => {
     );
   });
 
-  const contextValue = useMemo(
+  const chatContextValue = useMemo(
     () =>
       chat
         ? {
@@ -118,19 +119,15 @@ const ChatPage: React.FC = () => {
 
   return (
     <>
-      {contextValue ? (
-        <CachedChatsProvider>
-          {/* <ChatProvider id={id as string}> */}
-          <ChatContext.Provider value={contextValue}>
-            <MembersProvider>
-              <MessagesProvider>
-                <ChatMetaTitle />
-                <Chat />
-              </MessagesProvider>
-            </MembersProvider>
-          </ChatContext.Provider>
-          {/* </ChatProvider> */}
-        </CachedChatsProvider>
+      {chatContextValue ? (
+        <ChatContext.Provider value={chatContextValue}>
+          <MembersProvider>
+            <MessagesProvider>
+              <ChatMetaTitle />
+              <Chat />
+            </MessagesProvider>
+          </MembersProvider>
+        </ChatContext.Provider>
       ) : (
         <Box
           position="fixed"

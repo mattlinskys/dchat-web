@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import useBlockNumber from "hooks/useBlockNumber";
 import { Interface } from "ethers/lib/utils";
 import useMulticall from "hooks/useMulticall";
@@ -17,6 +17,11 @@ const useContractReads = (
   const [results, setResults] = useState<any[]>([]);
   const multicall = useMulticall();
   const blockNumber = useBlockNumber();
+  const readsStr = useMemo(() => JSON.stringify(reads), [reads]);
+
+  useEffect(() => {
+    setResults([]);
+  }, [readsStr, multicall]);
 
   useEffect(() => {
     if (!reads || reads.length === 0) {
@@ -49,7 +54,7 @@ const useContractReads = (
     return () => {
       controller.abort();
     };
-  }, [multicall, JSON.stringify(reads), watch && blockNumber]);
+  }, [multicall, readsStr, watch && blockNumber]);
 
   return results;
 };

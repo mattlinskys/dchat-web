@@ -12,6 +12,7 @@ import { providers } from "ethers";
 import { ExternalProvider } from "@ethersproject/providers";
 
 import ProfileProvider from "providers/ProfileProvider";
+import CachedChatsProvider from "providers/CachedChatsProvider";
 import SetupProfileDialogProvider from "providers/SetupProfileDialogProvider";
 import ProfileDialogProvider from "providers/ProfileDialogProvider";
 import JoinChatDialogProvider from "providers/JoinChatDialogProvider";
@@ -38,12 +39,14 @@ const App: React.FC = () => (
       <WagmiProvider autoConnect connectors={connectors} provider={provider}>
         <ChakraProvider theme={theme}>
           <ProfileProvider>
-            <Layout>
-              <Routes>
-                <Route path={HOME_PATH} element={<HomePage />} />
-                <Route path={CHAT_PATH} element={<ChatPage />} />
-              </Routes>
-            </Layout>
+            <CachedChatsProvider>
+              <Layout>
+                <Routes>
+                  <Route path={HOME_PATH} element={<HomePage />} />
+                  <Route path={CHAT_PATH} element={<ChatPage />} />
+                </Routes>
+              </Layout>
+            </CachedChatsProvider>
 
             <SetupProfileDialogProvider />
             <ProfileDialogProvider />
