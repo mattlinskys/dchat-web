@@ -59,7 +59,7 @@
 
   "home.heading": "All your messages on <span>server</span>",
   "home.title": "Blockchain",
-  "home.description": "Decentralized chat that stores encrypted messages on blockchain without using centralized data store",
+  "home.description": "Decentralized chat that stores encrypted messages on blockchain without using centralized data storage",
   "home.actions.create-chat": "Create new chat",
   "home.actions.join-chat": "Join chat by ID",
   "home.mobile.hint": "DeChat is currently available only on desktop browser with the MetaMask extension",
