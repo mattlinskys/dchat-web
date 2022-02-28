@@ -12,7 +12,7 @@ export const SUPPORTED_CHAINS = [
 ];
 
 export const MULTICALL_ADDRESSES = {
-  [chain.polygonMainnet.id]: "0x11ce4B23bD875D7F5C6a31084f55fDe1e9A87507",
-  [chain.polygonTestnetMumbai.id]: "0x08411ADd0b5AA8ee47563b146743C13b3556c9Cc",
+  [chain.polygonMainnet.id]: "0x275617327c958bD06b5D6b871E7f491D76113dd8",
+  [chain.polygonTestnetMumbai.id]: "0xe9939e7Ea7D7fb619Ac57f648Da7B1D425832631",
   [hardhat.id]: process.env.REACT_APP_LOCALNODE_MULTICALL_ADDRESS,
 };
